@@ -1,0 +1,16 @@
+{
+  "debug": false,
+  "site_name": "Название сайта",
+  "menu": [
+    {
+      "title": "Главная",
+      "href": "index"
+    }, {
+      "title": "Стайлгайд",
+      "href": "styleguide"
+    }, {
+      "title": "Контакты",
+      "href": "contacts"
+    }
+  ]
+}
