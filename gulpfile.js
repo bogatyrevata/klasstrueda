@@ -197,19 +197,13 @@ export const images = ()  => src(`${path.images.root}/**/*.{png,jpg,jpeg}`)
 const fonts = () => src(`${dirs.src}/fonts/*.{woff,woff2}`)
   .pipe(dest(`${dirs.dest}/static/fonts/`))
 
-const vendorStyles = () => src(`${path.vendor.styles}*.min.css`)
+export const vendorStyles = () => src(`${path.vendor.styles}*.min.css`)
   .pipe(dest(`${path.styles.save}`))
 
 const vendorScripts = () => src(`${path.vendor.scripts}*.min.js`)
   .pipe(dest(`${path.scripts.save}`))
 
 export const vendor = parallel(vendorStyles, vendorScripts);
-
-const pixelGlass = () => src(`node_modules/pixel-glass/{styles.css,script.js}`)
-  .pipe(dest(`${dirs.dest}/static/pp/`))
-
-export const pp = () => src(`${dirs.src}/static/pp/*`)
-  .pipe(dest(`${dirs.dest}/static/pp/`))
 
 export const server = () => {
   const bs = browser.init({
@@ -227,13 +221,13 @@ export const server = () => {
 };
 
 /**
- * Задачи для разработки
- */
-export const start = series(clean, parallel(fonts, pixelGlass, pp), parallel(img, images, css, styles, templates, scripts, vendor, sprite), server);
-
-/**
  * Для билда
  */
 export const build = series(clean, css, fonts, parallel(img, images, styles, templates, scripts, vendor, sprite));
+
+/**
+ * Задачи для разработки
+ */
+export const start = series(build, server);
 
 export default start;
