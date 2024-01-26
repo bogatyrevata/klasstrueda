@@ -22,7 +22,6 @@
     "gulp-sharp-optimize-images": "latest",
     "gulp-svgmin": "latest",
     "gulp-svgstore": "latest",
-    "pixel-glass": "github:makehtml/pixel-glass",
     "postcss-csso": "latest",
     "postcss-lit": "latest",
     "postcss-scss": "latest",

@@ -12,5 +12,28 @@
       "title": "Контакты",
       "href": "contacts"
     }
-  ]
+  ],
+  "contacts": {
+    "phone": "+012 345 6789",
+    "address": "123 Street, New York, USA"
+  },
+  "links": [{
+    "title": "twitter",
+    "href": "#twitter-url1"
+  }, {
+    "title": "facebook-f",
+    "href": "#twitter-ur2l"
+  }, {
+    "title": "youtube",
+    "href": "#twitter-url3"
+  }, {
+    "title": "linkedin-in",
+    "href": "#twitter-url4"
+  }, {
+    "title": "vk",
+    "href": "#twitter-url4"
+  }, {
+    "title": "instagram",
+    "href": "#twitter-url4"
+  }]
 }
