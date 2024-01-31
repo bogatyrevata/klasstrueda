@@ -1,7 +1,7 @@
 {
-  "name": "gulp-sass-nunjucks",
-  "version": "3.1.0",
-  "description": "Базовый каркас для начала разработки на jinja + sass",
+  "name": "klasstrueda",
+  "version": "0.0.1",
+  "description": "klasstrueda - проект по онлайн-обучению на творческих курсах",
   "devDependencies": {
     "autoprefixer": "latest",
     "browser-sync": "latest",
