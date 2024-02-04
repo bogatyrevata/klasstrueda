@@ -1,7 +1,7 @@
 {
-  "name": "gulp-sass-nunjucks",
-  "version": "3.1.0",
-  "description": "Базовый каркас для начала разработки на jinja + sass",
+  "name": "klasstrueda",
+  "version": "0.1.0",
+  "description": "klasstrueda - проект по онлайн-обучению на творческих курсах",
   "devDependencies": {
     "autoprefixer": "latest",
     "browser-sync": "latest",
@@ -22,7 +22,6 @@
     "gulp-sharp-optimize-images": "latest",
     "gulp-svgmin": "latest",
     "gulp-svgstore": "latest",
-    "pixel-glass": "github:makehtml/pixel-glass",
     "postcss-csso": "latest",
     "postcss-lit": "latest",
     "postcss-scss": "latest",

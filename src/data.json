@@ -1,6 +1,6 @@
 {
   "debug": false,
-  "site_name": "Название сайта",
+  "site_name": "klasstrueda",
   "menu": [
     {
       "title": "Главная",
@@ -12,5 +12,22 @@
       "title": "Контакты",
       "href": "contacts"
     }
-  ]
+  ],
+  "contacts": {
+    "phone": "+012 345 6789",
+    "address": "123 Street, New York, USA"
+  },
+  "links": [{
+    "title": "facebook-f",
+    "href": "#twitter-ur2l"
+  }, {
+    "title": "youtube",
+    "href": "#twitter-url3"
+  },{
+    "title": "vk",
+    "href": "#twitter-url4"
+  }, {
+    "title": "instagram",
+    "href": "#twitter-url4"
+  }]
 }
