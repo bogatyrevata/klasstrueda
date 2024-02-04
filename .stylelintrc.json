@@ -21,5 +21,21 @@
       "ignore": ["selectors-within-list"]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/sass/bootstrap/**/*.scss"],
+      "rules": {
+        "at-rule-empty-line-before": null,
+        "no-descending-specificity": null,
+        "number-max-precision": 5,
+        "scss/at-extend-no-missing-placeholder": null,
+        "scss/at-if-no-null": null,
+        "scss/at-mixin-pattern": null,
+        "scss/comment-no-empty": null,
+        "scss/no-global-function-names": null,
+        "value-keyword-case": null
+      }
+    }
+  ]
 }

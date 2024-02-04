@@ -20,11 +20,9 @@
   flex-wrap: wrap; // allow us to do the line break for collapsing content
   align-items: center;
   justify-content: space-between; // space out brand from logo
-  padding-top: $navbar-padding-y;
-  padding-right: $navbar-padding-x; // default: null
-  padding-bottom: $navbar-padding-y;
-  padding-left: $navbar-padding-x; // default: null
-  @include gradient-bg();
+  padding: $navbar-padding-y $navbar-padding-x $navbar-padding-y $navbar-padding-x; // default: null // default: null
+
+  @include gradient-bg;
 
   // Because flex properties aren't inherited, we need to redeclare these first
   // few properties so that content nested within behave properly.
@@ -57,7 +55,9 @@
   padding-top: $navbar-brand-padding-y;
   padding-bottom: $navbar-brand-padding-y;
   margin-right: $navbar-brand-margin-end;
+
   @include font-size($navbar-brand-font-size);
+
   text-decoration: if($link-decoration == none, null, none);
   white-space: nowrap;
 
@@ -111,6 +111,7 @@
 .navbar-collapse {
   flex-basis: 100%;
   flex-grow: 1;
+
   // For always expanded or extra full navbars, ensure content aligns itself
   // properly vertically. Can be easily overridden with flex utilities.
   align-items: center;
@@ -119,10 +120,13 @@
 // Button for toggling the navbar when in its collapsed state
 .navbar-toggler {
   padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;
+
   @include font-size($navbar-toggler-font-size);
+
   line-height: 1;
   background-color: transparent; // remove default button style
   border: $border-width solid transparent; // remove default button style
+
   @include border-radius($navbar-toggler-border-radius);
   @include transition($navbar-toggler-transition);
 
@@ -197,6 +201,7 @@
     }
   }
 }
+
 // scss-docs-end navbar-expand-loop
 
 
@@ -297,6 +302,7 @@
 
   .navbar-text {
     color: $navbar-dark-color;
+
     a,
     a:hover,
     a:focus {

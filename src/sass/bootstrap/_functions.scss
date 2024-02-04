@@ -7,6 +7,7 @@
 @mixin _assert-ascending($map, $map-name) {
   $prev-key: null;
   $prev-num: null;
+
   @each $key, $num in $map {
     @if $prev-num == null or unit($num) == "%" or unit($prev-num) == "%" {
       // Do nothing
@@ -15,6 +16,7 @@
     } @else if $prev-num >= $num {
       @warn "Invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} which isn't greater than #{$prev-num}, the value of the previous key '#{$prev-key}' !";
     }
+
     $prev-key: $key;
     $prev-num: $num;
   }
@@ -26,6 +28,7 @@
   @if length($map) > 0 {
     $values: map-values($map);
     $first-value: nth($values, 1);
+
     @if $first-value != 0 {
       @warn "First breakpoint in #{$map-name} must start at 0, but starts at #{$first-value}.";
     }
@@ -36,22 +39,26 @@
 // It prefixes the keys with `n` and makes the value negative.
 @function negativify-map($map) {
   $result: ();
+
   @each $key, $value in $map {
     @if $key != 0 {
       $result: map-merge($result, ("n" + $key: (-$value)));
     }
   }
+
   @return $result;
 }
 
 // Get multiple keys from a sass map
 @function map-get-multiple($map, $values) {
   $result: ();
+
   @each $key, $value in $map {
-    @if (index($values, $key) != null) {
+    @if  index($values, $key) != null {
       $result: map-merge($result, ($key: $value));
     }
   }
+
   @return $result;
 }
 
@@ -106,6 +113,7 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
 
   @each $color in $foregrounds {
     $contrast-ratio: contrast-ratio($background, $color);
+
     @if $contrast-ratio > $min-contrast-ratio {
       @return $color;
     } @else if $contrast-ratio > $max-ratio {
@@ -118,7 +126,6 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
 
   @return $max-ratio-color;
 }
-
 @function contrast-ratio($background, $foreground: $color-contrast-light) {
   $l1: luminance($background);
   $l2: luminance(opaque($background, $foreground));
@@ -165,6 +172,7 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
 @function shift-color($color, $weight) {
   @return if($weight > 0, shade-color($color, $weight), tint-color($color, -$weight));
 }
+
 // scss-docs-end color-functions
 
 // Return valid calc
@@ -172,31 +180,25 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
   @if $value1 == null {
     @return $value2;
   }
-
   @if $value2 == null {
     @return $value1;
   }
-
   @if type-of($value1) == number and type-of($value2) == number and comparable($value1, $value2) {
     @return $value1 + $value2;
   }
 
   @return if($return-calc == true, calc(#{$value1} + #{$value2}), $value1 + unquote(" + ") + $value2);
 }
-
 @function subtract($value1, $value2, $return-calc: true) {
   @if $value1 == null and $value2 == null {
     @return null;
   }
-
   @if $value1 == null {
     @return -$value2;
   }
-
   @if $value2 == null {
     @return $value1;
   }
-
   @if type-of($value1) == number and type-of($value2) == number and comparable($value1, $value2) {
     @return $value1 - $value2;
   }

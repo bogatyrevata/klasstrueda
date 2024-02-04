@@ -46,7 +46,9 @@
 body {
   margin: 0; // 1
   font-family: $font-family-base;
+
   @include font-size($font-size-base);
+
   font-weight: $font-weight-base;
   line-height: $line-height-base;
   color: $body-color;
@@ -65,7 +67,7 @@ body {
 hr {
   margin: $hr-margin-y 0;
   color: $hr-color; // 1
-  background-color: currentColor;
+  background-color: currentcolor;
   border: 0;
   opacity: $hr-opacity;
 }
@@ -93,31 +95,37 @@ hr:not([size]) {
 
 h1 {
   @extend %heading;
+
   @include font-size($h1-font-size);
 }
 
 h2 {
   @extend %heading;
+
   @include font-size($h2-font-size);
 }
 
 h3 {
   @extend %heading;
+
   @include font-size($h3-font-size);
 }
 
 h4 {
   @extend %heading;
+
   @include font-size($h4-font-size);
 }
 
 h5 {
   @extend %heading;
+
   @include font-size($h5-font-size);
 }
 
 h6 {
   @extend %heading;
+
   @include font-size($h6-font-size);
 }
 
@@ -232,7 +240,9 @@ mark {
 sub,
 sup {
   position: relative;
+
   @include font-size($sub-sup-font-size);
+
   line-height: 0;
   vertical-align: baseline;
 }
@@ -258,7 +268,7 @@ a {
 // causes specificity issues in many other styles that are too complex to fix.
 // See https://github.com/twbs/bootstrap/issues/19402
 
-a:not([href]):not([class]) {
+a:not([href], [class]) {
   &,
   &:hover {
     color: inherit;
@@ -274,7 +284,9 @@ code,
 kbd,
 samp {
   font-family: $font-family-code;
+
   @include font-size(1em); // Correct the odd `em` font sizing in all browsers.
+
   direction: ltr #{"/* rtl:ignore */"};
   unicode-bidi: bidi-override;
 }
@@ -288,12 +300,15 @@ pre {
   margin-top: 0; // 1
   margin-bottom: 1rem; // 2
   overflow: auto; // 3
+
   @include font-size($code-font-size);
+
   color: $pre-color;
 
   // Account for some code outputs that place code tags in pre tags
   code {
     @include font-size(inherit);
+
     color: inherit;
     word-break: normal;
   }
@@ -301,6 +316,7 @@ pre {
 
 code {
   @include font-size($code-font-size);
+
   color: $code-color;
   word-wrap: break-word;
 
@@ -312,14 +328,19 @@ code {
 
 kbd {
   padding: $kbd-padding-y $kbd-padding-x;
+
   @include font-size($kbd-font-size);
+
   color: $kbd-color;
   background-color: $kbd-bg;
+
   @include border-radius($border-radius-sm);
 
   kbd {
     padding: 0;
+
     @include font-size(1em);
+
     font-weight: $nested-kbd-font-weight;
   }
 }
@@ -414,7 +435,9 @@ optgroup,
 textarea {
   margin: 0; // 1
   font-family: inherit;
+
   @include font-size(inherit);
+
   line-height: inherit;
 }
 
@@ -423,6 +446,7 @@ button,
 select {
   text-transform: none;
 }
+
 // Set the cursor for non-`<button>` buttons
 //
 // Details at https://github.com/twbs/bootstrap/pull/30562
@@ -503,7 +527,9 @@ legend {
   width: 100%;
   padding: 0;
   margin-bottom: $legend-margin-bottom;
+
   @include font-size($legend-font-size);
+
   font-weight: $legend-font-weight;
   line-height: inherit;
 
