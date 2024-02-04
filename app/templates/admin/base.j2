@@ -1,0 +1,25 @@
+{% extends "base.j2" %}
+{% set is_admin = True %}
+
+{% block head %}
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/style.css') }}"> #}
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/bootstrap.min.css') }}"> #}
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/codemirror.css') }}"> #}
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/codemirror-yeti.css') }}"> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror-css.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror-htmlmixed.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror-matchtags.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror-xml.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/libs/codemirror-xml-fold.js') }}"></script> #}
+  {# <script src="{{ url_for('static', filename='admin/js/codemirror-activate.js') }}"></script> #}
+{% endblock head %}
+
+{% block content %}
+  <section class="admin pt-5">
+    <div class="admin__container container pt-5 pb-5">
+      {% block admin_content %}
+      {% endblock admin_content %}
+    </div>
+  </section>
+{% endblock content %}

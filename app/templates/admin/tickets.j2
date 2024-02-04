@@ -1,0 +1,20 @@
+{% extends "admin/base.j2" %}
+{% from 'macros/form.j2' import base, btn, render_field_errors %}
+
+{% block admin_content %}
+  <h1>{{ _('Ticket list') }}</h1>
+  {% if tickets %}
+    <section class="tickets">
+      {% for ticket in tickets %}
+        <article class="tickets__item{% if not ticket.is_answered %} tickets__item--new{% endif %}">
+          <h3 class="tickets__summary">
+            <code>{{ ticket.id }}</code>
+            {{ ticket.subject if ticket.subject else _('No subject') }}
+            <small>{{ ticket.dt_created }} {{ ticket.user_from.email }}</small>
+            <a href="{{ url_for('admin_tickets.details', ticket_id=ticket.id) }}">{{ _('Ticket details') }}</a>
+          </h3>
+        </article>
+      {% endfor %}
+    </section>
+  {% endif %}
+{% endblock admin_content %}

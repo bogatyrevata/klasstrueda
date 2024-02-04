@@ -1,0 +1,25 @@
+{% extends "admin/base.j2" %}
+
+{% block admin_content %}
+  <h2>{{ _('Changing roles for a user') }} {{ user.email }}</h2>
+  <h3>{{ _('Available roles') }}</h3>
+  <ul>
+    {% for role in roles %}
+      <li>
+        {% if role in user.roles %}
+          {{ role.name }}
+        {% else %}
+          <a href="{{ url_for('admin.user_role_add', user_id=user.id, role_id=role.id) }}">{{ role.name }}</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  <h3>{{ _('User roles') }}</h3>
+  <ul>
+    {% for role in user.roles %}
+      <li>
+        <a href="{{ url_for('admin.user_role_delete', user_id=user.id, role_id=role.id) }}">{{ role.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock admin_content %}
