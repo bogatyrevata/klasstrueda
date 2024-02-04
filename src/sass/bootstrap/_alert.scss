@@ -7,6 +7,7 @@
   padding: $alert-padding-y $alert-padding-x;
   margin-bottom: $alert-margin-bottom;
   border: $alert-border-width solid transparent;
+
   @include border-radius($alert-border-radius);
 }
 
@@ -47,11 +48,13 @@
   $alert-background: shift-color($value, $alert-bg-scale);
   $alert-border: shift-color($value, $alert-border-scale);
   $alert-color: shift-color($value, $alert-color-scale);
-  @if (contrast-ratio($alert-background, $alert-color) < $min-contrast-ratio) {
+
+  @if  contrast-ratio($alert-background, $alert-color) < $min-contrast-ratio {
     $alert-color: mix($value, color-contrast($alert-background), abs($alert-color-scale));
   }
   .alert-#{$state} {
     @include alert-variant($alert-background, $alert-border, $alert-color);
   }
 }
+
 // scss-docs-end alert-modifiers

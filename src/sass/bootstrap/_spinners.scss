@@ -6,6 +6,7 @@
 @keyframes spinner-border {
   to { transform: rotate(360deg) #{"/* rtl:ignore */"}; }
 }
+
 // scss-docs-end spinner-border-keyframes
 
 .spinner-border {
@@ -35,11 +36,13 @@
   0% {
     transform: scale(0);
   }
+
   50% {
     opacity: 1;
     transform: none;
   }
 }
+
 // scss-docs-end spinner-grow-keyframes
 
 .spinner-grow {
@@ -47,7 +50,7 @@
   width: $spinner-width;
   height: $spinner-height;
   vertical-align: $spinner-vertical-align;
-  background-color: currentColor;
+  background-color: currentcolor;
   // stylelint-disable-next-line property-disallowed-list
   border-radius: 50%;
   opacity: 0;
