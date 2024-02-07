@@ -12,7 +12,7 @@ Flask-SQLAlchemy
 flask-uploads
 Flask-WTF
 loguru
-mysqlclient
+PyMySQL
 python-dotenv
 requests
 git+https://github.com/jokerinteractive/flask-resize@master
