@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, current_app, flash, g, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, abort, g, render_template
 from flask_security import hash_password
-from requests import get
+from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import OperationalError
 
 from app.ext.core.models import user_datastore
@@ -43,44 +43,54 @@ def init_request():
 @core.before_app_request
 def before_app_request():
     g.current_year = datetime.now(tz=TZ).year
-    g.menu = [{
-        "title": "Главная",
-        "url": "index",
-    }, {
-        "title": "Сделать прогноз",
-        "url": "predictions",
-    }, {
-        "title": "Контакты",
-        "url": "contacts",
-    }, {
-        "title": "Предложения по улучшению сайта",
-        "url": "suggestions_improvement",
-    }, {
-        "title": "Таблица РПЛ",
-        "url": "show_table",
-    }]
-
-
-@core.get("")
-def index():
-    """Главная страница."""
-    menu = [
+    g.menu = [
       {
-        "title": "Главная",
-        "href": "index"
+        "title": "Home",
+        "href": ""
       }, {
-        "title": "Стайлгайд",
-        "href": "styleguide"
+        "title": "About",
+        "href": "about"
       }, {
-        "title": "Контакты",
+        "title": "Courses",
+        "href": "courses"
+      }, {
+        "title": "Pages",
+        "href": "#",
+        "submenu": [
+          {
+            "title": "Features",
+            "href": "feature"
+          }, {
+            "title": "Appointment",
+            "href": "appointment"
+          }, {
+            "title": "Our Team",
+            "href": "team"
+          }, {
+            "title": "Testimonial",
+            "href": "testimonial"
+          }, {
+            "title": "404 Page",
+            "href": "404"
+          }, {
+            "title": "Страница курса",
+            "href": "course-page"
+          }, {
+            "title": "Оплата",
+            "href": "payment"
+          }
+        ]
+      }, {
+        "title": "Contact",
         "href": "contacts"
       }
     ]
-    contacts = {
+    g.contacts = {
       "phone": "+012 345 6789",
-      "address": "123 Street, New York, USA"
+      "address": "123 Street, New York, USA",
+      "email": "info@example.com"
     }
-    links = [{
+    g.social_links = [{
       "title": "facebook-f",
       "href": "#twitter-ur2l"
     }, {
@@ -93,5 +103,18 @@ def index():
       "title": "instagram",
       "href": "#twitter-url4"
     }]
-    return render_template("public/index.j2", menu=menu, contacts=contacts, links=links)
 
+
+@core.get("")
+def index():
+    """Главная страница."""
+    return render_template("public/index.j2")
+
+
+@core.get("/<string:page_name>")
+def page(page_name):
+    """Для других статических страниц."""
+    try:
+        return render_template(f"public/{page_name}.j2")
+    except TemplateNotFound:
+        abort(404)
