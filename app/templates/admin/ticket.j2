@@ -1,0 +1,40 @@
+{% extends "admin/base.j2" %}
+{% from 'macros/form.j2' import base, bs_base, bs_btn, btn, raw, render_field_errors %}
+
+{% block admin_content %}
+  <h1>{{ title }}</h1>
+  <section class="tickets">
+    {% if ticket %}
+      <article class="tickets__item tickets__item--floating-label">
+        <h2>{{ ticket.subject if ticket.subject else _('No subject') }}</h2>
+        <p>{{ ticket.message }}</p>
+        <p class="tickets__details">
+          <small>{{ _('Date') }}: {{ ticket.dt_created }}</small>
+          <small>{{ _('User') }}: {{ ticket.user_from.email }}</small>
+        </p>
+      </article>
+    {% endif %}
+    {% if tickets %}
+      {% for ticket in tickets %}
+        <article class="tickets__item tickets__item--reply{% if current_user.id != ticket.user_id_from %} tickets__item--not-my{% endif %}">
+          <p>{{ ticket.message }}</p>
+          <p class="tickets__details">
+            <small>{{ _('Date') }}: {{ ticket.dt_created }}</small>
+            <small>{{ _('User') }}: {{ ticket.user_from.email }}</small>
+          </p>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </section>
+  <form action="{{ url_for('admin_tickets.reply') }}" method="post">
+    {{ form.hidden_tag() }}
+    {{ render_field_errors(form.csrf_token) }}
+    {% if ticket %}
+      {{ raw(form.parent_id) }}
+    {% else %}
+      {{ bs_base(form.subject) }}
+    {% endif %}
+    {{ bs_base(form.message) }}
+    {{ bs_btn(form.submit) }}
+  </form>
+{% endblock admin_content %}

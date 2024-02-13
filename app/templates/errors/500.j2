@@ -1,0 +1,11 @@
+{% extends "base.j2" %}
+
+{% block content %}
+  <section class="page pt-5">
+    <div class="page__container container pt-5">
+      <h2>{{ _('Server error') }}</h2>
+      <p>{{ _('Try to visit the site in a while, our experts are already working on solving the problem.') }}</p>
+      <div hidden>{{ error }}</div>
+    </div>
+  </section>
+{% endblock content %}
