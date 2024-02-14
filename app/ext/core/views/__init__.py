@@ -45,50 +45,47 @@ def before_app_request():
     g.current_year = datetime.now(tz=TZ).year
     g.menu = [
       {
-        "title": "Home",
+        "title": "Главная",
         "href": ""
       }, {
-        "title": "About",
+        "title": "О нас",
         "href": "about"
       }, {
-        "title": "Courses",
+        "title": "Курсы",
         "href": "courses"
       }, {
-        "title": "Pages",
+        "title": "Страницы",
         "href": "#",
         "submenu": [
           {
-            "title": "Features",
+            "title": "Преимущества",
             "href": "feature"
           }, {
-            "title": "Appointment",
-            "href": "appointment"
-          }, {
-            "title": "Our Team",
+            "title": "Наша команда",
             "href": "team"
           }, {
-            "title": "Testimonial",
+            "title": "Отзывы",
             "href": "testimonial"
-          }, {
-            "title": "404 Page",
-            "href": "404"
           }, {
             "title": "Страница курса",
             "href": "course-page"
           }, {
+            "title": "Записаться",
+            "href": "appointment"
+          }, {
             "title": "Оплата",
             "href": "payment"
-          }
+          },
         ]
       }, {
-        "title": "Contact",
+        "title": "Написать нам",
         "href": "contacts"
       }
     ]
     g.contacts = {
-      "phone": "+012 345 6789",
-      "address": "123 Street, New York, USA",
-      "email": "info@example.com"
+      "phone": "+79112454000",
+      "address": "Санкт-Петербург, Газовая 10",
+      "email": "klasstrueda@gmail.com"
     }
     g.social_links = [{
       "title": "facebook-f",
