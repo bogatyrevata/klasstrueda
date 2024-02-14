@@ -1,9 +1,10 @@
 /********** Template CSS **********/
 :root {
-  --primary: #F3BD00;
+  --danger: #F3BD00;
   --secondary: #757575;
   --light: #F3F6F8;
   --dark: #0C2B4B;
+  --danger: #DC3535
 }
 
 .py-6 {
@@ -46,8 +47,8 @@
   transition: .5s;
 }
 
-.btn.btn-primary,
-.btn.btn-outline-primary:hover {
+.btn.btn-danger,
+.btn.btn-outline-danger:hover {
   color: #FFFFFF;
 }
 
@@ -99,7 +100,7 @@
 
 .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link.active {
-  color: var(--primary);
+  color: var(--danger);
 }
 
 .navbar .dropdown-toggle::after {
@@ -165,8 +166,8 @@
 .carousel-control-next-icon {
   width: 3rem;
   height: 3rem;
-  background-color: var(--primary);
-  border: 10px solid var(--primary);
+  background-color: var(--danger);
+  border: 10px solid var(--danger);
 }
 
 @media (max-width: 768px) {
@@ -184,7 +185,7 @@
 }
 
 .page-header {
-  background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url(../img/carousel-1.jpg) center center no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url(../img/jewelry-1.jpg) center center no-repeat;
   background-size: cover;
 }
 
@@ -206,7 +207,7 @@
 /*** Courses ***/
 .courses {
   min-height: 100vh;
-  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url(../img/carousel-1.jpg) center center no-repeat;
+  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url(../img/jewelry-1.jpg) center center no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
@@ -255,7 +256,7 @@
 
 .team-item:hover::after {
   height: 100%;
-  background: var(--primary);
+  background: var(--danger);
 }
 
 .team-item .team-social {
@@ -295,14 +296,14 @@
   width: 20px;
   height: 20px;
   background: transparent;
-  border: 2px solid var(--primary);
+  border: 2px solid var(--danger);
   transition: .5s;
 }
 
 .testimonial-carousel .owl-dot.active {
   width: 40px;
   height: 40px;
-  background: var(--primary);
+  background: var(--danger);
 }
 
 .testimonial-carousel .owl-item img {
@@ -333,7 +334,7 @@
 }
 
 .footer .btn.btn-link:hover {
-  color: var(--primary);
+  color: var(--danger);
   letter-spacing: 1px;
   box-shadow: none;
 }
@@ -343,7 +344,7 @@
 }
 
 .copyright a {
-  color: var(--primary);
+  color: var(--danger);
 }
 
 .copyright a:hover {
