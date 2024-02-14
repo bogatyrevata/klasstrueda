@@ -26,10 +26,11 @@
       </div>
       <div class="h-100 d-inline-flex align-items-center mx-n2">
         {# TODO: почему тут не из списка соцсетей формируется разметка? #}
-        <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-facebook-f"></i></a>
-        <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-twitter"></i></a>
-        <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-linkedin-in"></i></a>
-        <a class="btn btn-square btn-link rounded-0" href=""><i class="fab fa-instagram"></i></a>
+        {% for link in g.social_links %}
+            <a class="{% if not loop.last %}btn btn-square btn-link rounded-0 border-0 border-end border-secondary{% else %}btn btn-square btn-link rounded-0{% endif %}" href="{{ link.href }}">
+              <i class="fab fa-{{ link.title }} text-danger"></i>
+            </a>
+          {% endfor %}
       </div>
     </div>
   </div>

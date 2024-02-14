@@ -92,16 +92,16 @@ def before_app_request():
     }
     g.social_links = [{
       "title": "facebook-f",
-      "href": "#twitter-ur2l"
+      "href": "https://www.facebook.com/klasstrueda"
     }, {
       "title": "youtube",
-      "href": "#twitter-url3"
+      "href": "https://www.youtube.com/channel/UCXIbv2Y_Qvy3sxvluUDA6XQ"
     },{
       "title": "vk",
-      "href": "#twitter-url4"
+      "href": "https://vk.com/true_da"
     }, {
       "title": "instagram",
-      "href": "#twitter-url4"
+      "href": "https://www.instagram.com/klasstrueda/"
     }]
 
 
