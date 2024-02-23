@@ -32,18 +32,18 @@
 
   @include media-min(xl) { justify-content: initial; }
 }
-@mixin btn-primary {
+@mixin btn-danger {
   @include btn;
 
   color: white;
-  background-color: var(--color-primary);
+  background-color: var(--color-danger);
 
   &:hover,
   &:focus,
   &:active { color: white; }
-  &:hover { background-color: var(--color-primary-hover); }
+  &:hover { background-color: var(--color-danger-hover); }
   &:focus { outline: 3px solid var(--color-transparent-hover); }
-  &:active { background-color: var(--color-primary-active); }
+  &:active { background-color: var(--color-danger-active); }
 }
 @mixin btn-secondary {
   @include btn;
@@ -71,7 +71,7 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  background-color: var(--color-primary);
+  background-color: var(--color-danger);
 
   > svg {
     width: 24px;

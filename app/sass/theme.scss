@@ -1,9 +1,9 @@
 /********** Template CSS **********/
 :root {
-  --primary: #F3BD00;
-  --secondary: #757575;
-  --light: #F3F6F8;
-  --dark: #0C2B4B;
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --light: #{$light};
+  --dark: #{$dark};
 }
 
 .py-6 {
@@ -46,9 +46,9 @@
   transition: .5s;
 }
 
-.btn.btn-primary,
-.btn.btn-outline-primary:hover {
-  color: #FFFFFF;
+.btn.btn-danger,
+.btn.btn-outline-danger:hover {
+  color: #fff;
 }
 
 .btn-square {
@@ -118,7 +118,7 @@
   }
 
   .navbar .navbar-nav {
-      border-top: 1px solid #EEEEEE;
+      border-top: 1px solid #eee;
   }
 }
 
@@ -144,10 +144,7 @@
 
 /*** Header ***/
 .carousel-caption {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,12 +181,12 @@
 }
 
 .page-header {
-  background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url(../img/carousel-1.jpg) center center no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .75)), url(../img/jewelry-1.jpg) center center no-repeat;
   background-size: cover;
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
-  color: #999999;
+  color: #999;
 }
 
 
@@ -206,7 +203,7 @@
 /*** Courses ***/
 .courses {
   min-height: 100vh;
-  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url(../img/carousel-1.jpg) center center no-repeat;
+  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url(../img/jewelry-1.jpg) center center no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
@@ -248,7 +245,7 @@
   height: 0;
   top: 0;
   left: 0;
-  background: #FFFFFF;
+  background: #fff;
   transition: .5s;
   z-index: -1;
 }

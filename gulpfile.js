@@ -19,74 +19,30 @@ import svgstore from 'gulp-svgstore';
 const { src, dest, watch, parallel, series } = gulp;
 
 /**
- *  Основные директории
- */
-const dirs = {
-  src: 'src',
-  dest: 'build'
-};
-
-/**
  * Пути к файлам
  */
 const path = {
   styles: {
-    root: `${dirs.src}/sass/`,
-    compile: `${dirs.src}/sass/style.scss`,
-    save: `${dirs.dest}/static/css/`,
-    css: `${dirs.src}/css/*.css`,
+    root: 'app/sass/',
+    compile: 'app/sass/style.scss',
+    save: 'app/static/css/',
+  },
+  scripts: {
+    root: 'app/static/mjs/script.js',
+    save: 'app/static/js/',
   },
   templates: {
-    root: `${dirs.src}/templates/`,
-    pages: `${dirs.src}/templates/pages/`,
-    save: `${dirs.dest}`
-  },
-  json: `${dirs.src}/data.json`,
-  scripts: {
-    root: `${dirs.src}/static/js/`,
-    compile: `${dirs.src}/static/js/script.js`,
-    save: `${dirs.dest}/static/js/`
-  },
-  fonts: {
-    root: `${dirs.src}/static/fonts/`,
-    save: `${dirs.dest}/static/fonts/`
-  },
-  img: {
-    root: `${dirs.src}/static/img/`,
-    icons: `${dirs.src}/static/img/icons/`,
-    save: `${dirs.dest}/static/img/`
-  },
-  images: {
-    root: `${dirs.src}/static/images/`,
-    save: `${dirs.dest}/static/images/`
+    root: 'app/templates/'
   },
   vendor: {
-    styles: `${dirs.src}/vendor/css/`,
-    scripts: `${dirs.src}/vendor/js/`
+    styles: 'app/vendor/css/',
+    scripts: 'app/vendor/js/',
   }
 };
-
-const imageOptimizeConfigs = {
-  webp: {
-    quality: 80,
-    lossless: false,
-  },
-  png_to_png: {
-    quality: 80,
-    lossless: false,
-  },
-  jpg_to_jpg: {
-    quality: 80,
-    mozjpeg: true,
-  }
-}
 
 /**
  * Основные задачи
  */
-export const css = () => src(path.styles.css)
-  .pipe(dest(path.styles.save))
-
 export const styles = () => src(path.styles.compile, { sourcemaps: true })
   .pipe(plumber(notify.onError({
     title: 'SCSS',
@@ -102,22 +58,7 @@ export const styles = () => src(path.styles.compile, { sourcemaps: true })
   }))
   .pipe(dest(path.styles.save, { sourcemaps: '.' }));
 
-export const templates = () => src(`${path.templates.pages}*.j2`)
-  .pipe(plumber(notify.onError({
-    title: 'J2',
-    message: 'Error: <%= error.message %>'
-  })))
-  .pipe(data((file) => {
-    return JSON.parse(
-      fs.readFileSync(path.json)
-    );
-  }))
-  .pipe(render({
-    path: [`${path.templates.root}`]
-  }))
-  .pipe(dest(path.templates.save));
-
-export const scripts = () => src(path.scripts.compile)
+export const scripts = () => src(path.scripts.root)
   .pipe(plumber(notify.onError({
     title: 'SCRIPTS',
     message: 'Error: <%= error.message %>'
@@ -130,73 +71,6 @@ export const scripts = () => src(path.scripts.compile)
   }))
   .pipe(dest(path.scripts.save));
 
-export const clean = (done) => {
-  deleteSync([dirs.dest]);
-  done();
-}
-
-export const sprite = () => src(`${path.img.icons}**/*.svg`)
-  .pipe(plumber(notify.onError({
-    title: 'SPRITE',
-    message: 'Error: <%= error.message %>'
-  })))
-  .pipe(svgmin({
-    plugins: [{
-      name: 'removeDoctype',
-      active: true
-    }, {
-      name: 'removeXMLNS',
-      active : true
-    }, {
-      name: 'removeXMLProcInst',
-      active: true
-    }, {
-      name: 'removeComments',
-      active: true
-    }, {
-      name: 'removeMetadata',
-      active: true
-    }, {
-      name: 'removeEditorNSData',
-      active: true
-    }, {
-      name: 'removeViewBox',
-      active: false
-    }]
-  }))
-  .pipe(cheerio({
-    run: function ($) {
-      // $('[fill]').removeAttr('fill');
-      // $('[stroke]').removeAttr('stroke');
-      $('[style]').removeAttr('style');
-    },
-    parserOptions: {xmlMode: true}
-  }))
-  .pipe(svgstore({
-    inlineSvg: true
-  }))
-  .pipe(rename('sprite.svg'))
-  .pipe(dest(path.img.save))
-
-export const img = ()  => src(`${path.img.root}/**/*.{png,jpg,jpeg}`)
-  .pipe(plumber(notify.onError({
-    title: 'IMG',
-    message: 'Error: <%= error.message %>'
-  })))
-  .pipe(sharpOptimizeImages(imageOptimizeConfigs))
-  .pipe(dest(path.img.save));
-
-export const images = ()  => src(`${path.images.root}/**/*.{png,jpg,jpeg}`)
-  .pipe(plumber(notify.onError({
-    title: 'IMAGES',
-    message: 'Error: <%= error.message %>'
-  })))
-  .pipe(sharpOptimizeImages(imageOptimizeConfigs))
-  .pipe(dest(path.images.save));
-
-const fonts = () => src(`${dirs.src}/fonts/*.{woff,woff2}`)
-  .pipe(dest(`${dirs.dest}/static/fonts/`))
-
 export const vendorStyles = () => src(`${path.vendor.styles}*.min.css`)
   .pipe(dest(`${path.styles.save}`))
 
@@ -207,23 +81,22 @@ export const vendor = parallel(vendorStyles, vendorScripts);
 
 export const server = () => {
   const bs = browser.init({
-    server: dirs.dest,
+    proxy: '127.0.0.1:5000',
     cors: true,
     notify: false,
     ui: false,
-    open: false
+    open: false,
+    scrollThrottle: 100,
   });
-  watch(path.styles.css, css).on('change', bs.reload);
   watch(`${path.styles.root}**/*.scss`, styles).on('change', bs.reload);
-  watch(`${path.templates.root}**/*.j2`, templates).on('change', bs.reload);
-  watch(`${path.json}`, templates).on('change', bs.reload);
   watch(`${path.scripts.root}**/*.js`, scripts).on('change', bs.reload);
+  watch(`${path.templates.root}**/*.j2`).on('change', bs.reload);
 };
 
 /**
  * Для билда
  */
-export const build = series(clean, css, fonts, parallel(img, images, styles, templates, scripts, vendor, sprite));
+export const build = parallel(styles, scripts, vendor);
 
 /**
  * Задачи для разработки
