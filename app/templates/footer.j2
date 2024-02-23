@@ -3,14 +3,14 @@
   <div class="container">
     <div class="row g-5">
       <div class="col-lg-3 col-md-6">
-        <h4 class="text-white mb-4">Get In Touch</h4>
-        <h2 class="text-danger mb-4">Klasstrueda</h2>
+        <h4 class="text-white mb-4">Контакты</h4>
+        <h2 class="text-primary mb-4">Klasstrueda</h2>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ g.contacts.address }}</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ g.contacts.phone }}</p>
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ g.contacts.email }}</p>
       </div>
       <div class="col-lg-3 col-md-6">
-        <h4 class="text-light mb-4">Quick Links</h4>
+        <h4 class="text-light mb-4">Разделы сайта</h4>
         <a class="btn btn-link" href="about.html">О мастерской</a>
         <a class="btn btn-link" href="contacts.html">Контакты</a>
         <a class="btn btn-link" href="faq.html">FAQ</a>
@@ -18,7 +18,7 @@
         <a class="btn btn-link" href="">Support</a>
       </div>
       <div class="col-lg-3 col-md-6">
-        <h4 class="text-light mb-4">Popular Links</h4>
+        <h4 class="text-light mb-4">Популярные ссылки</h4>
         <a class="btn btn-link" href="course-page.html">Страница курса</a>
         <a class="btn btn-link" href="course-page.html">Страница курса</a>
         <a class="btn btn-link" href="course-page.html">Страница курса</a>
@@ -26,14 +26,14 @@
         <a class="btn btn-link" href="payment.html">Оплата</a>
       </div>
       <div class="col-lg-3 col-md-6">
-        <h4 class="text-light mb-4">Newsletter</h4>
+        <h4 class="text-light mb-4">Подписка</h4>
         <form action="">
           <div class="input-group">
-            <input type="text" class="form-control p-3 border-0" placeholder="Your Email Address">
-            <button class="btn btn-danger">Sign Up</button>
+            <input type="text" class="form-control p-3 border-0" placeholder="Введите email">
+            <button class="btn btn-primary">Подписаться</button>
           </div>
         </form>
-        <h6 class="text-white mt-4 mb-3">Follow Us</h6>
+        <h6 class="text-white mt-4 mb-3">Мы в соцсетях</h6>
         <div class="d-flex pt-2">
           {% for link in g.social_links %}
             <a class="btn btn-square btn-outline-light me-{% if not loop.last %}1{% else %}0{% endif %}" href="{{ link.href }}">
@@ -47,24 +47,21 @@
 </div>
 <!-- Footer End -->
 
-
 <!-- Copyright Start -->
 <div class="container-fluid copyright text-light py-4 wow fadeIn" data-wow-delay="0.1s">
   <div class="container">
     <div class="row">
       <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-        &copy; <a href="#">Klasstrueda</a>, All Right Reserved.
+        &copy; <a href="#">Klasstrueda</a>, все права защищены.
       </div>
       <div class="col-md-6 text-center text-md-end">
-        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-        Created By <a href="#">Taisiiya Bogatyreva</a>
-        <br>Distributed By: <a href="https://special.makehtml.ru/" target="_blank">MakeHtml</a>
+        Разработано: <a href="#">Taisiiya Bogatyreva</a>
+        <br>При участии: <a href="https://jokerinteractive.ru/" target="_blank">JokerTeam</a>
       </div>
     </div>
   </div>
 </div>
 <!-- Copyright End -->
 
-
 <!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-danger btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
