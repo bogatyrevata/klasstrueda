@@ -1,10 +1,9 @@
 /********** Template CSS **********/
 :root {
-  --danger: #F3BD00;
-  --secondary: #757575;
-  --light: #F3F6F8;
-  --dark: #0C2B4B;
-  --danger: #DC3535
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --light: #{$light};
+  --dark: #{$dark};
 }
 
 .py-6 {
@@ -49,7 +48,7 @@
 
 .btn.btn-danger,
 .btn.btn-outline-danger:hover {
-  color: #FFFFFF;
+  color: #fff;
 }
 
 .btn-square {
@@ -100,7 +99,7 @@
 
 .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link.active {
-  color: var(--danger);
+  color: var(--primary);
 }
 
 .navbar .dropdown-toggle::after {
@@ -119,7 +118,7 @@
   }
 
   .navbar .navbar-nav {
-      border-top: 1px solid #EEEEEE;
+      border-top: 1px solid #eee;
   }
 }
 
@@ -145,10 +144,7 @@
 
 /*** Header ***/
 .carousel-caption {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -166,8 +162,8 @@
 .carousel-control-next-icon {
   width: 3rem;
   height: 3rem;
-  background-color: var(--danger);
-  border: 10px solid var(--danger);
+  background-color: var(--primary);
+  border: 10px solid var(--primary);
 }
 
 @media (max-width: 768px) {
@@ -190,7 +186,7 @@
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
-  color: #999999;
+  color: #999;
 }
 
 
@@ -249,14 +245,14 @@
   height: 0;
   top: 0;
   left: 0;
-  background: #FFFFFF;
+  background: #fff;
   transition: .5s;
   z-index: -1;
 }
 
 .team-item:hover::after {
   height: 100%;
-  background: var(--danger);
+  background: var(--primary);
 }
 
 .team-item .team-social {
@@ -296,14 +292,14 @@
   width: 20px;
   height: 20px;
   background: transparent;
-  border: 2px solid var(--danger);
+  border: 2px solid var(--primary);
   transition: .5s;
 }
 
 .testimonial-carousel .owl-dot.active {
   width: 40px;
   height: 40px;
-  background: var(--danger);
+  background: var(--primary);
 }
 
 .testimonial-carousel .owl-item img {
@@ -334,7 +330,7 @@
 }
 
 .footer .btn.btn-link:hover {
-  color: var(--danger);
+  color: var(--primary);
   letter-spacing: 1px;
   box-shadow: none;
 }
@@ -344,7 +340,7 @@
 }
 
 .copyright a {
-  color: var(--danger);
+  color: var(--primary);
 }
 
 .copyright a:hover {
