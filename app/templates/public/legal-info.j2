@@ -1,13 +1,10 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
 {% extends "base.j2" %}
 
 {% set page = "legal-info" %}
 
 {% block content %}
-<!-- Page Header Start -->
-  <div class="container-fluid page-header py-6 my-6 mt-0 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container text-center">
-      <h1 class="display-4 text-white animated slideInDown mb-4">Юридическая информация</h1>
-    </div>
-  </div>
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='legal-info') }}
   <!-- Page Header End -->
 {% endblock content %}
