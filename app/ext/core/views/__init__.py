@@ -74,6 +74,12 @@ def before_app_request():
           }, {
             "title": "Оплата",
             "href": "payment"
+          }, {
+              "title": "FAQ",
+              "href": "faq"
+          }, {
+              "title": "Юридическая информация",
+              "href": "legal-info"
           },
         ]
       }, {

@@ -1,85 +1,75 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
 {% extends "base.j2" %}
 
 {% set page = "courses" %}
 
 {% block content %}
-<!-- Page Header Start -->
-  <div class="container-fluid page-header py-6 my-6 mt-0 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container text-center">
-      <h1 class="display-4 text-white animated slideInDown mb-4">Courses</h1>
-      <nav aria-label="breadcrumb animated slideInDown">
-        <ol class="breadcrumb justify-content-center mb-0">
-          <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-          <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
-          <li class="breadcrumb-item text-danger active" aria-current="page">Courses</li>
-        </ol>
-      </nav>
-    </div>
-  </div>
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='courses') }}
   <!-- Page Header End -->
 
 
   <!-- Courses Start -->
-  <div class="container-xxl py-6">
+  <div class="container-xxl courses my-6 py-6 pb-0">
     <div class="container">
       <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-        <h6 class="text-danger text-uppercase mb-2">Tranding Courses</h6>
-        <h1 class="display-6 mb-4">Our Courses Upskill You With Driving Training</h1>
+        <h6 class="text-primary text-uppercase mb-2">Популярные курсы</h6>
+        <h1 class="display-6 mb-4">Наши курсы помогут вам раскрыть свой творческий потенциал</h1>
       </div>
       <div class="row g-4 justify-content-center">
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-          <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
             <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-danger text-white fs-5 py-1 px-4 mb-4">$99</div>
-              <h5 class="mb-3">Automatic Car Lessons</h5>
-              <p>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</p>
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$0</div>
+              <h5 class="mb-3">Мастер-класс: кольцо "всмятку"</h5>
+              <p>На заняти вы освоите базовые техники и сделаете мятое кольцо из серебра</p>
               <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-danger me-2"></i>Beginner</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-danger me-2"></i>3 Week</li>
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 день</li>
               </ol>
             </div>
             <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}" alt="">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-danger border-2" href="">Read More</a>
+                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-          <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
             <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-danger text-white fs-5 py-1 px-4 mb-4">$99</div>
-              <h5 class="mb-3">Highway Driving Lesson</h5>
-              <p>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</p>
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$100</div>
+              <h5 class="mb-3">Ювелирный марафон</h5>
+              <p>Позволит за короткое время пройти интересующую тему по ювелирному делу</p>
               <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-danger me-2"></i>Beginner</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-danger me-2"></i>3 Week</li>
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 неделя</li>
               </ol>
             </div>
             <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}" alt="">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-danger border-2" href="">Read More</a>
+                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-          <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
             <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-danger text-white fs-5 py-1 px-4 mb-4">$99</div>
-              <h5 class="mb-3">International Driving</h5>
-              <p>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</p>
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$200</div>
+              <h5 class="mb-3">Базовый ювелирный курс</h5>
+              <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров</p>
               <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-danger me-2"></i>Beginner</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-danger me-2"></i>3 Week</li>
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>4 недели</li>
               </ol>
             </div>
             <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-3.jpg') }}" alt="">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-3.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-danger border-2" href="">Read More</a>
+                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
               </div>
             </div>
           </div>
