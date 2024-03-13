@@ -7,8 +7,7 @@
 #}
 {% macro base(field, bem_block='form', floating_label=True, show_errors=True) -%}
   <div class="{{ bem_block }}__control{% if floating_label %} {{ bem_block }}__control--floating{% endif %}{% if field.errors %} form__control--error{% endif %}">
-    {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
-    {{ field.label(class='%s__label' % bem_block) }}
+    {{ field(class='%s__text form-control border-0 bg-light' % bem_block, placeholder=field.label.text, **kwargs) }}
     {% if show_errors %}{{ errors(field.errors) }}{% endif %}
   </div>
 {%- endmacro %}
@@ -48,7 +47,7 @@
 {% macro checkbox(field, bem_block='form') -%}
   <div class="{{ bem_block }}__control {{ bem_block }}__control--checkbox{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
     {{ field(class='%s__checkbox' % bem_block) }}
-    {{ field_label(class='%s__label' % bem_block) }}
+    {{ field.label(class='%s__label' % bem_block) }}
     {{ errors(field.errors) }}
   </div>
 {%- endmacro %}
@@ -61,15 +60,15 @@
   </div>
 {%- endmacro %}
 
-{% macro btn(field, bem_block='form') %}
-  {{ field(class='%s__submit' % bem_block)|safe }}
+{% macro btn(field, value='Submit', extra_class='', bem_block='form') %}
+  {{ field(class='%s__submit btn btn-primary py-4 px-lg-5 d-none d-lg-block %s' % (bem_block, extra_class), value=value)|safe }}
 {% endmacro %}
 
 {% macro prop_next() -%}
   {% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}
 {%- endmacro %}
 
-{% macro render_field_errors_js(field) %}
+{% macro render_field_errors(field) %}
   {% if field and field.errors %}
     {% block js %}
       <script src="{{ url_for('static', filename='js/toastify.min.js') }}"></script>
