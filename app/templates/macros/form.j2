@@ -48,7 +48,7 @@
 {% macro checkbox(field, bem_block='form') -%}
   <div class="{{ bem_block }}__control {{ bem_block }}__control--checkbox{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
     {{ field(class='%s__checkbox' % bem_block) }}
-    {{ field_label(class='%s__label' % bem_block) }}
+    {{ field.label(class='%s__label' % bem_block) }}
     {{ errors(field.errors) }}
   </div>
 {%- endmacro %}
