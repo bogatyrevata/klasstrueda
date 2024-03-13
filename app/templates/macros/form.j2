@@ -7,8 +7,7 @@
 #}
 {% macro base(field, bem_block='form', floating_label=True, show_errors=True) -%}
   <div class="{{ bem_block }}__control{% if floating_label %} {{ bem_block }}__control--floating{% endif %}{% if field.errors %} form__control--error{% endif %}">
-    {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
-    {{ field.label(class='%s__label' % bem_block) }}
+    {{ field(class='%s__text form-control border-0 bg-light' % bem_block, placeholder=field.label.text, **kwargs) }}
     {% if show_errors %}{{ errors(field.errors) }}{% endif %}
   </div>
 {%- endmacro %}
