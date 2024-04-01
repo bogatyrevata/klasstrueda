@@ -58,7 +58,7 @@
     {% else %}
       <a href="{{ url_for('security.logout') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Выйти
       <i class="fa fa-arrow-right ms-3"></i></a>
-      <a href="{{ url_for('security.logout') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Личный кабинет
+      <a href="{{ url_for('user.index') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Личный кабинет
       <i class="fa fa-arrow-right ms-3"></i></a>
     {% endif %}
   </div>

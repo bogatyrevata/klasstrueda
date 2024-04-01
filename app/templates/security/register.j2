@@ -11,8 +11,8 @@
       {{ render_field_errors(register_user_form.csrf_token) }}
       {{ base(register_user_form.username) }}
       {{ base(register_user_form.email) }}
-      {{ base(register_user_form.firstname) }}
-      {{ base(register_user_form.lastname) }}
+      {{ base(register_user_form.first_name) }}
+      {{ base(register_user_form.last_name) }}
       {{ base(register_user_form.password) }}
       {% if register_user_form.password_confirm %}
         {{ base(register_user_form.password_confirm, placeholder='Подтверждение пароля', modifier='pass') }}

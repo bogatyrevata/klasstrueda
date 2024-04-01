@@ -1,14 +1,14 @@
 {% extends "admin/base.j2" %}
 
 {% block admin_content %}
-  <h2>{{ _('Settings and extensions') }}</h2>
+  <h2>Настройки</h2>
   {% for setting in settings %}<p>{{ setting.title }}: {{ setting.setting }}</p>{% endfor %}
   <p>
-    <small>{{ _('Site version') }}: {{ version }}</small>
+    <small>Версия сайта: {{ version }}</small>
     <br>
-    <small>{{ _('Database revision') }}: {{ db_revision }}</small>
+    <small>Версия БД: {{ db_revision }}</small>
   </p>
-  <h3>{{ _('Extensions') }}</h3>
+  <h3>Расширения</h3>
   <ul>
     {% for ext in extensions %}<li>{{ ext.title }}: {{ ext.version }}</li>{% endfor %}
   </ul>
