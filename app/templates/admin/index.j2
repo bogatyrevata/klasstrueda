@@ -4,7 +4,7 @@
   <ul class="admin__links">
     {% for link in admin_links %}
       <li>
-        <a href="{{ url_for(link.controller) }}">{{ icon(link.icon) }}{{ link.title }}</a>
+        <a href="{{ url_for(link.controller) }}">{{ link.title }}</a>
       </li>
     {% endfor %}
   </ul>

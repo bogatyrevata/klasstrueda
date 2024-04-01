@@ -97,13 +97,12 @@ class DevelopmentConfig(BaseConfig):
     SECRET_KEY = os.getenv("SECRET_KEY", "liualdsknbkjzxcvoaewrASDV76s!@#$%^&*")
     SECURITY_EMAIL_VALIDATOR_ARGS = {"check_deliverability": False}
 
-    # DB_DRIVER = "mysql+mysqldb"
-    # DB_USER = os.getenv("DB_USER")
-    # DB_PASS = os.getenv("DB_PASS")
-    # DB_NAME = os.getenv("DB_NAME")
-    # DB_HOST = os.getenv("DB_HOST", "localhost")
-    # SQLALCHEMY_DATABASE_URI = f"{DB_DRIVER}://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}?charset=utf8mb4"
-
+    DB_DRIVER = "mysql+mysqldb"
+    DB_USER = os.getenv("DB_USER")
+    DB_PASS = os.getenv("DB_PASS")
+    DB_NAME = os.getenv("DB_NAME")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    SQLALCHEMY_DATABASE_URI = f"{DB_DRIVER}://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}?charset=utf8mb4"
 
 
 class TestingConfig(DevelopmentConfig):

@@ -17,6 +17,7 @@ from loguru import logger
 from werkzeug.serving import WSGIRequestHandler, _ansi_style, _log, uri_to_iri
 
 from app.exceptions import ExtNotValidError
+from app.ext.core.forms import ExtendedConfirmRegisterForm
 from app.ext.core.models import user_datastore
 from app.extensions import csrf, db, executor, mail, migrate, photos, resize, security, session
 from app.utils import url_for_icon, url_for_resize
@@ -107,7 +108,7 @@ def register_extensions(app: Flask) -> None:
     mail.init_app(app)
     migrate.init_app(app, db)
     resize.init_app(app)
-    security.init_app(app, user_datastore)
+    security.init_app(app, user_datastore, confirm_register_form=ExtendedConfirmRegisterForm)
     session.init_app(app)
     configure_uploads(app, photos)
 

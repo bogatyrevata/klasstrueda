@@ -35,6 +35,7 @@ def init_request():
                 password=hash_password("1234567"),
                 roles=["user"],
             )
+        db.session.commit()
     except OperationalError as msg:
         abort(500, msg)
 
@@ -111,6 +112,7 @@ def before_app_request():
 @core.get("")
 def index():
     """Главная страница."""
+    init_request()
     return render_template("public/index.j2")
 
 

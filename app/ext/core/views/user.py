@@ -32,14 +32,14 @@ def edit():
     edit_profile_form = EditProfileForm()
     if edit_profile_form.validate_on_submit():
         current_user_db.username = edit_profile_form.username.data
-        current_user_db.firstname = edit_profile_form.firstname.data
-        current_user_db.lastname = edit_profile_form.lastname.data
+        current_user_db.first_name = edit_profile_form.first_name.data
+        current_user_db.last_name = edit_profile_form.last_name.data
         current_user_db.us_phone_number = edit_profile_form.phone.data
         db.session.commit()
         flash("Сохранено", "success")
         return redirect(url_for("user.edit"))
     edit_profile_form.username.data = current_user_db.username
-    edit_profile_form.firstname.data = current_user_db.firstname
-    edit_profile_form.lastname.data = current_user_db.lastname
+    edit_profile_form.first_name.data = current_user_db.first_name
+    edit_profile_form.last_name.data = current_user_db.last_name
     edit_profile_form.phone.data = current_user_db.us_phone_number
     return render_template("user/edit_profile.j2", form=edit_profile_form)
