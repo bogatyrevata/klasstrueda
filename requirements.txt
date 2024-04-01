@@ -1,3 +1,4 @@
+bcrypt
 bleach
 email_validator
 Flask
@@ -12,7 +13,7 @@ Flask-SQLAlchemy
 flask-uploads
 Flask-WTF
 loguru
-PyMySQL
+mysqlclient
 python-dotenv
 requests
 git+https://github.com/jokerinteractive/flask-resize@master
