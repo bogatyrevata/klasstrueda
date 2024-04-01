@@ -14,24 +14,24 @@ class Role(db.Model, FsRoleMixin):
 
 
 class User(db.Model, FsUserMixin):
-    firstname = db.Column(db.String(255))
-    lastname = db.Column(db.String(255))
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
 
 
 class Photo(db.Model, ModelMixin):
     """Модель для хранения изображений сайта."""
 
     __tablename__ = "photos"
-    id: Mapped[int] = mapped_column(init=True, primary_key=True)
-    filename: Mapped[str] = mapped_column(String(255))
-    alt: Mapped[str] = mapped_column(String(255))
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255))
+    alt = db.Column(db.String(255))
 
 
 class Setting(db.Model):
     """Настройки сайта."""
 
     __tablename__ = "settings"
-    id: Mapped[int] = mapped_column(init=True, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     alias = db.Column(db.String(64), unique=True, nullable=False)
     setting = db.Column(db.String(1024))
     title = db.Column(db.String(256))
