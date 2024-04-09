@@ -4,7 +4,7 @@
     <div class="row g-5">
       <div class="col-lg-3 col-md-6">
         <h4 class="text-white mb-4">Контакты</h4>
-        <h2 class="text-primary mb-4">Klasstrueda</h2>
+        <a class="" href="{{ url_for('core.index') }}"><h2 class="text-primary mb-4">Klasstrueda</h2></a>
         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ g.contacts.address }}</p>
         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ g.contacts.phone }}</p>
         <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ g.contacts.email }}</p>
@@ -52,10 +52,10 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-        &copy; <a href="#">Klasstrueda</a>, все права защищены.
+        &copy; <a href="{{ url_for('core.index') }}">Klasstrueda</a>, все права защищены.
       </div>
       <div class="col-md-6 text-center text-md-end">
-        Разработано: <a href="#">Taisiiya Bogatyreva</a>
+        Разработано: <a href="https://github.com/bogatyrevata">Taisiiya Bogatyreva</a>
         <br>При участии: <a href="https://jokerinteractive.ru/" target="_blank">JokerTeam</a>
       </div>
     </div>

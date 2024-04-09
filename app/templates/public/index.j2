@@ -14,8 +14,8 @@
               <div class="row justify-content-center">
                 <div class="col-lg-7">
                   <h1 class="display-2 text-light mb-5 animated slideInDown">Базовый ювелирный курс</h1>
-                  <a href="" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
-                  <a href="" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
+                  <a href="{{ url_for('core.page', page_name='course-page') }}" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
+                  <a href="{{ url_for('core.page', page_name='courses') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
                 </div>
               </div>
             </div>
@@ -28,8 +28,8 @@
               <div class="row justify-content-center">
                 <div class="col-lg-7">
                   <h1 class="display-2 text-light mb-5 animated slideInDown">Марафон: кольца со вставками</h1>
-                  <a href="" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
-                  <a href="" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
+                  <a href="{{ url_for('core.page', page_name='course-page') }}" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
+                  <a href="{{ url_for('core.page', page_name='courses') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
                 </div>
               </div>
             </div>
@@ -118,7 +118,7 @@
             <p class="mb-4">Наша миссия - поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
             <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i> Экспертные преподаватели
+                <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
               </div>
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Легкость и доступность
@@ -132,7 +132,7 @@
             </div>
             <div class="row g-4">
               <div class="col-sm-6">
-                <a class="btn btn-primary py-3 px-5" href="">Подробнее</a>
+                <a class="btn btn-primary py-3 px-5" href="{{ url_for('core.page', page_name='about') }}">Подробнее</a>
               </div>
               <div class="col-sm-6">
                 <a class="d-inline-flex align-items-center btn btn-outline-primary border-2 p-2" href="tel:{{ g.contacts.tel }}">
@@ -172,7 +172,7 @@
             <div class="position-relative mt-auto">
               <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='course-page') }}">Подробнее</a>
               </div>
             </div>
           </div>
@@ -191,7 +191,7 @@
             <div class="position-relative mt-auto">
               <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='course-page') }}">Подробнее</a>
               </div>
             </div>
           </div>
@@ -210,7 +210,7 @@
             <div class="position-relative mt-auto">
               <img class="img-fluid" src="{{ url_for('static', filename='img/courses-3.jpg') }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="">Подробнее</a>
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='course-page') }}">Подробнее</a>
               </div>
             </div>
           </div>
@@ -329,9 +329,9 @@
             <div class="position-relative">
               <img class="img-fluid" src="{{ url_for('static', filename='img/team-1.jpg') }}"  alt="">
               <div class="team-social text-center">
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/denisgutov"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/denisgutov"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/denisgutov/"><i class="fab fa-instagram"></i></a>
               </div>
             </div>
             <div class="bg-light text-center p-4">
@@ -345,9 +345,9 @@
             <div class="position-relative">
               <img class="img-fluid" src="{{ url_for('static', filename='img/team-2.jpg') }}"  alt="">
               <div class="team-social text-center">
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/yura.bylkov"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/ybylkov"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/bylkov/"><i class="fab fa-instagram"></i></a>
               </div>
             </div>
             <div class="bg-light text-center p-4">
@@ -361,9 +361,9 @@
             <div class="position-relative">
               <img class="img-fluid" src="{{ url_for('static', filename='img/team-3.jpg') }}"  alt="">
               <div class="team-social text-center">
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/muravieshko"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/klaechka"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/farforstylespb/"><i class="fab fa-instagram"></i></a>
               </div>
             </div>
             <div class="bg-light text-center p-4">
@@ -377,9 +377,9 @@
             <div class="position-relative">
               <img class="img-fluid" src="{{ url_for('static', filename='img/team-4.jpg') }}"  alt="">
               <div class="team-social text-center">
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-square btn-outline-primary border-2 m-1" href=""><i class="fab fa-instagram"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/taisiya.bogatyreva/"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/bogatyrevata"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/bogatyreva.taisiya/"><i class="fab fa-instagram"></i></a>
               </div>
             </div>
             <div class="bg-light text-center p-4">
