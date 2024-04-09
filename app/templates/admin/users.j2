@@ -6,9 +6,9 @@
     <tr>
       <th>ID</th>
       <th>Email</th>
-      <th>Username</th>
-      <th>Roles</th>
-      <th>Confirmed at</th>
+      <th>Имя пользователя</th>
+      <th>Роль</th>
+      <th>Подтверждено в</th>
     </tr>
     {% for user in users %}
       <tr>
@@ -23,7 +23,7 @@
           {{ user.username }}
         </td>
         <td>
-          <a href="{{ url_for('admin.user_roles', user_id=user.id) }}">change</a>
+          <a href="{{ url_for('admin.user_roles', user_id=user.id) }}">Изменить</a>
           [
           {% for role in user.roles %}
             {{ role.name }}
@@ -35,7 +35,7 @@
           {% if user.confirmed_at %}
             {{ user.confirmed_at }}
           {% else %}
-            Not yet confirmed
+            Еще не подтверждено
           {% endif %}
         </td>
       </tr>
