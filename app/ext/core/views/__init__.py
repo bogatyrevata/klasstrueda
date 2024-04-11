@@ -67,9 +67,12 @@ def before_app_request():
             "title": "Отзывы",
             "href": "testimonial"
           }, {
+            "title": "Базовый ювелирный курс",
+            "href": "basic-jewelry"
+          }, {
             "title": "Страница курса",
             "href": "course-page"
-          }, {
+          },{
             "title": "Записаться",
             "href": "appointment"
           }, {
