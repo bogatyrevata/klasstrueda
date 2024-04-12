@@ -51,14 +51,14 @@
       {{ make_menu(g.menu, page) }}
     </div>
       {% if not current_user.is_authenticated %}
-      <a href="{{ url_for('security.login') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Войти
+      <a href="{{ url_for('security.login') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Войти
       <i class="fa fa-arrow-right ms-3"></i></a>
-      <a href="{{ url_for('security.register') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Регистрация
+      <a href="{{ url_for('security.register') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Регистрация
       </a>
     {% else %}
-      <a href="{{ url_for('security.logout') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Выйти
+      <a href="{{ url_for('security.logout') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Выйти
       <i class="fa fa-arrow-right ms-3"></i></a>
-      <a href="{{ url_for('user.index') }}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Личный кабинет
+      <a href="{{ url_for('user.index') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Личный кабинет
       <i class="fa fa-arrow-right ms-3"></i></a>
     {% endif %}
   </div>
