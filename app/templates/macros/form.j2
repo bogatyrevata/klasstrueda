@@ -61,7 +61,7 @@
 {%- endmacro %}
 
 {% macro btn(field, value='Submit', extra_class='', bem_block='form') %}
-  {{ field(class='%s__submit btn btn-primary py-4 px-lg-5 d-none d-lg-block %s' % (bem_block, extra_class), value=value)|safe }}
+  {{ field(class='%s__submit btn btn-primary py-4 px-lg-5 d-lg-block %s' % (bem_block, extra_class), value=value)|safe }}
 {% endmacro %}
 
 {% macro prop_next() -%}
