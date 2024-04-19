@@ -16,7 +16,7 @@
             <h6 class="text-primary text-uppercase mb-2">Ювелирный курс</h6>
             <h1 class="display-6 mb-4">Базовый ювелирный курс</h1>
             <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров </p>
-            <p class="mb-4">Наша миссия - поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
+            <p class="mb-4">Наша миссия&nbsp;— поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
             <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
@@ -52,7 +52,7 @@
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
-        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h1 class="display-6 mb-4">Как проходит обучение</h1>
               <p>участники получают доступ к видеоурокам и записанным трансляциям по основным этапам и следующим темам:</p>
@@ -94,7 +94,7 @@
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
-        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
           <h1 class="display-6 mb-4">Кому подойдет курс</h1>
           <div class="row gy-5 gx-4">
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
@@ -249,25 +249,25 @@
           <p>Во время курса вы сделаете несколько работ и сможете добавить их в портфолио</p>
         </div>
         <div class="row justify-content-center">
-          <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="owl-carousel testimonial-carousel">
-              <div class="testimonial-item text-center">
+          <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="owl-carousel workphoto-carousel">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/studentwork-1.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-1.jpg') }}"  alt="">
                 </div>
                 <h5>Анна Иванова</h5>
                 <span>Профессия</span>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/studentwork-2.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-2.jpg') }}"  alt="">
                 </div>
                 <h5>Юрий Петров</h5>
                 <span>Профессия</span>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/studentwork-3.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-3.jpg') }}"  alt="">
                 </div>
                 <h5>Мария Сидорова</h5>
                 <span>Профессия</span>
@@ -281,13 +281,19 @@
   <!-- Course Students End-->
 
   <!-- Course Promo Start-->
-  <div class="container xxl py-4">
+  <div class="container-xxl promo my-4 py-4">
     <div class="container">
       <div class="row g-5">
         <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
           <h1 class="display-12 mb-4">Акция</h1>
-          <p>При покупке курса до 10.05.24 вы получаете:</p>
+          <div id="timer">
+            <span id="days"></span>дни
+            <span id="hours"></span>часы
+            <span id="minutes"></span>минуты
+            <span id="seconds"></span>секунды
+          </div>
+          <p>При покупке курса вы получаете:</p>
           <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-12">
                 <i class="fa fa-check text-primary me-2"></i>Доступ к видео в течение 1 года
@@ -312,7 +318,7 @@
       <div class="row g-5">
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
-          <h1 class="display-6 mb-4">Если у вас есть какие-либо вопросы, свяжитесь с нами</h1>
+          <h1 class="display-6 mb-4">Записаться на курс или получить бесплатную консультацию по курсу</h1>
           <form>
             <div class="row g-3">
               <div class="col-md-6">
@@ -344,6 +350,9 @@
               </div>
             </div>
           </form>
+          <div class="col-12 mt-3">
+          <a href="">*Политика конфиденциальности</a>
+          </div>
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
@@ -368,9 +377,9 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">О преподавателе</h6>
-            <h1 class="display-6 mb-4">Талантливый ювелир и художник</h1>
-            <p>В нашем онлайн марафоне "Ювелирное мастерство - делаем креативные кольца" есть одна важная и уникальная особенность. Как думаете какая? Все онлайн занятия проводит автор и ведущий мастер - ювелир, художник Юрий Былков. </p>
-            <p class="mb-4">Юрий - многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в "Эрмитаже" и музее ювелирного искусства в г.Пфорцхайм Германияю, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства в разных странах мира.</p>
+            <h1 class="display-6 mb-4">Талантливый ювелир и&nbsp;— художник</h1>
+            <p>В нашем онлайн марафоне «Ювелирное мастерство&nbsp;—  делаем креативные кольца» есть одна важная и уникальная особенность. Как думаете какая? Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник Юрий Былков. </p>
+            <p class="mb-4">Юрий&nbsp;—  многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и музее ювелирного искусства в г.Пфорцхайм Германияю, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства в разных странах мира.</p>
           </div>
         </div>
       </div>
@@ -386,46 +395,46 @@
           <h1 class="display-6 mb-4">Работы мастера</h1>
         </div>
         <div class="row justify-content-center">
-          <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="owl-carousel testimonial-carousel">
-              <div class="testimonial-item text-center">
+          <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="owl-carousel workphoto-carousel">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-2.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/jewelry-2.jpg') }}"  alt="">
                 </div>
                 <h5>Кольцо с аметистом</h5>
                 <p>Материал: латунь, серебрение, аметист</p>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-3.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto " src="{{ url_for('static', filename='img/jewelry-3.jpg') }}"  alt="">
                 </div>
                 <h5>Кольцо «Два плывуна» из серии «Корни»</h5>
                 <p>Материал: титан, гипоаллергенный сплав</p>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-4.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/jewelry-4.jpg') }}"  alt="">
                 </div>
                 <h5>Каф из серии «Отрезки»</h5>
                 <p>Материал: латунь, серебрение</p>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-5.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/jewelry-5.jpg') }}"  alt="">
                 </div>
                 <h5>Кольцо из серии «Знаменитости»</h5>
                 <p>Материал: ультрафиолетовая смола, искусственный волос</p>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-6.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/jewelry-6.jpg') }}"  alt="">
                 </div>
                 <h5>Кольцо транформер «Линии»</h5>
                 <p>Материал: титан</p>
               </div>
-              <div class="testimonial-item text-center">
+              <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto workphoto" src="{{ url_for('static', filename='img/jewelry-7.jpg') }}"  alt="">
+                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/jewelry-7.jpg') }}"  alt="">
                 </div>
                 <h5>Браслеты и кольца из разных серий</h5>
                 <p>Материал: латунь, посеребрение</p>
@@ -461,7 +470,7 @@
               <div class="position-relative mt-auto">
                 <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}"  alt="">
                 <div class="courses-overlay">
-                  <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='course-page') }}">Подробнее</a>
+                  <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Подробнее</a>
                 </div>
               </div>
             </div>
@@ -480,7 +489,7 @@
               <div class="position-relative mt-auto">
                 <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}"  alt="">
                 <div class="courses-overlay">
-                  <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='course-page') }}">Подробнее</a>
+                  <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Подробнее</a>
                 </div>
               </div>
             </div>
@@ -540,6 +549,9 @@
                 </div>
               </form>
             </div>
+            <div class="col-12 mt-3">
+            <a href="">*Политика конфиденциальности</a>
+          </div>
           </div>
           <!-- Course Registration End-->
         </div>
