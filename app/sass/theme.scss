@@ -233,6 +233,13 @@
   opacity: 1;
 }
 
+/*** Promo ****/
+.promo {
+  min-height: 50vh;
+  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, .9)), url(../img/jewelry-1.jpg) center center no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
 
 /*** Team ***/
 .team-items {
