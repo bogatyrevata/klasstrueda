@@ -48,3 +48,24 @@
       loop: true,
   });
 })(jQuery);
+
+
+  // Workphoto carousel
+$(".workphoto-carousel").owlCarousel({
+    autoplay: true,
+    smartSpeed: 1000,
+    dots: true,
+    loop: true,
+    responsiveClass:true,
+    responsive:{
+        0:{
+            items:1,
+        },
+        768:{
+            items:2,
+        },
+        1200:{
+            items:3,
+        }
+    }
+  });

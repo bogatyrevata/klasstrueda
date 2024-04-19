@@ -312,9 +312,35 @@
   height: 150px;
 }
 
-.testimonial-carousel .owl-item .workphoto {
-  width: 450px;
-  height: 450px;
+/*** workphoto ***/
+.workphoto-carousel .owl-dots {
+  height: 40px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workphoto-carousel .owl-dot {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 2px solid var(--primary);
+  transition: .5s;
+}
+
+.workphoto-carousel .owl-dot.active {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+}
+
+.workphoto-carousel .owl-item img {
+  width: 350px;
+  height: 350px;
   border-radius: 50%;
 }
 
