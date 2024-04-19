@@ -351,6 +351,22 @@
   border-radius: 50%;
 }
 
+/*** timer ***/
+#timer {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #999;
+  letter-spacing: -1px;
+}
+#timer span {
+  font-size: 60px;
+  color: #333;
+  margin: 0 3px 0 15px;
+}
+#timer span:first-child {
+  margin-left: 0;
+}
+
 /*** Footer ***/
 .footer .btn.btn-link {
   display: block;
@@ -389,3 +405,4 @@
 .copyright a:hover {
   color: var(--light);
 }
+
