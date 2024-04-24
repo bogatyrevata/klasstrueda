@@ -16,6 +16,7 @@ class Role(db.Model, FsRoleMixin):
 class User(db.Model, FsUserMixin):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
+    userphoto = db.Column(db.String(255))
 
 
 class Photo(db.Model, ModelMixin):
