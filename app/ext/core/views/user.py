@@ -12,7 +12,7 @@ user = Blueprint("user", __name__, template_folder="templates")
 @login_required
 def index():
     """Главная страница личного кабинета."""
-    g.breadcrumbs = [{"title": "ЛК"}]
+    g.breadcrumbs = [{"title": "Личный кабинет"}]
     user_links = [
         {"controller": "user.edit", "title": "Изменить"},
         {"controller": "security.logout", "title": "Выйти"},
@@ -27,7 +27,7 @@ def index():
 @login_required
 def edit():
     """Редактирование данных пользователя."""
-    g.breadcrumbs = [{"controller": ".index", "title": "ЛК"}, {"title": "Изменить"}]
+    g.breadcrumbs = [{"controller": ".index", "title": "Личный Кабинет"}, {"title": "Изменить"}]
     current_user_db = User.query.get(current_user.id)
     edit_profile_form = EditProfileForm()
     if edit_profile_form.validate_on_submit():
