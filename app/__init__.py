@@ -158,11 +158,3 @@ def create_app(config_obj=None):
     register_blueprints(app)
 
     return app
-
-
-try:
-    """решение проблемы с модулем MySQLdb"""
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
