@@ -1,6 +1,10 @@
 {% extends "admin/base.j2" %}
+{% from "macros/admin_ breadcrumbs.j2" import admin_breadcrumbs %}
 
 {% block admin_content %}
+
+{{ admin_breadcrumbs() }}
+
   <h2>{{ _('Changing roles for a user') }} {{ user.email }}</h2>
   <h3>{{ _('Available roles') }}</h3>
   <ul>

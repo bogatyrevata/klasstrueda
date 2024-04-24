@@ -97,7 +97,7 @@ class DevelopmentConfig(BaseConfig):
     SECRET_KEY = os.getenv("SECRET_KEY", "liualdsknbkjzxcvoaewrASDV76s!@#$%^&*")
     SECURITY_EMAIL_VALIDATOR_ARGS = {"check_deliverability": False}
 
-    DB_DRIVER = "mysql+mysqldb"
+    DB_DRIVER = "mysql+pymysql"
     DB_USER = os.getenv("DB_USER")
     DB_PASS = os.getenv("DB_PASS")
     DB_NAME = os.getenv("DB_NAME")

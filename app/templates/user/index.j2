@@ -1,9 +1,16 @@
 {% extends "admin/base.j2" %}
+{% from "macros/admin_ breadcrumbs.j2" import admin_breadcrumbs %}
 
 {% block admin_content %}
+
+{{ admin_breadcrumbs() }}
+
   <div class="col-lg-4 ml-auto">
     <h1>Личный кабинет</h1>
     <ul>
+     <li>
+        <strong>Фото пользователя</strong>: {{ current_user.userphoto }}
+      </li>
       <li>
         <strong>Логин</strong>: {{ current_user.username }}
       </li>
