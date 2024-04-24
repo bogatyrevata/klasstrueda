@@ -1,6 +1,10 @@
 {% extends "admin/base.j2" %}
+{% from "macros/admin_ breadcrumbs.j2" import admin_breadcrumbs %}
 
 {% block admin_content %}
+
+{{ admin_breadcrumbs() }}
+
   <ul class="admin__links">
     {% for link in admin_links %}
       <li>
