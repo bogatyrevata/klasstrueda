@@ -3,6 +3,7 @@
 .idea/
 .venv/
 __pycache__/
+app/static/upload/
 build/
 log/
 node_modules/
