@@ -31,23 +31,25 @@ def edit():
     current_user_db = User.query.get(current_user.id)
     edit_profile_form = EditProfileForm()
     if edit_profile_form.validate_on_submit():
-      current_user_db.username = edit_profile_form.username.data
-      current_user_db.first_name = edit_profile_form.first_name.data
-      current_user_db.last_name = edit_profile_form.last_name.data
-      current_user_db.us_phone_number = edit_profile_form.phone.data
+        current_user_db.username = edit_profile_form.username.data
+        current_user_db.first_name = edit_profile_form.first_name.data
+        current_user_db.last_name = edit_profile_form.last_name.data
+        if edit_profile_form.phone.data:
+            current_user_db.us_phone_number = edit_profile_form.phone.data
 
-      # Проверяем наличие и непустоту файла userphoto
-      if 'userphoto' in request.files and request.files['userphoto']:
-          filename = photos.save(request.files['userphoto'])
-          current_user_db.userphoto = filename
-          db.session.commit()  # Сохраняем изменения в базе данных после сохранения файла
+        # Проверяем наличие и непустоту файла userphoto
+        if 'userphoto' in request.files and request.files['userphoto']:
+            filename = photos.save(request.files['userphoto'])
+            current_user_db.userphoto = filename
+            db.session.commit()  # Сохраняем изменения в базе данных после сохранения файла
 
-      db.session.commit()  # Сохраняем изменения в базе данных
-      flash("Сохранено", "success")
-      return redirect(url_for("user.edit"))
+        db.session.commit()  # Сохраняем изменения в базе данных
+        flash("Сохранено", "success")
+        return redirect(url_for("user.edit"))
     edit_profile_form.userphoto.data = current_user_db.userphoto
     edit_profile_form.username.data = current_user_db.username
     edit_profile_form.first_name.data = current_user_db.first_name
     edit_profile_form.last_name.data = current_user_db.last_name
     edit_profile_form.phone.data = current_user_db.us_phone_number
-    return render_template("user/edit_profile.j2", form=edit_profile_form)
+    userphoto = current_user_db.userphoto
+    return render_template("user/edit_profile.j2", form=edit_profile_form, userphoto=userphoto)
