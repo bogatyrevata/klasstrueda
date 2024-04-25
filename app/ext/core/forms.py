@@ -1,5 +1,6 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from wtforms import StringField, SubmitField, TelField, FileField
 from wtforms.validators import DataRequired
 
@@ -7,8 +8,7 @@ from wtforms.validators import DataRequired
 class EditProfileForm(FlaskForm):
     """Форма редактирования пользователя."""
 
-    userphoto = FileField("Фотография")
-    # userphoto = FileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])
+    userphoto = FileField("Фотография", [FileAllowed(["jpg", "png"], "Только джпег или пнг!")])
     username = StringField("Логин")
     first_name = StringField("Имя")
     last_name = StringField("Фамилия")
