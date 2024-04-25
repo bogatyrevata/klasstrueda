@@ -8,7 +8,7 @@
       <nav aria-label="breadcrumb animated slideInDown">
         <ol class="breadcrumb justify-content-center mb-0">
           {% for breadcrumb in g.breadcrumbs %}
-            <li class="breadcrumb-item"><a class="text-white" href="#">{{ breadcrumb.title }}</a></li>
+            <li class="breadcrumb-item"><a class="text-white"{% if breadcrumb.controller %} href="{{ url_for(breadcrumb.controller) }}"{% endif %}>{{ breadcrumb.title }}</a></li>
           {% endfor %}
         </ol>
       </nav>
