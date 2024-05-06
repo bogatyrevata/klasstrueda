@@ -54,7 +54,7 @@ def before_app_request():
         "title": "Курсы",
         "href": "courses"
       }, {
-        "title": "Страницы",
+        "title": "Разделы",
         "href": "#",
         "submenu": [
           {
@@ -84,10 +84,13 @@ def before_app_request():
           }, {
               "title": "Юридическая информация",
               "href": "legal-info"
-          },
+          },{
+              "title": "Политика конфеденциальности",
+              "href": "privaci"
+          }
         ]
       }, {
-        "title": "Написать нам",
+        "title": "Контакты",
         "href": "contacts"
       }
     ]
