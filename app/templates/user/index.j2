@@ -5,8 +5,14 @@
   <div class="col-lg-4 ml-auto">
     <h1>Личный кабинет</h1>
     <ul>
-     <li>
+      <li>
         <strong>Фото пользователя</strong>: {{ current_user.userphoto }}
+        {% if userphoto %}
+          {% set filename = 'upload/%s' % userphoto %}
+          <img src="{{ url_for('static', filename=filename) }}" alt="" width="100">
+        {% else %}
+          Фото не загружено
+        {% endif %}
       </li>
       <li>
         <strong>Логин</strong>: {{ current_user.username }}
