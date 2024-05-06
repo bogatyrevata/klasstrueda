@@ -84,7 +84,10 @@ def before_app_request():
           }, {
               "title": "Юридическая информация",
               "href": "legal-info"
-          },
+          },{
+              "title": "Политика конфеденциальности",
+              "href": "privaci"
+          }
         ]
       }, {
         "title": "Написать нам",
