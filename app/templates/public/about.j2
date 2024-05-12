@@ -21,10 +21,17 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">О нас</h6>
-            <h1 class="display-6 mb-4">Добро пожаловать в Мастерскую Творчества!</h1>
-            <p>Мы стремимся быть вдохновляющим центром творчества, где студенты могут научиться искусствам ювелирного дела, керамики и обработке кожи в комфортной онлайн среде. </p>
-            <p class="mb-4">Наша миссия - поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
-            <div class="row g-2 mb-4 pb-2">
+            <h1 class="display-6 mb-4">История Класса Труда!</h1>
+            <p class="mb-4">В самом начале нашего пути, когда десять лет назад зарождалась идея Класса Труда, наша цель была ясна: помогать всем,
+            кто разделял наше влечение к ручной работе и творчеству. Мы предоставляли мастерам доступные рабочие места, избегая
+            дорогих арендных платежей за большие помещения, и создавали сообщество, где каждый мог найти свое место.</p>
+            <p class="mb-4">Вместе с нами многие наши ученики и резиденты росли и развивались, создавая свои собственные мастерские
+            или объединяясь с другими единомышленниками. Наша мастерская стала не только источником вдохновения для тех, кто
+            стремится освоить искусство ручной работы, но и площадкой для раскрытия талантов и создания новых идей.</p>
+            <p class="mb-4">Сегодня наша мастерская стала местом, где опыт создания и развития теперь доступен всем, кто увлечен
+             ручным трудом и творчеством. Даже находясь далеко от мастерской, вы можете присоединиться к нашему сообществу и раскрыть
+             свой творческий потенциал, погрузившись в уникальный мир рукоделия и мастерства.</p>
+            {# <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
               </div>
@@ -37,8 +44,8 @@
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Сообщество единомышленников
               </div>
-            </div>
-            <div class="row g-4">
+            </div> #}
+            {# <div class="row g-4">
               <div class="col-sm-6">
                 <a class="btn btn-primary py-3 px-5" href="">Подробнее</a>
               </div>
@@ -50,7 +57,7 @@
                   <span class="px-3">{{ g.contacts.phone }}</span>
                 </a>
               </div>
-            </div>
+            </div> #}
           </div>
         </div>
       </div>
@@ -127,7 +134,7 @@
             </div>
             <div class="bg-light text-center p-4">
               <h5 class="mt-2">Таисия Богатырева</h5>
-              <span>Frontent-Developer</span>
+              <span>Кожевник</span>
             </div>
           </div>
         </div>
@@ -135,4 +142,57 @@
     </div>
   </div>
   <!-- Team End -->
+
+  <!-- Testimonial Start -->
+    <div class="container-xxl py-6">
+    <div class="container">
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+        <h6 class="text-primary text-uppercase mb-2">Отзывы</h6>
+        <h1 class="display-6 mb-4">Что пишут о нас ученики</h1>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="owl-carousel testimonial-carousel">
+            <div class="testimonial-item text-center">
+              <div class="position-relative mb-5">
+                <img class="img-fluid rounded-circle mx-auto" src="{{ url_for('static', filename='img/testimonial-1.jpg') }}"  alt="">
+                <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px;">
+                  <i class="fa fa-quote-left fa-2x text-primary"></i>
+                </div>
+              </div>
+              <p class="fs-4">За непродолжительное время я научился основным навыкам и техникам и сделал несколько изделий о которых раньше и думать не мог. Однозначно я доволен курсом. Спасибо огромное Юра и Класс Труда.</p>
+              <hr class="w-25 mx-auto">
+              <h5>Равиль Хафизов</h5>
+              <span>Профессия</span>
+            </div>
+            <div class="testimonial-item text-center">
+              <div class="position-relative mb-5">
+                <img class="img-fluid rounded-circle mx-auto" src="{{ url_for('static', filename='img/testimonial-2.jpg') }}"  alt="">
+                <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px;">
+                  <i class="fa fa-quote-left fa-2x text-primary"></i>
+                </div>
+              </div>
+              <p class="fs-4">На курсе я узнала для себя много нового, а также подкорректировала знания о уже знакомых техниках. Я впервые работала с серебряным припоем, перестала бояться паять дома, попробовала крапановую закрепку, научилась делать крепление и иглу для брошей, попробовала делать штифтовые соединения. Очень удобный формат курса, все доступно, понятно и интересно.</p>
+              <hr class="w-25 mx-auto">
+              <h5>Валерия Скоморохова</h5>
+              <span>Профессия</span>
+            </div>
+            <div class="testimonial-item text-center">
+              <div class="position-relative mb-5">
+                <img class="img-fluid rounded-circle mx-auto" src="{{ url_for('static', filename='img/testimonial-3.jpg') }}"  alt="">
+                <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white rounded-circle" style="width: 60px; height: 60px;">
+                  <i class="fa fa-quote-left fa-2x text-primary"></i>
+                </div>
+              </div>
+              <p class="fs-4">Для меня это большой шаг вперед. Буквально распахнулись просторы для творчества. Спасибо за обстоятельное и подробное объяснение азов мастерства. Грустно, что всё когда-то заканчивается, и курс тоже подошёл к концу. Желаю вам рукастеньких и благодарных учеников, и, конечно, творческих идей и успехов!</p>
+              <hr class="w-25 mx-auto">
+              <h5>Инна Калечиц</h5>
+              <span>Профессия</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Testimonial End -->
 {% endblock content %}
