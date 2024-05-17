@@ -88,3 +88,47 @@
     {% endfor %}
   {% endif %}
 {% endmacro %}
+
+{# Макросы для полей форм#}
+
+{% macro input_form_6(field) %}
+  <div class="col-md-6">
+    <div class="form-floating">
+    {% if field.errors %}
+      {% set className = 'form-control border-0 bg-light is-invalid' %}
+    {% else %}
+      {% set className = 'form-control border-0 bg-light' %}
+    {% endif %}
+      {{ field(class=className, id="", placeholder="") }}
+      {{ field.label(for="") }}
+      {% if field.errors %}
+        <ul class=invalid-feedback>
+        {% for error in field.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro input_form_12(field, style="") %}
+  <div class="col-md-12">
+    <div class="form-floating">
+      {% if field.errors %}
+      {% set className = 'form-control border-0 bg-light is-invalid' %}
+    {% else %}
+      {% set className = 'form-control border-0 bg-light' %}
+    {% endif %}
+      {{ field(class=className, id="", placeholder="", style=style) }}
+      {{ field.label(for="") }}
+      {% if field.errors %}
+        <ul class=invalid-feedback>
+        {% for error in field.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, g, render_template
+from flask import Blueprint, abort, g, redirect, render_template, request, url_for
 from flask_security import hash_password
 from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import OperationalError
@@ -8,6 +8,7 @@ from sqlalchemy.exc import OperationalError
 from app.ext.core.models import user_datastore
 from app.extensions import csrf, db
 from config import TZ
+from app.ext.core.forms import RegistrationForm
 
 
 core = Blueprint("core", __name__, template_folder="templates")
@@ -116,7 +117,8 @@ def before_app_request():
 def index():
     """Главная страница."""
     init_request()
-    return render_template("public/index.j2")
+    form = RegistrationForm(meta={'csrf':False})
+    return render_template("public/index.j2", form=form)
 
 
 @core.get("/<string:page_name>")
@@ -126,3 +128,34 @@ def page(page_name):
         return render_template(f"public/{page_name}.j2")
     except TemplateNotFound:
         abort(404)
+
+
+@core.get("/contacts")
+def contacts():
+    """Контакты."""
+    init_request()
+    form = RegistrationForm(meta={'csrf':False})
+    return render_template("public/contacts.j2", form=form)
+
+
+@core.get("/basic-jewelry")
+def basic_jewelry():
+    """Базовый ювелирный курс."""
+    init_request()
+    form = RegistrationForm(request.form, meta={'csrf':False})
+    return render_template("public/basic-jewelry.j2", form=form)
+
+@core.get("/appointment")
+def appointment():
+    """Регистрация на курс."""
+    init_request()
+    form = RegistrationForm(request.form, meta={'csrf':False})
+    return render_template("public/appointment.j2", form=form)
+
+@core.post("/form-processing")
+def form_proc():
+  form = RegistrationForm(request.form, meta={'csrf':False})
+  if form.validate():
+      print(form.data)
+      return redirect(url_for("index"))
+  return render_template("public/contacts.j2", form=form)
