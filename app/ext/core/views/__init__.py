@@ -145,6 +145,7 @@ def basic_jewelry():
     form = RegistrationForm(request.form, meta={'csrf':False})
     return render_template("public/basic-jewelry.j2", form=form)
 
+
 @core.get("/appointment")
 def appointment():
     """Регистрация на курс."""
@@ -152,9 +153,10 @@ def appointment():
     form = RegistrationForm(request.form, meta={'csrf':False})
     return render_template("public/appointment.j2", form=form)
 
+
 @core.post("/form-processing")
 def form_proc():
-  form = RegistrationForm(request.form, meta={'csrf':False})
+  form = RegistrationForm(request.form)
   if form.validate():
       print(form.data)
       return redirect(url_for("index"))
