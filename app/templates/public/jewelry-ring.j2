@@ -2,22 +2,27 @@
 {% from "macros/form.j2" import input_form_6, input_form_12 %}
 {% extends "base.j2" %}
 
-{% set page = "course-page" %}
+{% set page = "jewelry-ring" %}
 
 {% block content %}
  <!-- Page Header Start -->
- {{ generate_page_header(active_item='basic-jewelry') }}
+ {{ generate_page_header(active_item='jewelry-ring') }}
   <!-- Page Header End -->
-<!-- About Course Start -->
+
+  <!-- About Course Start -->
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
-            <h6 class="text-primary text-uppercase mb-2">Ювелирный курс</h6>
-            <h1 class="display-6 mb-4">Базовый ювелирный курс</h1>
-            <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров </p>
-            <p class="mb-4">Наша миссия&nbsp;— поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
+            <h6 class="text-primary text-uppercase mb-2">Ювелирный мастер-класс</h6>
+            <h1 class="display-6 mb-4">Ювелирный мастер-класс: кольцо «всмятку»</h1>
+            <p>На нашем эксклюзивном ювелирном мастер-классе вы сможете создать уникальное кольцо с эффектом мятой поверхности. Под
+            руководством опытного мастера-ювелира, каждый участник погрузится в процесс создания ювелирного украшения с нуля. </p>
+            <p>В ходе занятия вы познакомитесь с различными техниками обработки металла, научитесь использовать профессиональные
+            инструменты и воплотите свои творческие идеи в реальность.</p>
+            <p class="mb-4">В завершение мастер-класса вы уйдете домой с индивидуально созданным кольцом, которое станет прекрасным
+            дополнением вашей коллекции украшений или особенным подарком для близкого человека.</p>
             <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
@@ -41,7 +46,7 @@
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
-            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/about-2.jpg') }}"  alt="" style="object-fit: cover;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-9.jpg') }}"  alt="" style="object-fit: cover;">
           </div>
       </div>
       </div>
@@ -49,7 +54,7 @@
   </div>
   <!-- About Course End -->
 
-  <!-- Course Informtion Start-->
+    <!-- Course Informtion Start-->
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
@@ -91,7 +96,7 @@
   </div>
   <!-- Course Informtion End-->
 
-  <!-- Feature Course Start-->
+    <!-- Feature Course Start-->
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
@@ -141,7 +146,7 @@
   </div>
   <!-- Feature Course End-->
 
-  <!-- Course Skills Start-->
+    <!-- Course Skills Start-->
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
@@ -172,8 +177,8 @@
                         <i class="fa fa-users text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Разрабатывать дизайн украшений</h5>
-                        <span>Перейти от эскиза к готовой работе</span>
+                        <h5>Повторите дизайнерское кольцо</h5>
+                        <span>Мы покажем простые техники, чтобы вы могли сделать украшение даже с минимальными навыками</span>
                       </div>
                     </div>
                   </div>
@@ -198,8 +203,8 @@
                         <i class="fa fa-clock text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Получите базовые знания для дальнейшего развития</h5>
-                        <span>Вы сможете попробовать основные направления и выбрать то что больше понравится</span>
+                        <h5>Получите начальные знания для дальнейшего развития</h5>
+                        <span>Вы сможете попробовать сделать ювелирное украшение и решить, нравится ли вам</span>
                       </div>
                     </div>
                   </div>
@@ -211,8 +216,8 @@
                         <i class="fa fa-clock text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Научитесь работать с минильными инструментами</h5>
-                        <span>Уже во время курса вы начнете делать первые украшения с минимумом инструментов</span>
+                        <h5>Сделаете свое первое кольцо</h5>
+                        <span>Уже во время мастер-класса вы сделаете свое первое украшение - мятое кольцо</span>
                       </div>
                     </div>
                   </div>
@@ -224,8 +229,8 @@
                         <i class="fa fa-clock text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Работа с клиентами</h5>
-                        <span>Мы научим вам позиционировать свои работы так что от клиентов не будет отбоя</span>
+                        <h5>Практические навыки</h5>
+                        <span>Вы получите ценные навыки и знания, которые сможете применить в будущем для создания других украшений</span>
                       </div>
                     </div>
                   </div>
@@ -241,45 +246,6 @@
   </div>
   <!-- Course Skills End-->
 
-  <!-- Course Students Start-->
-  <div class="container-xxl py-4">
-    <div class="container">
-      <div class="row g-5">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-          <h1 class="display-6 mb-4">Работы учеников</h1>
-          <p>Во время курса вы сделаете несколько работ и сможете добавить их в портфолио</p>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="owl-carousel workphoto-carousel">
-              <div class="workphoto-item text-center">
-                <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-1.jpg') }}"  alt="">
-                </div>
-                <h5>Анна Иванова</h5>
-                <span>Профессия</span>
-              </div>
-              <div class="workphoto-item text-center">
-                <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-2.jpg') }}"  alt="">
-                </div>
-                <h5>Юрий Петров</h5>
-                <span>Профессия</span>
-              </div>
-              <div class="workphoto-item text-center">
-                <div class="position-relative mb-5">
-                  <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-3.jpg') }}"  alt="">
-                </div>
-                <h5>Мария Сидорова</h5>
-                <span>Профессия</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Course Students End-->
 
   <!-- Course Promo Start-->
   <div class="container-xxl promo my-4 py-4">
@@ -287,7 +253,7 @@
       <div class="row g-5">
         <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
-          <h1 class="display-12 mb-4">Акция</h1>
+          <h1 class="display-12 mb-4">Акция! Бесплатный доступ к занятию:</h1>
           <div id="timer">
             <span id="days"></span>дни
             <span id="hours"></span>часы
@@ -338,7 +304,7 @@
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
-            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-6.jpg') }}"  alt="" style="object-fit: cover;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-10.jpg') }}"  alt="" style="object-fit: cover;">
           </div>
         </div>
       </div>
@@ -433,9 +399,9 @@
 <div class="container-xxl courses my-6 py-6 pb-0">
     <div class="container">
       <div class="row g-5">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-          <h6 class="text-primary text-uppercase mb-2">Ювелирный курс</h6>
-          <h1 class="display-6 mb-4">Стоимость курса</h1>
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+          <h6 class="text-primary text-uppercase mb-2">Ювелирный мастер-класс</h6>
+          <h1 class="display-12 mb-4">Стоимость мастер-класса</h1>
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -522,5 +488,4 @@
     </div>
 </div>
   <!-- Prise End-->
-
 {% endblock content %}

@@ -70,6 +70,16 @@ $(".workphoto-carousel").owlCarousel({
     }
   });
 
+  // Workphoto-single-carousel
+  $(".workphoto-single-carousel").owlCarousel({
+    autoplay: true,
+    smartSpeed: 1000,
+    items: 1,
+    dots: true,
+    loop: true,
+    responsiveClass:true,
+});
+
   // Timer
   var timer;
   const promoDayEnd = 7;

@@ -351,6 +351,38 @@
   border-radius: 50%;
 }
 
+/*** workphoto-single ***/
+.workphoto-single-carousel .owl-dots {
+  height: 40px;
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workphoto-single-carousel .owl-dot {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 2px solid var(--primary);
+  transition: .5s;
+}
+
+.workphoto-single-carousel .owl-dot.active {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+}
+
+.workphoto-single-carousel .owl-item img {
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+}
+
 /*** timer ***/
 #timer {
   font-family: Arial, sans-serif;

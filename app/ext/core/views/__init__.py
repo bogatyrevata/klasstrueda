@@ -70,7 +70,13 @@ def before_app_request():
           }, {
             "title": "Базовый ювелирный курс",
             "href": "basic-jewelry"
-          },{
+          }, {
+            "title": "Мастер-класс: кольцо всмятку",
+            "href": "jewelry-ring"
+          }, {
+            "title": "Ювелирный марафон",
+            "href": "jewelry-marathon"
+          }, {
             "title": "Записаться",
             "href": "appointment"
           }, {
@@ -152,6 +158,20 @@ def appointment():
     init_request()
     form = RegistrationForm(request.form, meta={'csrf':False})
     return render_template("public/appointment.j2", form=form)
+
+@core.get("/jewelry-marathon")
+def jewelry_marathon():
+    """Регистрация на курс."""
+    init_request()
+    form = RegistrationForm(request.form, meta={'csrf':False})
+    return render_template("public/jewelry-marathon.j2", form=form)
+
+@core.get("/jewelry-ring")
+def jewelry_ring():
+    """Регистрация на курс."""
+    init_request()
+    form = RegistrationForm(request.form, meta={'csrf':False})
+    return render_template("public/jewelry-ring.j2", form=form)
 
 
 @core.post("/form-processing")

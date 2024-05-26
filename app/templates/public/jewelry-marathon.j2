@@ -2,11 +2,11 @@
 {% from "macros/form.j2" import input_form_6, input_form_12 %}
 {% extends "base.j2" %}
 
-{% set page = "course-page" %}
+{% set page = "jewelry-marathon" %}
 
 {% block content %}
  <!-- Page Header Start -->
- {{ generate_page_header(active_item='basic-jewelry') }}
+ {{ generate_page_header(active_item='jewelry-marathon') }}
   <!-- Page Header End -->
 <!-- About Course Start -->
   <div class="container-xxl py-4">
@@ -14,19 +14,23 @@
       <div class="row g-5">
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
-            <h6 class="text-primary text-uppercase mb-2">Ювелирный курс</h6>
-            <h1 class="display-6 mb-4">Базовый ювелирный курс</h1>
-            <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров </p>
-            <p class="mb-4">Наша миссия&nbsp;— поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
+            <h6 class="text-primary text-uppercase mb-2">Ювелирный марафон</h6>
+            <h1 class="display-6 mb-4">Ювелирный марафон: кольца</h1>
+            <p>Марафон будет проходить в течение недели. Каждый день вы будете получать записанные уроки как сделать интересное и
+            оригинальное кольцо и дополнительные уроки с полезными советами, творческими подсказками и идеями. Все записи и материалы
+            останутся в доступе для участников.</p>
+            <p class="mb-4">Особое внимание уделим созданию эскизов, проработке идеи еще до момента работы с материалом, поиску
+            решений для того чтобы вы могли сделать крутое ювелирное изделия используя те инструменты и объем навыков, который у вас
+            есть. В конце марафона будет онлайн стрим с мастером, на котором будет обратная связь, советы и ответы на вопросы.</p>
             <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
+                <i class="fa fa-check text-primary me-2"></i>Экспертный преподаватель
               </div>
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Легкость и доступность
               </div>
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Гибкий график
+                <i class="fa fa-check text-primary me-2"></i>Много знаний за небольшое время
               </div>
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Сообщество единомышленников
@@ -41,7 +45,7 @@
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
-            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/about-2.jpg') }}"  alt="" style="object-fit: cover;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-6.jpg') }}"  alt="" style="object-fit: cover;">
           </div>
       </div>
       </div>
@@ -56,22 +60,22 @@
         <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h1 class="display-6 mb-4">Как проходит обучение</h1>
-              <p>Участники получают доступ к видеоурокам и записанным трансляциям по основным этапам и следующим темам:</p>
+              <p>Участники в течение недели каждый день получают записи занятий на тему, как сделать разные кольца:</p>
                 <div class="row g-2 mb-4 pb-2">
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Пайка горелкой
+                    <i class="fa fa-check text-primary me-2"></i>Обручальное кольцо
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Выпиливание лобзиком
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо из двух металлов
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Восковое моделирование
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо из развертки
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Штифтовое соединение
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо с подвиждным соединением
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Закрепка камней и вставок
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо с глухой закрепкой
                   </div>
                 </div>
               <p>Все видеоуроки будут в записи и можно будет изучать все темы в комфортном режиме и удобное время в течение трех месяцев.</p>
@@ -241,7 +245,7 @@
   </div>
   <!-- Course Skills End-->
 
-  <!-- Course Students Start-->
+    <!-- Course Students Start-->
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
@@ -294,7 +298,7 @@
             <span id="minutes"></span>минуты
             <span id="seconds"></span>секунды
           </div>
-          <p>При покупке курса вы получаете:</p>
+          <p>При покупке марафона вы получаете:</p>
           <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-12">
                 <i class="fa fa-check text-primary me-2"></i>Доступ к видео в течение 1 года
@@ -338,7 +342,7 @@
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
-            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-6.jpg') }}"  alt="" style="object-fit: cover;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/jewelry-10.jpg') }}"  alt="" style="object-fit: cover;">
           </div>
         </div>
       </div>
@@ -435,7 +439,7 @@
       <div class="row g-5">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
           <h6 class="text-primary text-uppercase mb-2">Ювелирный курс</h6>
-          <h1 class="display-6 mb-4">Стоимость курса</h1>
+          <h1 class="display-6 mb-4">Стоимость марафона</h1>
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -498,7 +502,7 @@
           <!-- Course Registration Start-->
           <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
             <div class="bg-primary text-center p-5">
-              <h1 class="mb-4">Записаться на курс</h1>
+              <h1 class="mb-4">Записаться на марафон</h1>
               <form action="{{ url_for('core.form_proc') }}" method="post">
                 <div class="row g-3">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -522,5 +526,4 @@
     </div>
 </div>
   <!-- Prise End-->
-
 {% endblock content %}
