@@ -19,15 +19,25 @@ class BaseConfig:
     APP_NAME = BASE_APP_NAME
     APP_DESCRIPTION = os.getenv("APP_DESCRIPTION")
 
+    # MAIL_ADMINS = ["admin@gu.ru"]
+    # MAIL_BACKEND = os.getenv("MAIL_BACKEND", "console")
+    # MAIL_DEFAULT_SENDER = (BASE_APP_NAME, "team@jokerinteractive.ru")
+    # MAIL_SERVER = os.getenv("MAIL_SERVER")
+    # MAIL_PORT = int(os.getenv("MAIL_PORT", "465"))
+    # MAIL_USE_SSL = os.getenv("MAIL_USE_SSL", None)
+    # MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", None)
+    # MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    # MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+
     MAIL_ADMINS = ["admin@gu.ru"]
     MAIL_BACKEND = os.getenv("MAIL_BACKEND", "console")
-    MAIL_DEFAULT_SENDER = (BASE_APP_NAME, "team@jokerinteractive.ru")
-    MAIL_SERVER = os.getenv("MAIL_SERVER")
-    MAIL_PORT = int(os.getenv("MAIL_PORT", "465"))
-    MAIL_USE_SSL = os.getenv("MAIL_USE_SSL", None)
-    MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", None)
-    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
-    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = ("KLASSTRUEDA", "klasstruedaru@gmail.com")
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_SSL = False
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = 'klasstruedaru@gmail.com'
+    MAIL_PASSWORD = 'imgalgzwsmaflvtl'
 
     RESIZE_DOMAIN = os.getenv("RESIZE_DOMAIN", "127.0.0.1:5000")
     RESIZE_ROOT = os.path.join(BASE_DIR, "app")
