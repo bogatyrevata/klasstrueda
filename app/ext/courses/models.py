@@ -1,12 +1,26 @@
-from flask_security import SQLAlchemyUserDatastore
-from flask_security.models.fsqla_v3 import FsModels, FsRoleMixin, FsUserMixin
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime, UTC
 
 from app.extensions import db
 from app.models import ModelMixin
 
-FsModels.set_db_info(db)
+
+video_category_table = db.Table(
+    "video_category",
+    db.Model.metadata,
+    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+)
+
+
+class Video(db.Model, ModelMixin):
+    """Модель для хранения видео."""
+
+    __tablename__ = "video"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    alias = db.Column(db.String(255))
+    description = db.Column(db.String(2048))
+    duration_seconds = db.Column(db.Integer)
 
 
 class Category(db.Model, ModelMixin):
@@ -18,34 +32,19 @@ class Category(db.Model, ModelMixin):
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
 
-class Video(db.Model, ModelMixin):
-    """Модель для хранения видео."""
 
-    __tablename__ = "video"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    alias = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
-    duration = db.Column(db.String(255))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-
-
-class Course (db.Model, ModelMixin):
+class Course(db.Model, ModelMixin):
     """Модель для хранения курсов."""
 
     __tablename__ = "course"
     id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    module = db.Column(db.Integer)
-    artist = db.Column(db.String(255))
-    tarif = db.Column(db.Integer)
-    feedback_id = db.Column(db.Integer, db.ForeignKey('feedback.id'))
 
 
-class Module (db.Model, ModelMixin):
+class Module(db.Model, ModelMixin):
     """Модель для хранения модулей курсов."""
 
     __tablename__ = "module"
@@ -55,69 +54,70 @@ class Module (db.Model, ModelMixin):
     description = db.Column(db.String(2048))
 
 
-class Lesson (db.Model, ModelMixin):
+class Lesson(db.Model, ModelMixin):
     """Модель для хранения уроков курсов."""
 
     __tablename__ = "lesson"
     id = db.Column(db.Integer, primary_key=True)
+    module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-    module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
 
-class Homework (db.Model, ModelMixin):
+
+class Homework(db.Model, ModelMixin):
     """Модель для хранения домашней работы для курсов."""
 
     __tablename__ = "homework"
     id = db.Column(db.Integer, primary_key=True)
+    module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
     name = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-    module_id = db.Column(db.Integer, db.ForeignKey('module.id'))
     file = db.Column(db.String(255))
 
-class Feedback (db.Model, ModelMixin):
+
+class Feedback(db.Model, ModelMixin):
     """Модель для хранения отзывов пользователей о курсах."""
 
-    __tablename__ = "homework"
+    __tablename__ = "feedback"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    alias = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    subject = db.Column(db.String(255))
+    message = db.Column(db.Text)
 
-class Artist (db.Model, ModelMixin):
+
+class Artist(db.Model, ModelMixin):
     """Модель для хранения мастеров, ведущих курс."""
 
     __tablename__ = "artist"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    alias = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
-    category = db.Column(db.String(255))
-    photo = db.Column(db.String(255))
-    social_link = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    avatar = db.Column(db.String(255))
+    bio = db.Column(db.String(255))
+    contacts = db.Column(db.String(255))
 
-class Payment (db.Model, ModelMixin):
+
+class Payment(db.Model, ModelMixin):
     """Модель для хранения оплаты."""
 
     __tablename__ = "payment"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    datetime = db.Column(db.DateTime)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    tarif_id = db.Column(db.Integer, db.ForeignKey('tarif.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
+    tariff_id = db.Column(db.Integer, db.ForeignKey("tariff.id"))
+    datetime_create = db.Column(db.DateTime, default=datetime.now(tz=UTC))
+    datetime_payment = db.Column(db.DateTime)
     final_price = db.Column(db.Numeric(precision=10, scale=2))
     status_payment = db.Column(db.Integer)
-    date_payment = db.Column(db.DateTime)
 
-class Tarif (db.Model, ModelMixin):
+
+class Tariff(db.Model, ModelMixin):
     """Модель для хранения тарифов курсов."""
 
-    __tablename__ = "tarif"
+    __tablename__ = "tariff"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     price = db.Column(db.Numeric(precision=10, scale=2))
     discount = db.Column(db.Integer)
-
