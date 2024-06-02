@@ -1,7 +1,5 @@
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models.fsqla_v3 import FsModels, FsRoleMixin, FsUserMixin
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.extensions import db
 from app.models import ModelMixin

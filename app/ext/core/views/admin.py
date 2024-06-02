@@ -32,6 +32,11 @@ def index():
             "title": "Пользователи",
             "icon": "users",
         },
+        {
+            "controller": "admin_courses.index",
+            "title": "Курсы",
+            "icon": "users",
+        },
     ]
 
     return render_template("admin/index.j2", admin_links=admin_links)
