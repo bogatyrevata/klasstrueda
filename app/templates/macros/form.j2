@@ -99,13 +99,13 @@
     {% else %}
       {% set className = 'form-control border-0 bg-light' %}
     {% endif %}
-      {{ field(class=className, id="", placeholder="") }}
-      {{ field.label(for="") }}
+      {{ field(class=className, placeholder="") }}
+      {{ field.label() }}
       {% if field.errors %}
-        <ul class=invalid-feedback>
-        {% for error in field.errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
+        <ul class="invalid-feedback">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
         </ul>
       {% endif %}
     </div>
@@ -120,13 +120,13 @@
     {% else %}
       {% set className = 'form-control border-0 bg-light' %}
     {% endif %}
-      {{ field(class=className, id="", placeholder="", style=style) }}
-      {{ field.label(for="") }}
+      {{ field(class=className, placeholder="", style=style) }}
+      {{ field.label() }}
       {% if field.errors %}
-        <ul class=invalid-feedback>
-        {% for error in field.errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
+        <ul class="invalid-feedback">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
         </ul>
       {% endif %}
     </div>

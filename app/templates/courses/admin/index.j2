@@ -1,0 +1,10 @@
+{% extends "admin/base.j2" %}
+
+{% block admin_content %}
+  <h1>Список всех курсов</h1>
+  {% for category in categories %}
+    <p><a href="#"><small>({{ category.id}})</small> {{ category.name }} - {{ category.alias }}</a></p>
+  {% endfor %}
+  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_category') }}">Добавить категорию</a>
+  <a class="btn btn-primary" href="#">Добавить курс</a>
+{% endblock admin_content %}
