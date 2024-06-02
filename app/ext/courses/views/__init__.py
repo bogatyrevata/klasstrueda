@@ -5,12 +5,11 @@ from flask_security import hash_password
 from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import OperationalError
 
-from app.ext.core.models import user_datastore
-from app.extensions import csrf, db
-from config import TZ
+from app.ext.courses.models import Category
 
 courses = Blueprint("course", __name__, template_folder="templates")
 
-@courses.get
+@courses.get("")
 def index():
-  pass
+    categories_db = Category.query.all()
+    return render_template("courses/public/index.j2", categories=categories_db)
