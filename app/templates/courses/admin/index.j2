@@ -16,7 +16,7 @@
   {% for category in categories %}
     <div class="category-item">
       <p>
-        <a href="#"><small>({{ category.id }})</small> {{ category.name }} - {{ category.alias }}</a>
+        <a href="{{ url_for('admin_courses.edit_category', category_id=category.id) }}"><small>({{ category.id }})</small> {{ category.name }} - {{ category.alias }}</a>
         <a class="btn btn-primary" href="{{ url_for('admin_courses.edit_category', category_id=category.id) }}">Изменить</a>
         <form action="{{ url_for('admin_courses.delete_category', category_id=category.id) }}" method="post" style="display:inline;">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -27,7 +27,7 @@
   {% endfor %}
   <a class="btn btn-primary" href="{{ url_for('admin_courses.add_category') }}">Добавить категорию</a>
   <h1>Список всех курсов</h1>
-  {% for course in course %}
+  {% for course in courses %}
     <div class="category-item">
       <p>
         <a href="#"><small>({{ course.id }})</small> {{ course.name }} - {{ course.alias }}</a>
