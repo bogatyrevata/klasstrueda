@@ -1,4 +1,4 @@
-{% extends "admin/base.j2" %}
+{# {% extends "admin/base.j2" %}
 
 {% block admin_content %}
   <h1>Список всех курсов</h1>
@@ -7,4 +7,32 @@
   {% endfor %}
   <a class="btn btn-primary" href="{{ url_for('admin_courses.add_category') }}">Добавить категорию</a>
   <a class="btn btn-primary" href="#">Добавить курс</a>
+{% endblock admin_content %} #}
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+
+{% block admin_content %}
+  <h1>Список всех категорий</h1>
+  {% for category in categories %}
+    <div class="category-item">
+      <p>
+        <a href="#"><small>({{ category.id }})</small> {{ category.name }} - {{ category.alias }}</a>
+        <a class="btn btn-primary" href="{{ url_for('admin_courses.edit_category', category_id=category.id) }}">Изменить</a>
+        <form action="{{ url_for('admin_courses.delete_category', category_id=category.id) }}" method="post" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?');">Удалить</button>
+        </form>
+      </p>
+    </div>
+  {% endfor %}
+  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_category') }}">Добавить категорию</a>
+  <h1>Список всех курсов</h1>
+  {% for course in course %}
+    <div class="category-item">
+      <p>
+        <a href="#"><small>({{ course.id }})</small> {{ course.name }} - {{ course.alias }}</a>
+      </p>
+    </div>
+  {% endfor %}
+  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_course') }}">Добавить курс</a>
 {% endblock admin_content %}

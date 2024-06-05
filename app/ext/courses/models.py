@@ -1,7 +1,23 @@
-from datetime import datetime, UTC
+from datetime import datetime
 
 from app.extensions import db
 from app.models import ModelMixin
+
+
+user_payment_table = db.Table(
+    "user_payment",
+    db.Model.metadata,
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
+    db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
+)
+
+
+user_homework_table = db.Table(
+    "user_homework",
+    db.Model.metadata,
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
+    db.Column("homework_id", db.Integer, db.ForeignKey("homework.id")),
+)
 
 
 video_category_table = db.Table(
@@ -9,6 +25,150 @@ video_category_table = db.Table(
     db.Model.metadata,
     db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
     db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+)
+
+
+video_course_table = db.Table(
+    "video_course",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+)
+
+
+video_module_table = db.Table(
+    "video_module",
+    db.Model.metadata,
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+)
+
+
+video_lesson_table = db.Table(
+    "video_lesson",
+    db.Model.metadata,
+    db.Column("lesson_id", db.Integer, db.ForeignKey("lesson.id")),
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+)
+
+
+video_feedback_table = db.Table(
+    "video_feedback",
+    db.Model.metadata,
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+    db.Column("feedback_id", db.Integer, db.ForeignKey("feedback.id")),
+)
+
+
+photo_category_table = db.Table(
+    "photo_category",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("category_id", db.Integer,db.ForeignKey("category.id")),
+)
+
+
+photo_course_table = db.Table(
+    "photo_course",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+)
+
+
+photo_module_table = db.Table(
+    "photo_module",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+)
+
+
+photo_lesson_table = db.Table(
+    "photo_lesson",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("lesson_id", db.Integer, db.ForeignKey("lesson.id")),
+)
+
+
+photo_homework_table = db.Table(
+    "photo_homework",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("homework_id", db.Integer, db.ForeignKey("homework.id")),
+)
+
+
+photo_feedback_table = db.Table(
+    "photo_feedback",
+    db.Model.metadata,
+    db.Column("photo_id", db.Integer, db.ForeignKey("photos.id")),
+    db.Column("feedback_id", db.Integer, db.ForeignKey("feedback.id"))
+)
+
+
+homework_module_table = db.Table(
+    "homework_module",
+    db.Model.metadata,
+    db.Column("homework_id", db.Integer, db.ForeignKey("homework.id")),
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+)
+
+
+course_module_table = db.Table(
+    "course_module",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+)
+
+
+course_payment_table = db.Table(
+    "course_payment",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
+)
+
+
+course_tariff_table = db.Table(
+    "course_tariff",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("tariff_id", db.Integer, db.ForeignKey("tariff.id")),
+)
+
+
+module_artist_table = db.Table(
+    "module_artist",
+    db.Model.metadata,
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+    db.Column("artist_id", db.Integer, db.ForeignKey("artist.id")),
+)
+
+
+artist_category_table = db.Table(
+    "artist_category",
+    db.Model.metadata,
+    db.Column("artist_id", db.Integer, db.ForeignKey("artist.id")),
+    db.Column("category_id", db.Integer, db.ForeignKey("category.id"),)
+)
+
+
+artist_course_table = db.Table(
+    "artist_course",
+    db.Model.metadata,
+    db.Column("artist_id", db.Integer, db.ForeignKey("artist.id")),
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+)
+
+
+tariff_payment_table = db.Table(
+    "tariff_payment",
+    db.Model.metadata,
+    db.Column("tariff_id", db.Integer, db.ForeignKey("tariff.id")),
+    db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
 )
 
 
@@ -106,7 +266,7 @@ class Payment(db.Model, ModelMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
     tariff_id = db.Column(db.Integer, db.ForeignKey("tariff.id"))
-    datetime_create = db.Column(db.DateTime, default=datetime.now(tz=UTC))
+    datetime_create = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     datetime_payment = db.Column(db.DateTime)
     final_price = db.Column(db.Numeric(precision=10, scale=2))
     status_payment = db.Column(db.Integer)
