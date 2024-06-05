@@ -21,6 +21,7 @@ def index():
 @admin_courses.route("/add-category", methods=["GET", "POST"])
 def add_category():
     form = CategoryForm()
+
     if form.validate_on_submit():
         category_db = Category(
             name=form.data["name"],
@@ -32,3 +33,33 @@ def add_category():
         return redirect(url_for(".index"))
 
     return render_template("courses/admin/add-category.j2", form=form)
+
+
+@admin_courses.route("/edit-category/>", methods=["GET", "POST"])
+def edit_category(category_id):
+    category_db = Category.query.get_or_404(category_id)
+    form = CategoryForm(category_db)
+
+    if form.validate_on_submit():
+        form.name = form.name.data
+        form.alias = form.alias.data
+        form.description = form.description.data
+        db.session.commit()
+        flash("Категория успешно обновлена!", "success")
+        return redirect(url_for(".index"))
+
+    return render_template("courses/admin/edit-category.j2", form=form, category=category_db)
+
+
+@admin_courses.route("/delete-category/<int:category_id>", methods=["POST"])
+def delete_category(category_id):
+    category_db = Category.query.get_or_404(category_id)
+
+    if category_db:
+        db.session.delete(category_db)
+        db.session.commit()
+        flash("Категория успешно удалена!", "success")
+    else:
+        flash(f"Ошибка при удалении категории!", "danger")
+
+    return redirect(url_for(".index"))
