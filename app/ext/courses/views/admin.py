@@ -1,8 +1,8 @@
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from flask_security import current_user, login_required
 
-from app.ext.courses.forms import CategoryForm
-from app.ext.courses.models import Category
+from app.ext.courses.forms import CategoryForm, CourseForm
+from app.ext.courses.models import Category, Course
 from app.extensions import db, photos
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
@@ -63,3 +63,24 @@ def delete_category(category_id):
         flash(f"Ошибка при удалении категории!", "danger")
 
     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-course/", methods=["GET", "POST"])
+def add_course():
+    form = CourseForm()
+    form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
+
+    if form.validate_on_submit():
+        course_db = Course(
+            category_id=form.data["category_id"],
+            name=form.data["name"],
+            alias=form.data["alias"],
+            description=form.data["description"],
+        )
+        db.session.add(course_db)
+        db.session.commit()
+        flash("Курс успешно добавлен!", "success")
+        return redirect(url_for(".index"))
+
+
+    return render_template("courses/admin/add-course.j2", form=form)
