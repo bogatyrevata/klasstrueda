@@ -1,4 +1,4 @@
-from datetime import datetime, UTC
+from datetime import datetime
 
 from app.extensions import db
 from app.models import ModelMixin
@@ -106,7 +106,7 @@ class Payment(db.Model, ModelMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
     tariff_id = db.Column(db.Integer, db.ForeignKey("tariff.id"))
-    datetime_create = db.Column(db.DateTime, default=datetime.now(tz=UTC))
+    datetime_create = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     datetime_payment = db.Column(db.DateTime)
     final_price = db.Column(db.Numeric(precision=10, scale=2))
     status_payment = db.Column(db.Integer)
