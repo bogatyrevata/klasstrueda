@@ -1,0 +1,148 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% extends "base.j2" %}
+
+{% set page = "team" %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='team') }}
+  <!-- Page Header End -->
+
+
+  <!-- Team Start -->
+  <div class="container-xxl py-6">
+    <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-10 text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+        <h6 class="text-primary text-uppercase mb-2">Наша команда мечты</h6>
+        <h1 class="display-6 mb-4">Мастера своего дела</h1>
+        <p>Мастера «Класса Труда»&nbsp;— это высококвалифицированные профессионалы, обладающие огромным опытом и страстью
+        к своему делу. Занимаясь обучением онлайн, они не только передают свои знания и навыки, но и вдохновляют
+        учеников на творчество и самовыражение. Интерактивные занятия под руководством наших мастеров позволяют
+        вам не только освоить ремесло, но и раскрыть свой потенциал в уютной обстановке своего дома.</p>
+      </div>
+        <div class="container-xxl py-4">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-item position-relative">
+                  <div class="position-relative">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/team-1.jpg') }}"  alt="">
+                    <div class="team-social text-center">
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/denisgutov"><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/denisgutov"><i class="fab fa-vk"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/denisgutov/"><i class="fab fa-instagram"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                  <h1 class="display-6 mb-4">Денис гутов</h1>
+                  <p class="mb-4">Денис&nbsp;—  основатель мастерской «Класс Труда», преображая ее в место вдохновения и развития
+                  рукоделия. Обладая более 15 годами опыта ведения бизнеса и запуска стартап-проектов, он открыл первую мастерскую
+                  коворкинг. Умея вдохновлять и направлять молодых авторов, на базе его мастерской выросло много молодых брендов
+                  керамики, столярных мастерских и кожевенных мастерских.
+                  </p>
+                  <p class="mb-4">Своим богатым опытом и пристальным вниманием к деталям он воплощает идеи и помогает другим
+                  раскрыть свой творческий потенциал. В его мастерской каждый находит поддержку и возможность развиваться в искусстве ремесла.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-xxl py-4">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-item position-relative">
+                  <div class="position-relative">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/team-2.jpg') }}"  alt="">
+                    <div class="team-social text-center">
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/yura.bylkov"><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/ybylkov"><i class="fab fa-vk"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/bylkov/"><i class="fab fa-instagram"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                  <h1 class="display-6 mb-4">Юрий Былков</h1>
+                  <p class="mb-4">Юрий&nbsp;—  многократный лауреат и победитель Международного конкурса дизайнеров
+                  ювелирных украшений ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и
+                  музее ювелирного искусства в г.Пфорцхайм Германияю, и частных коллекциях, регулярно участвуют в
+                  выставках ювелирного искусства в разных странах мира.</p>
+                  <p>В нашем онлайн марафоне «Ювелирное мастерство&nbsp;—  делаем креативные кольца» есть одна важная и уникальная
+                  особенность. Как думаете какая? Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник
+                  Юрий Былков. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-xxl py-4">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-item position-relative">
+                  <div class="position-relative">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/team-3.jpg') }}"  alt="">
+                    <div class="team-social text-center">
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/muravieshko"><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/klaechka"><i class="fab fa-vk"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/farforstylespb/"><i class="fab fa-instagram"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                  <h1 class="display-6 mb-4">Ольга Клаечка</h1>
+                  <p class="mb-4">Ольга&nbsp;— талантливый мастер керамики с профильным образованием по керамике в институте Иваново.
+                  Она имеет свой узнаваемый бренд и стиль, работала с керамикой и фарфором, проводит курсы по фарфору, которым нет
+                  аналогов. Умея сложное объяснять простым языком, Ольга имеет много успешных учеников, которые продают свои работы</p>
+                  <p class="mb-4">Талантливый мастер керамики, вдохновляющий своим мастерством и творческим подходом. Ее студия стала
+                  источником вдохновения для многих, кто стремится освоить искусство керамики. С пристальным вниманием к деталям и
+                  стремлением к совершенству, Ольга помогает ученикам раскрыть свой талант и создать уникальные произведения
+                  искусства.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-xxl py-4">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="team-item position-relative">
+                  <div class="position-relative">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/team-4.jpg') }}"  alt="">
+                    <div class="team-social text-center">
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.facebook.com/taisiya.bogatyreva/"><i class="fab fa-facebook-f"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://vk.com/bogatyrevata"><i class="fab fa-vk"></i></a>
+                      <a class="btn btn-square btn-outline-primary border-2 m-1" href="https://www.instagram.com/bogatyreva.taisiya/"><i class="fab fa-instagram"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                  <h1 class="display-6 mb-4">Таисия Богатырева</h1>
+                  <p class="mb-4">Таисия&nbsp;—  мастер по работе с кожей, чье мастерство вдохновляет и призывает к творчеству.
+                  Она занимается кожей уже более 10 лет и разработала свою методику обучения после проведения более 7 авторских
+                  мастер-классов. Ее студия является местом, где каждый может освоить искусство работы с кожей.</p>
+                  <p class="mb-4">С пристальным вниманием к деталям и стремлением к совершенству, Таисия помогает ученикам
+                  раскрыть свой талант и создать уникальные кожаные изделия.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Team End -->
+{% endblock content %}
+

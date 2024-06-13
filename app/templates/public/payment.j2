@@ -1,0 +1,10 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% extends "base.j2" %}
+
+{% set page = "payment" %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='payment') }}
+  <!-- Page Header End -->
+{% endblock content %}

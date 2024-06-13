@@ -1,0 +1,67 @@
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-white mb-4">Контакты</h4>
+        <a class="" href="{{ url_for('core.index') }}"><h2 class="text-primary mb-4">Klasstrueda</h2></a>
+        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>{{ g.contacts.address }}</p>
+        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>{{ g.contacts.phone }}</p>
+        <p class="mb-2"><i class="fa fa-envelope me-3"></i>{{ g.contacts.email }}</p>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-light mb-4">Разделы сайта</h4>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='about') }}">О мастерской</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='contacts') }}">Контакты</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='faq') }}">FAQ</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='legal-info') }}">Юридическая информация</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='privaci') }}">Политика конфеденциальности</a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-light mb-4">Популярные ссылки</h4>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Базовый ювелирный курс</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='jewelry-ring') }}">Мастер-класс: кольцо всмятку</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='jewelry-marathon') }}">Ювелирный марафон</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='testimonial') }}">Отзывы</a>
+        <a class="btn btn-link" href="{{ url_for('core.page', page_name='payment') }}">Оплата</a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-light mb-4">Подписка</h4>
+        <form action="">
+          <div class="input-group">
+            <input type="text" class="form-control p-3 border-0" placeholder="Введите email">
+            <button class="btn btn-primary">Подписаться</button>
+          </div>
+        </form>
+        <h6 class="text-white mt-4 mb-3">Мы в соцсетях</h6>
+        <div class="d-flex pt-2">
+          {% for link in g.social_links %}
+            <a class="btn btn-square btn-outline-light me-{% if not loop.last %}1{% else %}0{% endif %}" href="{{ link.href }}">
+              <i class="fab fa-{{ link.title }}"></i>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer End -->
+
+<!-- Copyright Start -->
+<div class="container-fluid copyright text-light py-4 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+        &copy; <a href="{{ url_for('core.index') }}">Klasstrueda</a>, все права защищены.
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        Разработано: <a href="https://github.com/bogatyrevata">Taisiiya Bogatyreva</a>
+        <br>При участии: <a href="https://jokerinteractive.ru/" target="_blank">JokerTeam</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Copyright End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

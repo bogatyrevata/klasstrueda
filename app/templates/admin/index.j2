@@ -1,0 +1,12 @@
+{% extends "admin/base.j2" %}
+
+{% block admin_content %}
+
+  <ul class="admin__links">
+    {% for link in admin_links %}
+      <li>
+        <a href="{{ url_for(link.controller) }}">{{ link.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock admin_content %}

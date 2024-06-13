@@ -1,0 +1,59 @@
+{% extends "admin/base.j2" %}
+
+{% block admin_content %}
+
+  <div class="col-lg-4 ml-auto">
+    <h1>Личный кабинет</h1>
+    <ul>
+      <li>
+        <strong>Фото пользователя</strong>: {{ current_user.userphoto }}
+        {% if userphoto %}
+          {% set filename = 'upload/%s' % userphoto %}
+          <img src="{{ url_for('static', filename=filename) }}" alt="" width="100">
+        {% else %}
+          Фото не загружено
+        {% endif %}
+      </li>
+      <li>
+        <strong>Логин</strong>: {{ current_user.username }}
+      </li>
+      <li>
+        <strong>Email</strong>: {{ current_user.email }}
+      </li>
+      <li>
+        <strong>Дата регистрации</strong>: {{ current_user.create_datetime }}
+      </li>
+      <li>
+        <strong>Дата активации</strong>: {{ current_user.confirmed_at }}
+      </li>
+      <li>
+        <strong>Дата правки</strong>: {{ current_user.update_datetime }}
+      </li>
+      <li>
+        <strong>Роли</strong> ({{ current_user.roles | count }}):
+        {% for role in current_user.roles %}
+          {{ role.name }}
+          {% if not loop.last %},{% endif %}
+        {% endfor %}
+      </li>
+      {# <li>
+        <a href="{{ url_for('user.edit') }}">Изменить</a>
+      </li>
+      <li>
+        <a href="{{ url_for_security('logout') }}">Выйти</a>
+      </li>
+      {% for role in current_user.roles %}
+        {% if role.name == 'admin' %}
+          <li>
+            <a href="{{ url_for('admin.index') }}">Админка</a>
+          </li>
+        {% endif %}
+      {% endfor %} #}
+    </ul>
+    <nav>
+      {% for link in user_links %}
+        <a class="btn btn-primary" href="{{ url_for(link.controller) }}">{{ link.title }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+{% endblock admin_content %}

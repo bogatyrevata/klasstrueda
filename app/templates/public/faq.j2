@@ -1,0 +1,208 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% extends "base.j2" %}
+
+{% set page = "faq" %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='faq') }}
+  <!-- Page Header End -->
+
+  <!-- Faq Start-->
+  <div class="container-xxl py-4">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.1s">
+          <h6 class="text-primary text-uppercase mb-2">А что если?</h6>
+          <h1 class="display-6 mb-4">Часто задаваемые вопросы</h1>
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Как можно освоить реальное ремесло через интернет?
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Да, действительно, лучше всего приобретать физические навыки работы с материалом непосредственно
+                  на практике. На онлайн-курсе вы получите знания, полезную информацию и, что самое главное, сможете
+                  общаться с мастером, что поможет вам на первых порах. Чтобы обучение не свелось к простому просмотру
+                  видео, вам придется физически работать с материалами и инструментами у себя дома или в любом удобном
+                  для вас месте. Полезная информация о том, как обустроить рабочее место, о минимальном наборе
+                  инструментов и материалов, будет предоставлена в рамках курса.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Можно ли научиться, если ранее никогда этим не занимался?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Мы уже более восьми лет проводим очные курсы в Санкт-Петербурге, и большинство участников приходят
+                  с нулевыми навыками. После курса у них значительно улучшаются навыки. Специфика онлайн-курса
+                  предполагает больший объем ответственности и мотивации со стороны участника для достижения
+                  результата. Но мы уверены, что все получится у тех, кто готов не только смотреть уроки, но и
+                  работать над домашними заданиями. Все участники обязательно будут получать постоянную поддержку и
+                  ответы на все технические вопросы.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Из чего состоит курс, и каков формат занятий?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Курс состоит из 6 этапов. На каждом этапе вы получите доступ к видеоурокам для самостоятельного
+                  изучения и видеоурокам с основной темой. На занятиях с ведущим мастером будут демонстрироваться
+                  основные навыки и техники. Записи видеоуроков и онлайн-занятия с мастером будут доступны участникам
+                  курса в закрытой группе.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Что, если что-то не получится или результат не будет достаточно хорошим?
+                </button>
+              </h2>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Обучение в любом формате всегда включает в себя ошибки и работу над их исправлением. В закрытой
+                  группе для участников курса будет предоставлена постоянная поддержка от мастера и кураторов:
+                  ответы на вопросы, разъяснения технических моментов и так далее. Поэтому для того чтобы достигнуть
+                  успеха, важно не бояться совершать ошибки, спрашивать, как их исправить, и работать над улучшением
+                  результатов.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  Как можно записаться и как проходит весь процесс?
+                </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Для регистрации вам необходимо оставить свои контактные данные в форме, и мы вышлем вам реквизиты
+                  для оплаты курса и приглашение в закрытую группу, где будет доступен весь информационный материал.
+                  Мы также отправим вам на почту минимальный набор расходных материалов, необходимых для первых
+                  занятий.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  Когда начнется курс и как будут проходить занятия? Смогут ли участники смотреть уроки в удобное
+                  для них время?
+                </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Доступ ко всем видеоматериалам и видеоурокам будет открыт в течение трех месяцев. Участники смогут
+                  просматривать видеоуроки по теме этапа в удобное для них время и выполнять домашние задания в
+                  комфортном режиме. Фотографии или видео процесса и результатов домашних заданий необходимо будет
+                  выкладывать в закрытую группу, где участники получат обратную связь и советы от мастера, а также
+                  смогут обмениваться опытом и информацией с другими участниками. Время, отведенное на выполнение
+                  домашних заданий, зависит от конкретного задания, но в целом это будет самостоятельная
+                  ответственность и желание каждого участника, кто стремится к развитию.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSeven">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                  Как работать по программе курса? Где будет проходить работа?
+                </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                Все задания курса на всех этапах вполне безопасны и реализуемы в домашних условиях. Однако
+                необходимо соблюдать определенные правила безопасности и организовать удобное, небольшое рабочее
+                место, которое находится подальше от места отдыха или приема пищи и недоступно для детей или домашних
+                животных. Все необходимые инструменты можно приобрести в магазинах крупных городов, а те, которых нет
+                в наличии, можно заказать через интернет с доставкой Почтой РФ. Если есть возможность договориться с
+                кем-то, кто имеет мастерскую или другое подходящее помещение, чтобы временно воспользоваться им для
+                выполнения домашних заданий и тренировки навыков, это будет дополнительным стимулом для более
+                продуктивной работы.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingEight">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                  Какие навыки и инструменты нужны для начала курса?
+                </button>
+              </h2>
+              <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Курс подходит для абсолютных новичков. Для успешного прохождения курса будет достаточно умения
+                  воспринимать информацию из видео и текстов. Что касается инструментов, потребуется приобрести
+                  определенный набор. Полный список и минимальный набор будут доступны участникам курса заранее,
+                  чтобы они могли приобрести необходимое оборудование. Минимальный набор инструментов будет стоить
+                  примерно от 13 до 18 тысяч рублей. Это если у вас в доме вообще нет инструментов, даже плоскогубцев.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingNine">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                  Смогу ли я устроиться на работу в мастерскую ювелиром после окончания курса? Выдается ли какой-то диплом?
+                </button>
+              </h2>
+              <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                Данный курс предоставит базовые навыки и понимание основ ювелирного дела и его разделов: создание и
+                дизайн изделий, подготовка материалов, основные методы изготовления изделий на практике, доработка и
+                фиксация изделий и многое другое. Курс является авторским и не сертифицируется, поэтому диплом о
+                профессиональной подготовке не выдается. По окончании курса вы вряд ли сможете найти работу в
+                ювелирной мастерской, но это не из-за отсутствия официального диплома, а из-за недостатка
+                практического опыта. Однако за 1-1,5 месяца курса вы получите практические навыки и широкое понимание
+                основ, которые обычно даются за несколько месяцев в техникумах и колледжах по соответствующей
+                специальности. Поэтому, доработав свои навыки самостоятельно после курса, вы сможете успешно
+                устроиться на работу или, если требуются жесткие формальные требования к дипломам, пройти
+                профессиональное обучение в сертифицированном учебном заведении.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTen">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                  По итогу смогу ли я работать с серебром или другими драгоценными металлами?
+                </button>
+              </h2>
+              <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                В ходе курса основными материалами будут латунь и медь. Во-первых, потому что они дешевы и доступны,
+                а во-вторых, отработка навыков на простых и дешевых материалах позволит вам смело переходить к более
+                дорогостоящим, включая драгоценные металлы. На курсе вы получите все необходимые навыки для того,
+                чтобы в дальнейшем работать с теми материалами, которые вам наиболее интересны.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingEleven">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                  У вас остались вопросы?
+                </button>
+              </h2>
+              <div id="collapseEleven" class="accordion-collapse collapse" aria-labelledby="headingEleven" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                Если у вас остались вопросы, не стесняйтесь задавать их в<a class="btn btn-link" href="{{ url_for('core.page', page_name='contacts') }}">Форме обратной связи</a>. Присоединиться к группе курса можно в разделе<a class="btn btn-link" href="{{ url_for('core.page', page_name='appointment') }}">Записаться</a>. Подробности о программе смотрите в разделе<a class="btn btn-link" href="{{ url_for('core.page', page_name='courses') }}">Курсы</a>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Faq End-->
+
+{% endblock content %}

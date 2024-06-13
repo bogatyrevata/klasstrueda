@@ -1,0 +1,81 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% extends "base.j2" %}
+
+{% set page = "courses" %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='courses') }}
+  <!-- Page Header End -->
+
+
+  <!-- Courses Start -->
+  <div class="container-xxl courses my-6 py-6 pb-0">
+    <div class="container">
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+        <h6 class="text-primary text-uppercase mb-2">Популярные курсы</h6>
+        <h1 class="display-6 mb-4">Наши курсы помогут вам раскрыть свой творческий потенциал</h1>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
+            <div class="text-center p-4 pt-0">
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$0</div>
+              <h5 class="mb-3">Мастер-класс: кольцо "всмятку"</h5>
+              <p>На заняти вы освоите базовые техники и сделаете мятое кольцо из серебра</p>
+              <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 день</li>
+              </ol>
+            </div>
+            <div class="position-relative mt-auto">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}"  alt="">
+              <div class="courses-overlay">
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='jewelry-ring') }}">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
+            <div class="text-center p-4 pt-0">
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$100</div>
+              <h5 class="mb-3">Ювелирный марафон</h5>
+              <p>Позволит за короткое время пройти интересующую тему по ювелирному делу</p>
+              <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 неделя</li>
+              </ol>
+            </div>
+            <div class="position-relative mt-auto">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}"  alt="">
+              <div class="courses-overlay">
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='jewelry-marathon') }}">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
+            <div class="text-center p-4 pt-0">
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$200</div>
+              <h5 class="mb-3">Базовый ювелирный курс</h5>
+              <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров</p>
+              <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>4 недели</li>
+              </ol>
+            </div>
+            <div class="position-relative mt-auto">
+              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-3.jpg') }}"  alt="">
+              <div class="courses-overlay">
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Courses End -->
+{% endblock content %}

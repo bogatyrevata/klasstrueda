@@ -1,0 +1,10 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% extends "base.j2" %}
+
+{% set page = "course-page" %}
+
+{% block content %}
+ <!-- Page Header Start -->
+ {{ generate_page_header(active_item='course-page') }}
+  <!-- Page Header End -->
+{% endblock content %}

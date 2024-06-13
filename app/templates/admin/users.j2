@@ -1,0 +1,46 @@
+{% extends "admin/base.j2" %}
+{% from "macros/admin_breadcrumbs.j2" import admin_breadcrumbs %}
+
+{% block admin_content %}
+
+  <h2>Users and roles</h2>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Имя пользователя</th>
+      <th>Роль</th>
+      <th>Подтверждено в</th>
+    </tr>
+    {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          {% if user.confirmed_at %}
+            {% set icon_name = 'user-active' %}
+          {% else %}
+            {% set icon_name = 'user' %}
+          {% endif %}
+          {{ user.username }}
+        </td>
+        <td>
+          <a href="{{ url_for('admin.user_roles', user_id=user.id) }}">Изменить</a>
+          [
+          {% for role in user.roles %}
+            {{ role.name }}
+            {% if not loop.last %},{% endif %}
+          {% endfor %}
+          ]
+        </td>
+        <td>
+          {% if user.confirmed_at %}
+            {{ user.confirmed_at }}
+          {% else %}
+            Еще не подтверждено
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock admin_content %}

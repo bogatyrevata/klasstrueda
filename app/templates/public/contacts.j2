@@ -1,0 +1,46 @@
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% from "macros/form.j2" import input_form_6, input_form_12 %}
+{% extends "base.j2" %}
+
+{% set page = "contacts" %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='contacts') }}
+  <!-- Page Header End -->
+
+
+  <!-- Contact Start -->
+  <div class="container-xxl py-6">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 450px;">
+          <div class="position-relative h-100">
+            <iframe class="position-relative w-100 h-100"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1996.8846626149852!2d30.29139407673082!3d59.96723665979735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4696314de0a26099%3A0xc7ce0c1a353bd7c9!2z0JPQsNC30L7QstCw0Y8g0YPQuy4sIDEwLCDQodCw0L3QutGCLdCf0LXRgtC10YDQsdGD0YDQsywg0KDQvtGB0YHQuNGPLCAxOTcxMTA!5e0!3m2!1sru!2sar!4v1709738859369!5m2!1sru!2sar"
+            frameborder="0" style="min-height: 450px; border:0;" allowfullscreen="" aria-hidden="false"
+            tabindex="0"></iframe>
+          </div>
+        </div>
+        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+          <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
+          <h1 class="display-6 mb-4">Если у вас есть какие-либо вопросы, свяжитесь с нами</h1>
+          <form action="{{ url_for('core.form_proc') }}" method="post">
+            <div class="row g-3">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              {{ input_form_6(form.first_name) }}
+              {{ input_form_6(form.email) }}
+              {{ input_form_12(form.question) }}
+              {{ input_form_12(form.message, style="height: 150px") }}
+              <div class="col-12">
+                <button class="btn btn-danger py-3 px-5" type="submit">Отправить сообщение</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Contact End -->
+{% endblock content %}
+

@@ -1,0 +1,36 @@
+{% extends "base.j2" %}
+{% from "macros/form.j2" import input_form_6, input_form_12 %}
+{% set page = "appointment" %}
+
+{% block content %}
+<!-- Appointment Start -->
+  <div class="container-xxl py-6">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='img/about-1.jpg') }}" alt="" style="object-fit: cover;">
+            <img class="position-absolute top-0 start-0 bg-white pe-3 pb-3" src="{{ url_for('static', filename='img/about-2.jpg') }}" alt="" style="width: 200px; height: 200px;">
+          </div>
+        </div>
+        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+          <h6 class="text-danger text-uppercase mb-2">Записаться</h6>
+          <h1 class="display-6 mb-4">Запишитесь на курс, марафон или мастер-класс</h1>
+          <form action="{{ url_for('core.form_proc') }}" method="post">
+            <div class="row g-3">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+             {{ input_form_6(form.first_name) }}
+             {{ input_form_6(form.email) }}
+             {{ input_form_12(form.course_name) }}
+             {{ input_form_12(form.message, style="height: 150px") }}
+              <div class="col-12">
+                <button class="btn btn-danger w-100 py-3" type="submit">Отправить</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Appointment End -->
+{% endblock content %}

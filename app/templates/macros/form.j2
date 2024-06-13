@@ -1,0 +1,134 @@
+{#
+  Макросы формы
+
+  base(field, bem_block='form', floating_label=True, show_errors=True)
+  errors(field) — показ ошибок для поля
+  form_errors(form) — показ ошибок для формы
+#}
+{% macro base(field, bem_block='form', floating_label=True, show_errors=True) -%}
+  <div class="{{ bem_block }}__control{% if floating_label %} {{ bem_block }}__control--floating{% endif %}{% if field.errors %} form__control--error{% endif %}">
+    {{ field(class='%s__text form-control border-0 bg-light' % bem_block, placeholder=field.label.text, **kwargs) }}
+    {% if show_errors %}{{ errors(field.errors) }}{% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro errors(field) %}
+  {% if field and field.errors %}
+    <div class="fs-div" id="{{ field.id if field else 'fs-field' }}">
+      <ul class="form__error">
+        {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro form_errors(form) %}
+  {% if form.form_errors %}
+    <div class="fs-div" id="fs-form-errors">
+      <ul class="form__error">
+        {% for error in form.form_errors %}<li class="fs-error-msg">{{ error }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro prop_next() -%}
+  {% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}
+{%- endmacro %}
+
+{% macro errors(errors, bem_block='form') -%}
+  {% if errors %}
+    <ul class="{{ bem_block }}__errors">
+      {% for error in errors %}<li>{{ error }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+{%- endmacro %}
+
+{% macro checkbox(field, bem_block='form') -%}
+  <div class="{{ bem_block }}__control {{ bem_block }}__control--checkbox{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
+    {{ field(class='%s__checkbox' % bem_block) }}
+    {{ field.label(class='%s__label' % bem_block) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro radio(field, bem_block='form') -%}
+  <div class="{{ bem_block }}__control {{ bem_block }}__control--radio{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
+    {{ field(class='%s__radio' % bem_block) }}
+    {{ field_label(class='%s__label' % bem_block) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro btn(field, value='Submit', extra_class='', bem_block='form') %}
+  {{ field(class='%s__submit btn btn-primary py-4 px-lg-5 d-lg-block %s' % (bem_block, extra_class), value=value)|safe }}
+{% endmacro %}
+
+{% macro prop_next() -%}
+  {% if 'next' in request.args %}?next={{ request.args.next|urlencode }}{% endif %}
+{%- endmacro %}
+
+{% macro render_field_errors(field) %}
+  {% if field and field.errors %}
+    {% block js %}
+      <script src="{{ url_for('static', filename='js/toastify.min.js') }}"></script>
+    {% endblock js %}
+
+    {% for error in field.errors %}
+      <script>
+        Toastify({
+          text: '{{ error }}',
+          duration: 7000,
+          close: true,
+          stopOnFocus: true,
+          gravity: 'bottom',
+          className: 'danger'
+        }).showToast();
+      </script>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{# Макросы для полей форм#}
+
+{% macro input_form_6(field) %}
+  <div class="col-md-6">
+    <div class="form-floating">
+    {% if field.errors %}
+      {% set className = 'form-control border-0 bg-light is-invalid' %}
+    {% else %}
+      {% set className = 'form-control border-0 bg-light' %}
+    {% endif %}
+      {{ field(class=className, placeholder="") }}
+      {{ field.label() }}
+      {% if field.errors %}
+        <ul class="invalid-feedback">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro input_form_12(field, style="") %}
+  <div class="col-md-12">
+    <div class="form-floating">
+      {% if field.errors %}
+      {% set className = 'form-control border-0 bg-light is-invalid' %}
+    {% else %}
+      {% set className = 'form-control border-0 bg-light' %}
+    {% endif %}
+      {{ field(class=className, placeholder="", style=style) }}
+      {{ field.label() }}
+      {% if field.errors %}
+        <ul class="invalid-feedback">
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}

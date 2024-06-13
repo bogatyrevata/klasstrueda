@@ -1,0 +1,11 @@
+{% extends "base.j2" %}
+
+{% block content %}
+  <section class="page pt-5">
+    <div class="page__container container pt-5">
+      <h2>{{ _('Access denied') }}</h2>
+      <p>{{ _('You probably do not have permission to view this page, if you think it is an error — contact your administrator.') }}</p>
+      <div hidden>{{ error }}</div>
+    </div>
+  </section>
+{% endblock content %}
