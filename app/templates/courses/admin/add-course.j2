@@ -3,6 +3,7 @@
 
 {% block admin_content %}
   <form action="{{ url_for('admin_courses.add_course') }}" method="post">
+    <h1>Добавление курса</h1>
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.category_id) }}

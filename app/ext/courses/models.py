@@ -191,6 +191,7 @@ class Category(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
+    courses = db.relationship('Course', backref='category', lazy=True)
 
 
 class Course(db.Model, ModelMixin):
@@ -202,6 +203,7 @@ class Course(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
+    modules = db.relationship('Module', secondary='course_module', backref='courses')
 
 
 class Module(db.Model, ModelMixin):
@@ -219,11 +221,11 @@ class Lesson(db.Model, ModelMixin):
 
     __tablename__ = "lesson"
     id = db.Column(db.Integer, primary_key=True)
-    module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
+    module_id = db.Column(db.Integer, db.ForeignKey("module.id"), nullable=False)
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-
+    # lessons = db.relationship('Lesson', backref='module', lazy=True)
 
 class Homework(db.Model, ModelMixin):
     """Модель для хранения домашней работы для курсов."""
