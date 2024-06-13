@@ -1,8 +1,10 @@
 {% extends "admin/base.j2" %}
+{% from "macros/admin_breadcrumbs.j2" import admin_breadcrumbs %}
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
   <form action="{{ url_for('admin_courses.add_category') }}" method="post">
+    <h1>Добавление категории</h1>
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.name) }}

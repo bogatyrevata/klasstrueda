@@ -9,10 +9,11 @@
   <a class="btn btn-primary" href="#">Добавить курс</a>
 {% endblock admin_content %} #}
 {% extends "admin/base.j2" %}
+{% from "macros/admin_breadcrumbs.j2" import admin_breadcrumbs %}
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <h1>Список всех категорий</h1>
+  {# <h1>Список всех категорий</h1>
   {% for category in categories %}
     <div class="category-item">
       <p>
