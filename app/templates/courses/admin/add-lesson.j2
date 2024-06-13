@@ -1,0 +1,16 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+
+{% block admin_content %}
+  <form action="{{ url_for('admin_courses.add_lesson') }}" method="post">
+    <h1>Добавление урока</h1>
+    <div class="row g-3">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      {{ input_form_6(form.module_id) }}
+      {{ input_form_6(form.name) }}
+      {{ input_form_6(form.alias) }}
+      {{ input_form_12(form.description, style="height: 150px") }}
+      {{ btn(form.submit, value="Отправить") }}
+    </div>
+  </form>
+{% endblock admin_content %}
