@@ -8,7 +8,32 @@
     {{ input_form_6(form.category_id) }}
     {{ input_form_6(form.name) }}
     {{ input_form_6(form.alias) }}
-    {{ input_form_12(form.description, style="height: 150px") }}
+    {{ input_form_12(form.description) }}
+    {{ input_form_12(form.image) }}
+    {{ input_form_12(form.level) }}
+    {{ input_form_12(form.duration) }}
+    {{ input_form_12(form.about, style="height: 150px") }}
+    {{ input_form_12(form.about_photo) }}
+        {% if about_photo %}
+          {% set filename = 'upload/%s' % about_photo %}
+          <img src="{{ url_for('static', filename=filename) }}" alt="" width="100">
+        {% else %}
+          Фото не загружено
+        {% endif %}
+    {{ input_form_12(form.information, style="height: 150px") }}
+    {{ input_form_12(form.features, style="height: 150px") }}
+    {{ input_form_12(form.skills, style="height: 150px") }}
+    {{ input_form_12(form.students_work) }}
+    {{ input_form_12(form.promo, style="height: 150px") }}
+    {{ input_form_12(form.registration_form, style="height: 150px") }}
+    {{ input_form_12(form.registration_photo) }}
+    {{ input_form_12(form.artist_photo) }}
+    {{ input_form_12(form.artist, style="height: 150px") }}
+    {{ input_form_12(form.artist_work, style="height: 150px") }}
+    {{ input_form_12(form.price, style="height: 150px") }}
+    {{ input_form_12(form.final_registration_form, style="height: 150px") }}
+    {{ input_form_12(form.start_date ) }}
+    {{ input_form_12(form.end_date ) }}
     {{ btn(form.submit, value="Изменить") }}
     <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
   </form>

@@ -202,7 +202,26 @@ class Course(db.Model, ModelMixin):
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
+    description = db.Column(db.String(255))
+    image = db.Column(db.String(255))
+    level = db.Column(db.String(255))
+    duration = db.Column(db.String(255))
+    about = db.Column(db.Text)
+    about_photo = db.Column(db.String(255))
+    information = db.Column(db.Text)
+    features = db.Column(db.Text)
+    skills = db.Column(db.Text)
+    students_work = db.Column(db.Text)
+    promo = db.Column(db.Text)
+    registration_form = db.Column(db.String(255))
+    registration_photo = db.Column(db.String(255))
+    artist = db.Column(db.Text)
+    artist_photo = db.Column(db.String(255))
+    artist_work = db.Column(db.Text)
+    price = db.Column(db.Text)
+    final_registration_form = db.Column(db.String(255))
+    start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     modules = db.relationship('Module', secondary='course_module', backref='courses')
 
 
@@ -225,7 +244,6 @@ class Lesson(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-    # lessons = db.relationship('Lesson', backref='module', lazy=True)
 
 class Homework(db.Model, ModelMixin):
     """Модель для хранения домашней работы для курсов."""
