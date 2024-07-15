@@ -80,6 +80,25 @@ def add_course():
             name=form.data["name"],
             alias=form.data["alias"],
             description=form.data["description"],
+            image=form.image["image"],
+            level=form.level["level"],
+            duration=form.duration["duration"],
+            about=form.data["about"],
+            about_photo=form.data["about_photo"],
+            information=form.data["information"],
+            features=form.data["features"],
+            skills=form.data["skills"],
+            students_work=form.data["students_work"],
+            promo=form.data["promo"],
+            registration_form=form.data["registration_form"],
+            registration_photo=form.data["registration_photo"],
+            artist=form.data["artist"],
+            artist_photo=form.data["artist_photo"],
+            artist_work=form.data["artist_work"],
+            price=form.data["price"],
+            start_date=form.start_date["start_date"],
+            end_date=form.end_date["end_date"],
+            final_registration_form=form.data["final_registration_form"],
         )
         course_db.save()
         flash("Курс успешно добавлен!", "success")
@@ -99,11 +118,38 @@ def edit_course(course_id):
         course_db.name = form.name.data
         course_db.alias = form.alias.data
         course_db.description = form.description.data
+        course_db.image = form.image.data
+        course_db.level = form.level.data
+        course_db.duration = form.duration.data
+        course_db.about = form.about.data
+
+        # Проверяем наличие и непустоту файла about_photo
+        if 'about_photo' in request.files and request.files['about_photo']:
+            filename = photos.save(request.files['about_photo'])
+            course_db.about_photo = filename
+
+        course_db.information = form.information.data
+        course_db.features = form.features.data
+        course_db.skills = form.skills.data
+        course_db.students_work = form.students_work.data
+        course_db.promo = form.promo.data
+        course_db.registration_form = form.registration_form.data
+        course_db.registration_photo = form.registration_photo.data
+        course_db.artist = form.artist.data
+        course_db.artist_photo = form.artist_photo.data
+        course_db.artist_work = form.artist_work.data
+        course_db.price = form.price.data
+        course_db.final_registration_form = form.final_registration_form.data
+        course_db.start_date = form.start_date.data
+        course_db.end_date = form.end_date.data
         db.session.commit()
-        flash("Курс успешно обновлен", "success")
+        flash("Курс успешно обновлен!", "success")
         return redirect(url_for(".edit_course", course_id=course_id))
 
-    return render_template("courses/admin/edit-course.j2", form=form, course=course_id, course_id=course_id)
+     # Предзаполняем поля формы и фото
+    form.about_photo.data = course_db.about_photo
+    about_photo = course_db.about_photo
+    return render_template("courses/admin/edit-course.j2", form=form, course=course_id, course_id=course_id, about_photo=about_photo)
 
 
 @admin_courses.post("/delete-course/<int:course_id>")
@@ -123,7 +169,6 @@ def delete_course(course_id):
 @admin_courses.route("/add-module/", methods=["GET","POST"])
 def add_module():
     form = ModuleForm()
-    # course_db = Course.query.get_or_404()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
 
     if form.validate_on_submit():
