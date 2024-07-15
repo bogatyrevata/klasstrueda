@@ -1,0 +1,14 @@
+{% extends "base.j2" %}
+{% from "macros/generate_page_header.j2" import generate_page_header %}
+
+{% block content %}
+  <!-- Page Header Start -->
+  {{ generate_page_header(active_item='courses') }}
+  <!-- Page Header End -->
+  
+   <div class="container">
+    <h1>{{ course.name }}</h1>
+    <p>{{ course.description }}</p>
+   </div>
+
+{% endblock content %}
