@@ -91,36 +91,36 @@
 
 {# Макросы для полей форм#}
 
-{% macro input_form_6(field) %}
+{% macro input_form_6(field, style="", id="", data_input="") %}
   <div class="col-md-6">
     <div class="form-floating">
-    {% if field.errors %}
-      {% set className = 'form-control border-0 bg-light is-invalid' %}
-    {% else %}
-      {% set className = 'form-control border-0 bg-light' %}
-    {% endif %}
-      {{ field(class=className, placeholder="") }}
+      {% if field.errors %}
+        {% set className = 'form-control border-0 bg-light is-invalid' %}
+      {% else %}
+        {% set className = 'form-control border-0 bg-light' %}
+      {% endif %}
+      {{ field(class=className, placeholder="", style=style, id=id, data_input=data_input) }}
       {{ field.label() }}
       {% if field.errors %}
-        <ul class="invalid-feedback">
+        <div class="invalid-feedback">
           {% for error in field.errors %}
-            <li>{{ error }}</li>
+            <div>{{ error }}</div>
           {% endfor %}
-        </ul>
+        </div>
       {% endif %}
     </div>
   </div>
 {% endmacro %}
 
-{% macro input_form_12(field, style="") %}
+{% macro input_form_12(field, style="", id="", data_input="") %}
   <div class="col-md-12">
     <div class="form-floating">
       {% if field.errors %}
-      {% set className = 'form-control border-0 bg-light is-invalid' %}
-    {% else %}
-      {% set className = 'form-control border-0 bg-light' %}
-    {% endif %}
-      {{ field(class=className, placeholder="", style=style) }}
+        {% set className = 'form-control border-0 bg-light is-invalid' %}
+      {% else %}
+        {% set className = 'form-control border-0 bg-light' %}
+      {% endif %}
+      {{ field(class=className, placeholder="", style=style, id=id, data_input=data_input) }}
       {{ field.label() }}
       {% if field.errors %}
         <ul class="invalid-feedback">
