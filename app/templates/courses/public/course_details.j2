@@ -1,14 +1,30 @@
 {% extends "base.j2" %}
 {% from "macros/generate_page_header.j2" import generate_page_header %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block content %}
   <!-- Page Header Start -->
   {{ generate_page_header(active_item='courses') }}
   <!-- Page Header End -->
-  
+
    <div class="container">
     <h1>{{ course.name }}</h1>
     <p>{{ course.description }}</p>
+    <img src="{{ url_for('static', filename='upload/' ~ course.image) }}" alt="{{ course.name }}" width="300" height="300">
+    {{ course.about }}
+    {{ course.about_photo }}
+    {{ course.information }}
+    {{ course.features }}
+    {{ course.skills }}
+    {{ course.students_work }}
+    {{ course.promo }}
+   </div>
+    <div class="container">
+    {{ course.registration_photo }}
+    {{ course.artist_photo }}
+    {{ course.artist }}
+    {{ course.artist_work }}
+    {{ course.final_registration_form }}
    </div>
 
 {% endblock content %}
