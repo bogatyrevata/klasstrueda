@@ -154,6 +154,8 @@ def create_app(config_obj=None):
 
     os.makedirs(LOGS_DIR, exist_ok=True)
 
+    app.template_global("url_for_resize")(url_for_resize)
+    
     register_extensions(app)
     register_blueprints(app)
 
