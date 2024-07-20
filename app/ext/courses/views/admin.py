@@ -118,7 +118,12 @@ def edit_course(course_id):
         course_db.name = form.name.data
         course_db.alias = form.alias.data
         course_db.description = form.description.data
-        course_db.image = form.image.data
+
+        # Проверяем наличие и непустоту файла image
+        if 'image' in request.files and request.files['image']:
+            filename = photos.save(request.files['image'])
+            course_db.image = filename
+
         course_db.level = form.level.data
         course_db.duration = form.duration.data
         course_db.about = form.about.data
@@ -131,13 +136,32 @@ def edit_course(course_id):
         course_db.information = form.information.data
         course_db.features = form.features.data
         course_db.skills = form.skills.data
-        course_db.students_work = form.students_work.data
+
+        # Проверяем наличие и непустоту файла students_work
+        if 'students_work' in request.files and request.files['students_work']:
+            filename = photos.save(request.files['students_work'])
+            course_db.students_work = filename
+
         course_db.promo = form.promo.data
         course_db.registration_form = form.registration_form.data
-        course_db.registration_photo = form.registration_photo.data
+
+        # Проверяем наличие и непустоту файла registration_photo
+        if 'registration_photo' in request.files and request.files['registration_photo']:
+            filename = photos.save(request.files['registration_photo'])
+            course_db.registration_photo = filename
+
         course_db.artist = form.artist.data
-        course_db.artist_photo = form.artist_photo.data
-        course_db.artist_work = form.artist_work.data
+
+        # Проверяем наличие и непустоту файла artist_photo
+        if 'artist_photo' in request.files and request.files['artist_photo']:
+            filename = photos.save(request.files['artist_photo'])
+            course_db.artist_photo = filename
+
+        # Проверяем наличие и непустоту файла artist_work
+        if 'artist_work' in request.files and request.files['artist_work']:
+            filename = photos.save(request.files['artist_work'])
+            course_db.artist_work = filename
+
         course_db.price = form.price.data
         course_db.final_registration_form = form.final_registration_form.data
         course_db.start_date = form.start_date.data
@@ -147,9 +171,23 @@ def edit_course(course_id):
         return redirect(url_for(".edit_course", course_id=course_id))
 
      # Предзаполняем поля формы и фото
+    form.image.data = course_db.image
     form.about_photo.data = course_db.about_photo
+    form.registration_photo.data = course_db.registration_photo
+    form.students_work.data = course_db.students_work
+    form.artist_photo.data = course_db.artist_photo
+    form.artist_work.data = course_db.artist_work
+
+    image = course_db.image
     about_photo = course_db.about_photo
-    return render_template("courses/admin/edit-course.j2", form=form, course=course_id, course_id=course_id, about_photo=about_photo)
+    registration_photo = course_db.registration_photo
+    students_work = course_db.students_work
+    artist_photo = course_db.artist_photo
+    artist_work = course_db.artist_work
+    print(about_photo)
+    return render_template("courses/admin/edit-course.j2", form=form, course=course_id,
+                           course_id=course_id, image=image, about_photo=about_photo, registration_photo=registration_photo,
+                           students_work=students_work, artist_photo=artist_photo, artist_work=artist_work)
 
 
 @admin_courses.post("/delete-course/<int:course_id>")
