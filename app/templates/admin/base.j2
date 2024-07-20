@@ -17,8 +17,22 @@
 {% endblock head %}
 
 {% block content %}
-
+{# меню page-header #}
 {{ admin_breadcrumbs() }}
+
+{# flash уведомления #}
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
 
   <section class="admin pt-5">
     <div class="admin__container container pt-5 pb-5">
@@ -26,4 +40,36 @@
       {% endblock admin_content %}
     </div>
   </section>
+
+{# скрипт для загрузки фото в форму курса по нажатию кнопки #}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('button[data_target]').forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const targetId = button.getAttribute('data_target');
+        const fileInput = document.getElementById(targetId);
+        if (fileInput) {
+          fileInput.click();
+        }
+      });
+    });
+
+    document.querySelectorAll('input[type="file"][data_input]').forEach(function(fileInput) {
+      fileInput.addEventListener('change', function() {
+        const previewId = fileInput.getAttribute('data_input') + '_preview';
+        const previewImage = document.getElementById(previewId);
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            if (previewImage) {
+              previewImage.src = e.target.result;
+            }
+          }
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      });
+    });
+  });
+</script>
 {% endblock content %}

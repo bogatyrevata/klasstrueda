@@ -17,7 +17,6 @@ def url_for_resize(
     ext: str = "jpg",
     fill: bool = False,
 ):
-    filename = f"images/{filename}"
     try:
         return resize(url_for("static", filename=filename), f"{width}x{height}", format=ext, fill=fill)
     except ImageNotFoundError as err:
