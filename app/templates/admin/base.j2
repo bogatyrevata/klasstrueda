@@ -17,8 +17,22 @@
 {% endblock head %}
 
 {% block content %}
-
+{# меню page-header #}
 {{ admin_breadcrumbs() }}
+
+{# flash уведомления #}
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
 
   <section class="admin pt-5">
     <div class="admin__container container pt-5 pb-5">
