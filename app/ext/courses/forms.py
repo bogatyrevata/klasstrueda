@@ -79,10 +79,10 @@ class HomeworkForm(FlaskForm):
 
 class CourseRegistrationForm(FlaskForm):
     name = StringField("Ваше имя", [DataRequired()])
-    email = EmailField("Ваш Email", [
+    email = EmailField("Ваш Email",
+    [
         DataRequired("Email обязателен для заполнения"),
         Email("Неверный формат Email, адрес должен содержать символ @")
-        ])
-    course_name = StringField("Название курса", [DataRequired()])
+    ])
     message = TextAreaField("Сообщение", [DataRequired()])
     submit = SubmitField("Отправить сообщение")

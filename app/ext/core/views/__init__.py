@@ -124,7 +124,7 @@ def index():
     """Главная страница."""
     init_request()
     form = RegistrationForm(meta={'csrf':False})
-    return render_template("public/index.j2", form=form)
+    return render_template("public/index.j2", form=form, hide_header=True)
 
 
 @core.get("/<string:page_name>")
@@ -140,7 +140,7 @@ def page(page_name):
 def contacts():
     """Контакты."""
     init_request()
-    form = RegistrationForm(meta={'csrf':False})
+    form = RegistrationForm(meta={'csrf': False})
     return render_template("public/contacts.j2", form=form)
 
 
@@ -148,7 +148,7 @@ def contacts():
 def basic_jewelry():
     """Базовый ювелирный курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf':False})
+    form = RegistrationForm(request.form, meta={'csrf': False})
     return render_template("public/basic-jewelry.j2", form=form)
 
 
@@ -159,6 +159,7 @@ def appointment():
     form = RegistrationForm(request.form, meta={'csrf':False})
     return render_template("public/appointment.j2", form=form)
 
+
 @core.get("/jewelry-marathon")
 def jewelry_marathon():
     """Регистрация на курс."""
@@ -166,11 +167,12 @@ def jewelry_marathon():
     form = RegistrationForm(request.form, meta={'csrf':False})
     return render_template("public/jewelry-marathon.j2", form=form)
 
+
 @core.get("/jewelry-ring")
 def jewelry_ring():
     """Регистрация на курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf':False})
+    form = RegistrationForm(request.form, meta={'csrf': False})
     return render_template("public/jewelry-ring.j2", form=form)
 
 

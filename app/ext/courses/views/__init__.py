@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, g, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
 from flask_security import hash_password
 from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import OperationalError
@@ -41,11 +41,20 @@ def course_details(course_id):
         )
 
         # Отправляем сообщение в Telegram
-        token = "6817644005:AAFLsE2vzasQK2xhYd2wST82IOxw2JEfowQ"  # токен бота telegram
-        chat_id = "YOUR_CHAT_ID"  # ID чата telegram
-        send_to_telegram(token, chat_id, telegram_message)
+        send_to_telegram(telegram_message)
+
+        from flask_mailman import EmailMessage
+
+        msg = EmailMessage(
+            'Hello',
+            'Body goes here',
+            'klasstruedaru@gmail.com',
+            ['admin@z-gu.ru'],
+            reply_to=['klasstruedaru@gmail.com'],
+        )
+        msg.send()
 
         flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
-        return redirect(url_for('courses.course_details', course_id=course_id))
+        return redirect(url_for('course.course_details', course_id=course_id))
 
     return render_template("courses/public/course_details.j2", course=course, form=form)

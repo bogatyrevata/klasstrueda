@@ -26,19 +26,20 @@
       {% for course in category.courses %}
         <div class="card" style="width: 18rem;">
           <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
+{#
             {{ picture(
-                class_name='card-img-top',
-                file_name='upload/' ~ course.image,
-                alt='Изображение для курса %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
+              class_name='card-img-top',
+              file_name='upload/' ~ course.image,
+              alt='Изображение для курса %s' % course.name,
+              width=200,
+              height=200,
+              bp_tablet=834,
+              width_tablet=300,
+              height_tablet=200,
+              bp_desktop=1440,
+              width_desktop=400,
+              height_desktop=300
+            ) }} #}
             <div class="card-body">
               <h5 class="card-title">{{ course.name }}</h5>
               <p class="card-text">{{ course.alias }}</p>

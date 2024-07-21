@@ -1,12 +1,7 @@
 {% extends "base.j2" %}
-{% from "macros/generate_page_header.j2" import generate_page_header %}
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block content %}
-  <!-- Page Header Start -->
-  {{ generate_page_header(active_item='courses') }}
-  <!-- Page Header End -->
-
    <div class="container">
     <h1>{{ course.name }}</h1>
     <p>{{ course.description }}</p>
@@ -26,13 +21,12 @@
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
             <h1 class="display-6 mb-4">Записаться на курс или получить бесплатную консультацию по курсу</h1>
-            <form action="{{ url_for('core.form_proc') }}" method="post">
+            <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
               <div class="row g-3">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              {{ input_form_6(form.name) }}
-              {{ input_form_6(form.email) }}
-              {{ input_form_12(form.course_name) }}
-              {{ input_form_12(form.message, style="height: 150px") }}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {{ input_form_6(form.name) }}
+                {{ input_form_6(form.email) }}
+                {{ input_form_12(form.message, style="height: 150px") }}
                 <div class="col-12">
                   <button class="btn btn-danger py-3 px-5" type="submit">Отправить сообщение</button>
                 </div>

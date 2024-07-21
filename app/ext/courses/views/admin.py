@@ -4,6 +4,7 @@ from flask_security import current_user, login_required
 from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm
 from app.ext.courses.models import Category, Course, Module, Lesson
 from app.extensions import db, photos
+from app.utils import send_to_telegram
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
@@ -168,6 +169,7 @@ def edit_course(course_id):
         course_db.end_date = form.end_date.data
         db.session.commit()
         flash("Курс успешно обновлен!", "success")
+        send_to_telegram(f"Курс «{course_db.name}» успешно обновлен!")
         return redirect(url_for(".edit_course", course_id=course_id))
 
      # Предзаполняем поля формы и фото
