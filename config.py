@@ -88,6 +88,9 @@ class BaseConfig:
     DB_DRIVER = "sqlite"
     SQLALCHEMY_DATABASE_URI = f"{DB_DRIVER}:///:memory:"
 
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
     UPLOADED_PHOTOS_DEST = "app/static/upload"
 
     WTF_CSRF_ENABLED = True
