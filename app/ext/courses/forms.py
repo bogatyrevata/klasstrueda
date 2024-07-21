@@ -2,11 +2,11 @@ from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
 from wtforms import DateField, StringField, SubmitField, TelField, FileField, EmailField, TextAreaField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Regexp
+from wtforms.validators import DataRequired, Regexp, Email
 
 
 class CategoryForm(FlaskForm):
-    name = StringField("Название категории", validators=[DataRequired()])
+    name = StringField("Название категории", validators=[DataRequired("Название обязательно для заполнения")])
     alias = StringField("Алиас категории", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -16,7 +16,7 @@ class CategoryForm(FlaskForm):
 
 
 class CourseForm(FlaskForm):
-    name = StringField("Название курса", validators=[DataRequired()])
+    name = StringField("Название курса", validators=[DataRequired("Название обязательно для заполнения")])
     alias = StringField("Алиас курса", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -75,3 +75,14 @@ class HomeworkForm(FlaskForm):
         FileAllowed(['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'], 'Только файлы с расширениями: jpg, jpeg, png, pdf, doc, docx!')
     ])
     submit = SubmitField("Добавить урок")
+
+
+class CourseRegistrationForm(FlaskForm):
+    name = StringField("Ваше имя", [DataRequired()])
+    email = EmailField("Ваш Email", [
+        DataRequired("Email обязателен для заполнения"),
+        Email("Неверный формат Email, адрес должен содержать символ @")
+        ])
+    course_name = StringField("Название курса", [DataRequired()])
+    message = TextAreaField("Сообщение", [DataRequired()])
+    submit = SubmitField("Отправить сообщение")

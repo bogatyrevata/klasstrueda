@@ -1,7 +1,9 @@
+
 from flask import current_app, url_for
 from flask_resize.exc import ImageNotFoundError
 
 from app.extensions import resize
+import requests
 
 
 def url_for_icon(icon_name: str) -> str:
@@ -22,3 +24,33 @@ def url_for_resize(
     except ImageNotFoundError as err:
         current_app.logger.error(f"Изображение '{filename}' не найдено {err}")
     return url_for("static", filename="images/no-image.jpg")
+
+# функция отправки сообщения в телеграмм
+def send_to_telegram(token, chat_id, message):
+    """
+    Отправляет сообщение в указанный чат Telegram.
+
+    :param token: Токен вашего Telegram-бота
+    :param chat_id: Идентификатор чата, куда будет отправлено сообщение
+    :param message: Текст сообщения
+    """
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": message
+    }
+
+    response = requests.post(url, data=data)
+
+    if response.status_code == 200:
+        print("Сообщение успешно отправлено")
+    else:
+        print("Ошибка при отправке сообщения")
+        print(response.text)
+
+# Пример использования
+token = "YOUR_BOT_TOKEN"
+chat_id = "YOUR_CHAT_ID"
+message = "Это тестовое сообщение из формы"
+
+send_to_telegram(token, chat_id, message)
