@@ -24,7 +24,7 @@
 <body>
   {% include "header.j2" %}
   {% if not hide_header %}
-    {{ generate_page_header(active_item='courses') }}
+    {{ generate_page_header(active_item) }}
   {% endif %}
   {# flash уведомления #}
   <div class="container">
