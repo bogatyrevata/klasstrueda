@@ -8,7 +8,7 @@ from sqlalchemy.exc import OperationalError
 from app.ext.courses.models import Category, Course
 from app.ext.courses.forms import CourseRegistrationForm
 
-from app.utils import send_to_telegram
+from app.utils import send_to_telegram, send_to_email
 
 courses = Blueprint("course", __name__, template_folder="templates")
 
@@ -31,8 +31,8 @@ def course_details(course_id):
         course_name = course.name  # Получаем название курса из объекта course
         message = form.message.data
 
-        # Формируем сообщение для отправки в Telegram
-        telegram_message = (
+        # Формируем сообщение для отправки
+        send_message= (
             f"Новая заявка на курс:\n"
             f"Имя: {name}\n"
             f"Email: {email}\n"
@@ -41,18 +41,28 @@ def course_details(course_id):
         )
 
         # Отправляем сообщение в Telegram
-        send_to_telegram(telegram_message)
+        send_to_telegram(send_message, send_to_admin=True)
 
-        from flask_mailman import EmailMessage
-
-        msg = EmailMessage(
-            'Hello',
-            'Body goes here',
-            'klasstruedaru@gmail.com',
-            ['admin@z-gu.ru'],
-            reply_to=['klasstruedaru@gmail.com'],
+        # Отправка сообщения на email
+        email_subject = "Новая заявка на курс"
+        send_to_email(
+            subject=email_subject,
+            body=send_message,
+            recipients=['bogatyrevata@gmail.com'],
+            sender='klasstruedaru@gmail.com',
+            reply_to=['klasstruedaru@gmail.com']
         )
-        msg.send()
+
+        # from flask_mailman import EmailMessage
+
+        # msg = EmailMessage(
+        #     'Hello',
+        #     'Body goes here',
+        #     'klasstruedaru@gmail.com',
+        #     ['bogatyrevata@gmail.com'],
+        #     reply_to=['klasstruedaru@gmail.com'],
+        # )
+        # msg.send()
 
         flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
         return redirect(url_for('course.course_details', course_id=course_id))

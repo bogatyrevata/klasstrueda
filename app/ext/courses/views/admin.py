@@ -169,7 +169,6 @@ def edit_course(course_id):
         course_db.end_date = form.end_date.data
         db.session.commit()
         flash("Курс успешно обновлен!", "success")
-        send_to_telegram(f"Курс «{course_db.name}» успешно обновлен!")
         return redirect(url_for(".edit_course", course_id=course_id))
 
      # Предзаполняем поля формы и фото
