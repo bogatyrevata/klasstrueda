@@ -16,8 +16,7 @@
       {% endif %}
       <nav aria-label="breadcrumb animated slideInDown">
         <ol class="breadcrumb justify-content-center mb-0">
-          <li class="breadcrumb-item"><a class="text-white" href="#">Главная</a></li>
-          <li class="breadcrumb-item"><a class="text-white" href="#">Страницы</a></li>
+          <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('core.index') }}">Главная</a></li>
           {% for item in g.menu %}
             {% if item.submenu %}
               {% for sub_item in item.submenu %}
