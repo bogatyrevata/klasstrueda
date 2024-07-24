@@ -1,6 +1,7 @@
 from requests import post
 
 from flask import current_app, url_for
+from flask_mailman import EmailMessage
 from flask_resize.exc import ImageNotFoundError
 
 from app.extensions import resize
@@ -66,3 +67,24 @@ def send_to_telegram(message, chat_id=None, send_to_admin=False):
         else:
             current_app.logger.error("Переменная окружения TELEGRAM_ADMIN_ID не установлена")
 
+def send_to_email(subject, body, recipients, sender=None, reply_to=None):
+    """
+    Отправляет email с заданным содержимым.
+
+    :param subject: Тема сообщения
+    :param body: Тело сообщения
+    :param recipients: Список получателей
+    :param sender: Отправитель (если не указан, будет использован MAIL_DEFAULT_SENDER)
+    :param reply_to: Адрес для ответа (опционально)
+    """
+    if not sender:
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+
+    msg = EmailMessage(
+        subject,
+        body,
+        sender,
+        recipients,
+        reply_to=reply_to
+    )
+    msg.send()
