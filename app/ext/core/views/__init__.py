@@ -124,14 +124,14 @@ def index():
     """Главная страница."""
     init_request()
     form = RegistrationForm(meta={'csrf':False})
-    return render_template("public/index.j2", form=form, hide_header=True)
+    return render_template("public/index.j2", form=form, hide_header=True, active_item="")
 
 
 @core.get("/<string:page_name>")
 def page(page_name):
     """Для других статических страниц."""
     try:
-        return render_template(f"public/{page_name}.j2")
+        return render_template(f"public/{page_name}.j2", active_item=page_name)
     except TemplateNotFound:
         abort(404)
 
@@ -141,7 +141,7 @@ def contacts():
     """Контакты."""
     init_request()
     form = RegistrationForm(meta={'csrf': False})
-    return render_template("public/contacts.j2", form=form)
+    return render_template("public/contacts.j2", form=form, active_item="contacts")
 
 
 @core.get("/basic-jewelry")
@@ -149,7 +149,7 @@ def basic_jewelry():
     """Базовый ювелирный курс."""
     init_request()
     form = RegistrationForm(request.form, meta={'csrf': False})
-    return render_template("public/basic-jewelry.j2", form=form)
+    return render_template("public/basic-jewelry.j2", form=form, active_item="basic-jewelry")
 
 
 @core.get("/appointment")
@@ -157,7 +157,7 @@ def appointment():
     """Регистрация на курс."""
     init_request()
     form = RegistrationForm(request.form, meta={'csrf':False})
-    return render_template("public/appointment.j2", form=form)
+    return render_template("public/appointment.j2", form=form, active_item="appointment")
 
 
 @core.get("/jewelry-marathon")
@@ -165,7 +165,7 @@ def jewelry_marathon():
     """Регистрация на курс."""
     init_request()
     form = RegistrationForm(request.form, meta={'csrf':False})
-    return render_template("public/jewelry-marathon.j2", form=form)
+    return render_template("public/jewelry-marathon.j2", form=form, active_item="jewelry-marathon")
 
 
 @core.get("/jewelry-ring")
@@ -173,7 +173,7 @@ def jewelry_ring():
     """Регистрация на курс."""
     init_request()
     form = RegistrationForm(request.form, meta={'csrf': False})
-    return render_template("public/jewelry-ring.j2", form=form)
+    return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
 
 
 @core.post("/form-processing")
@@ -182,4 +182,4 @@ def form_proc():
   if form.validate():
       print(form.data)
       return redirect(url_for("index"))
-  return render_template("public/contacts.j2", form=form)
+  return render_template("public/contacts.j2", form=form, active_item="form-processing")
