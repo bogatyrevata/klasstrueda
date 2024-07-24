@@ -1,5 +1,6 @@
 {% extends "admin/base.j2" %}
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+{% from "macros/pictures.j2" import display_image %}
 
 {% block admin_content %}
   <form class="row g-3" action="{{ url_for('admin_courses.edit_course', course_id=course_id) }}"
@@ -11,183 +12,43 @@
     {{ input_form_6(form.alias) }}
     {{ input_form_12(form.description) }}
     {{ input_form_12(form.image, id="image_input", data_input="image_input") }}
-        {% if image %}
-          {% set filename = 'upload/%s' % image %}
-          <div class="card" style="width: 18rem;">
-          {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % image,
-                alt='Изображение для preview %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="image_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="image_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(image, course.name, "image_input") }}
+
     {{ input_form_12(form.level) }}
     {{ input_form_12(form.duration) }}
     {{ input_form_12(form.about, style="height: 150px") }}
     {{ input_form_12(form.about_photo, id="about_photo_input", data_input="about_photo_input") }}
-        {% if about_photo %}
-          {% set filename = 'upload/%s' % about_photo %}
-          <div class="card" style="width: 18rem;">
-          {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % about_photo,
-                alt='Изображение для описания курса %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="about_photo_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="about_photo_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(about_photo, course.name, "about_photo_input") }}
+
     {{ input_form_12(form.information, style="height: 150px") }}
     {{ input_form_12(form.features, style="height: 150px") }}
     {{ input_form_12(form.skills, style="height: 150px") }}
     {{ input_form_12(form.students_work, id="students_work_input", data_input="students_work_input") }}
-    {% if students_work %}
-          {% set filename = 'upload/%s' % students_work %}
-          <div class="card" style="width: 18rem;">
-            {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % students_work,
-                alt='Изображение работ студентов %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="students_work_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="students_work_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(students_work, course.name, "students_work_input") }}
+
     {{ input_form_12(form.promo, style="height: 150px") }}
     {{ input_form_12(form.registration_form, style="height: 150px") }}
     {{ input_form_12(form.registration_photo, id="registration_photo_input", data_input="registration_photo_input") }}
-    {% if registration_photo %}
-          {% set filename = 'upload/%s' % registration_photo %}
-          <div class="card" style="width: 18rem;">
-          {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % registration_photo,
-                alt='Изображение для фото для формы %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="registration_photo_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="registration_photo_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(registration_photo, course.name, "registration_photo_input") }}
+
     {{ input_form_12(form.artist_photo, id="artist_photo_input", data_input="artist_photo_input") }}
-    {% if artist_photo %}
-          {% set filename = 'upload/%s' % artist_photo %}
-          <div class="card" style="width: 18rem;">
-          {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % artist_photo,
-                alt='Изображение для фото мастера %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="artist_photo_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="artist_photo_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(artist_photo, course.name, "artist_photo_input") }}
+
     {{ input_form_12(form.artist, style="height: 150px") }}
     {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
-    {% if artist_work %}
-          {% set filename = 'upload/%s' % artist_work %}
-          <div class="card" style="width: 18rem;">
-          {{ picture(
-                class_name='card-img-top',
-                file_name='upload/%s' % artist_work,
-                alt='Изображение для работ мастера %s' % course.name,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            <div class="card-body">
-              <button type="button" class="btn btn-primary" data_target="artist_work_input">Загрузить фото</button>
-            </div>
-          </div>
-        {% else %}
-          Фото не загружено
-          <div>
-            <button type="button" class="btn btn-primary" data_target="artist_work_input">Загрузить фото</button>
-          </div>
-        {% endif %}
+
+    {{ display_image(artist_work, course.name, "artist_work_input") }}
 
     {{ input_form_12(form.price, style="height: 150px") }}
     {{ input_form_12(form.final_registration_form, style="height: 150px") }}
-    {{ input_form_12(form.start_date ) }}
-    {{ input_form_12(form.end_date ) }}
+    {{ input_form_12(form.start_date) }}
+    {{ input_form_12(form.end_date) }}
     {{ btn(form.submit, value="Изменить") }}
     <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
   </form>
-
 {% endblock admin_content %}
