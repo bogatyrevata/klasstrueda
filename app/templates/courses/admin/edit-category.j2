@@ -14,14 +14,15 @@
   </form>
 
   <h2>Текущие фотографии</h2>
-<ul>
+  <ul>
     {% for photo in category.photos %}
-        <li>
-            <img src="{{ url_for('uploaded_file', filename=photo.filename) }}" alt="{{ photo.alt }}" width="100">
-            <form method="POST" action="{{ url_for('.delete_photo', photo_id=photo.id) }}" style="display:inline;">
-                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-            </form>
-        </li>
+      {% set filename = "upload/%s" % photo.filename %}
+      <li>
+        <img src="{{ url_for('static', filename=filename) }}" alt="{{ photo.alt }}" width="100">
+        <form method="post" action="{{ url_for('.delete_photo', category_id=category.id, photo_id=photo.id) }}" style="display:inline;">
+          <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+        </form>
+      </li>
     {% endfor %}
-</ul>
+  </ul>
 {% endblock admin_content %}
