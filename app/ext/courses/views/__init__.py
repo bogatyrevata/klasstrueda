@@ -53,17 +53,6 @@ def course_details(course_id):
             reply_to=['klasstruedaru@gmail.com']
         )
 
-        # from flask_mailman import EmailMessage
-
-        # msg = EmailMessage(
-        #     'Hello',
-        #     'Body goes here',
-        #     'klasstruedaru@gmail.com',
-        #     ['bogatyrevata@gmail.com'],
-        #     reply_to=['klasstruedaru@gmail.com'],
-        # )
-        # msg.send()
-
         flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
         return redirect(url_for('course.course_details', course_id=course_id))
 
