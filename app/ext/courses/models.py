@@ -152,7 +152,7 @@ artist_category_table = db.Table(
     "artist_category",
     db.Model.metadata,
     db.Column("artist_id", db.Integer, db.ForeignKey("artist.id")),
-    db.Column("category_id", db.Integer, db.ForeignKey("category.id"),)
+    db.Column("category_id", db.Integer, db.ForeignKey("category.id")),
 )
 
 
@@ -191,7 +191,10 @@ class Category(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
-    courses = db.relationship('Course', backref='category', lazy=True)
+    courses = db.relationship("Course", backref="category", lazy=True)
+
+    photos = db.relationship("Photo", secondary="photo_category", backref=db.backref("categoryes", lazy="dynamic"))
+
 
 
 class Course(db.Model, ModelMixin):
@@ -222,7 +225,7 @@ class Course(db.Model, ModelMixin):
     final_registration_form = db.Column(db.String(255))
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    modules = db.relationship('Module', secondary='course_module', backref='courses')
+    modules = db.relationship("Module", secondary="course_module", backref="courses")
 
 
 class Module(db.Model, ModelMixin):
