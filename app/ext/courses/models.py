@@ -193,7 +193,7 @@ class Category(db.Model, ModelMixin):
     description = db.Column(db.String(2048))
     courses = db.relationship("Course", backref="category", lazy=True)
 
-    photos = db.relationship("Photo", secondary="photo_category", backref=db.backref("categoryes", lazy="dynamic"))
+    photos = db.relationship("Photo", secondary="photo_category", backref=db.backref("category", lazy="dynamic"))
 
 
 
