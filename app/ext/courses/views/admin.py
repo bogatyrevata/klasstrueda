@@ -35,13 +35,16 @@ def add_category():
             description=form.data["description"],
         )
         filename=""
+        # Обработка загруженных файлов
         if "photo" in request.files and request.files["photo"]:
-            filename = photos.save(request.files["photo"])
-            photo_db = Photo(
-                filename=filename,
-                alt=f'Изображение для {form.data["name"]}',
-            )
-            category_db.photos.append(photo_db)
+            for file in request.files.getlist("photo"):
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = photos.save(file)
+                    new_photo = Photo(
+                        filename=filename,
+                        alt=f'Изображение для {form.data["name"]}',
+                    )
+                    category_db.photos.append(new_photo)
 
         category_db.save()
         flash("Категория успешно добавлена!", "success")
