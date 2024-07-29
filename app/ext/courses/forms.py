@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, StringField, SubmitField, TelField, FileField, EmailField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email
 
 
@@ -12,6 +12,7 @@ class CategoryForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание категории")
+    photo = MultipleFileField("Фотографии к категории курса",  validators=[FileAllowed(["jpg", "png"], "Только jpg или png!")])
     submit = SubmitField("Добавить категорию")
 
 
