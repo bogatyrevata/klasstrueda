@@ -114,26 +114,75 @@ def add_course():
             name=form.data["name"],
             alias=form.data["alias"],
             description=form.data["description"],
-            image=form.image["image"],
-            level=form.level["level"],
-            duration=form.duration["duration"],
+            level=form.data["level"],
+            duration=form.data["duration"],
             about=form.data["about"],
-            about_photo=form.data["about_photo"],
             information=form.data["information"],
             features=form.data["features"],
             skills=form.data["skills"],
-            students_work=form.data["students_work"],
             promo=form.data["promo"],
             registration_form=form.data["registration_form"],
-            registration_photo=form.data["registration_photo"],
             artist=form.data["artist"],
-            artist_photo=form.data["artist_photo"],
-            artist_work=form.data["artist_work"],
             price=form.data["price"],
-            start_date=form.start_date["start_date"],
-            end_date=form.end_date["end_date"],
+            start_date=form.data["start_date"],
+            end_date=form.data["end_date"],
             final_registration_form=form.data["final_registration_form"],
         )
+
+        # Проверяем наличие и непустоту файла image
+        if "image" in request.files and request.files["image"]:
+            try:
+                filename = photos.save(request.files["image"])
+                course_db.image = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла about_photo
+        if "about_photo" in request.files and request.files["about_photo"]:
+            try:
+                filename = photos.save(request.files["about_photo"])
+                course_db.about_photo = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла students_work
+        if "students_work" in request.files and request.files["students_work"]:
+            try:
+                filename = photos.save(request.files["students_work"])
+                course_db.students_work = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла registration_photo
+        if "registration_photo" in request.files and request.files["registration_photo"]:
+            try:
+                filename = photos.save(request.files["registration_photo"])
+                course_db.registration_photo = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла artist_photo
+        if "artist_photo" in request.files and request.files["artist_photo"]:
+            try:
+                filename = photos.save(request.files["artist_photo"])
+                course_db.artist_photo = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла artist_work
+        if "artist_work" in request.files and request.files["artist_work"]:
+            try:
+                filename = photos.save(request.files["artist_work"])
+                course_db.artist_work = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
         course_db.save()
         flash("Курс успешно добавлен!", "success")
         return redirect(url_for(".index"))
@@ -154,8 +203,8 @@ def edit_course(course_id):
         course_db.description = form.description.data
 
         # Проверяем наличие и непустоту файла image
-        if 'image' in request.files and request.files['image']:
-            filename = photos.save(request.files['image'])
+        if "image" in request.files and request.files["image"]:
+            filename = photos.save(request.files["image"])
             course_db.image = filename
 
         course_db.level = form.level.data
@@ -163,8 +212,8 @@ def edit_course(course_id):
         course_db.about = form.about.data
 
         # Проверяем наличие и непустоту файла about_photo
-        if 'about_photo' in request.files and request.files['about_photo']:
-            filename = photos.save(request.files['about_photo'])
+        if "about_photo" in request.files and request.files["about_photo"]:
+            filename = photos.save(request.files["about_photo"])
             course_db.about_photo = filename
 
         course_db.information = form.information.data
@@ -172,28 +221,28 @@ def edit_course(course_id):
         course_db.skills = form.skills.data
 
         # Проверяем наличие и непустоту файла students_work
-        if 'students_work' in request.files and request.files['students_work']:
-            filename = photos.save(request.files['students_work'])
+        if "students_work" in request.files and request.files["students_work"]:
+            filename = photos.save(request.files["students_work"])
             course_db.students_work = filename
 
         course_db.promo = form.promo.data
         course_db.registration_form = form.registration_form.data
 
         # Проверяем наличие и непустоту файла registration_photo
-        if 'registration_photo' in request.files and request.files['registration_photo']:
-            filename = photos.save(request.files['registration_photo'])
+        if "registration_photo" in request.files and request.files["registration_photo"]:
+            filename = photos.save(request.files["registration_photo"])
             course_db.registration_photo = filename
 
         course_db.artist = form.artist.data
 
         # Проверяем наличие и непустоту файла artist_photo
-        if 'artist_photo' in request.files and request.files['artist_photo']:
-            filename = photos.save(request.files['artist_photo'])
+        if "artist_photo" in request.files and request.files["artist_photo"]:
+            filename = photos.save(request.files["artist_photo"])
             course_db.artist_photo = filename
 
         # Проверяем наличие и непустоту файла artist_work
-        if 'artist_work' in request.files and request.files['artist_work']:
-            filename = photos.save(request.files['artist_work'])
+        if "artist_work" in request.files and request.files["artist_work"]:
+            filename = photos.save(request.files["artist_work"])
             course_db.artist_work = filename
 
         course_db.price = form.price.data
@@ -218,7 +267,6 @@ def edit_course(course_id):
     students_work = course_db.students_work
     artist_photo = course_db.artist_photo
     artist_work = course_db.artist_work
-    print(about_photo)
     return render_template("courses/admin/edit-course.j2", form=form, course=course_id,
                            course_id=course_id, image=image, about_photo=about_photo, registration_photo=registration_photo,
                            students_work=students_work, artist_photo=artist_photo, artist_work=artist_work)
