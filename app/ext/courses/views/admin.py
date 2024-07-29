@@ -1,10 +1,11 @@
+import werkzeug
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from flask_security import current_user, login_required
 
+from app.ext.core.models import Photo
 from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm
 from app.ext.courses.models import Category, Course, Module, Lesson
 from app.extensions import db, photos
-from app.utils import send_to_telegram
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
@@ -33,6 +34,15 @@ def add_category():
             alias=form.data["alias"],
             description=form.data["description"],
         )
+        filename=""
+        if "photo" in request.files and request.files["photo"]:
+            filename = photos.save(request.files["photo"])
+            photo_db = Photo(
+                filename=filename,
+                alt=f'Изображение для {form.data["name"]}',
+            )
+            category_db.photos.append(photo_db)
+
         category_db.save()
         flash("Категория успешно добавлена!", "success")
         return redirect(url_for(".index"))
@@ -49,11 +59,34 @@ def edit_category(category_id):
         category_db.name = form.name.data
         category_db.alias = form.alias.data
         category_db.description = form.description.data
+
+        # Обработка загруженных файлов
+        if form.photo.data:
+            for file in form.photo.data:
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = photos.save(file)
+                    new_photo = Photo(
+                        filename=filename,
+                        alt=f'Изображение для {form.name.data}',
+                    )
+                    category_db.photos.append(new_photo)
+
         db.session.commit()
         flash("Категория успешно обновлена!", "success")
         return redirect(url_for(".edit_category", category_id=category_id))
 
     return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
+
+
+@admin_courses.route("/delete-photo/<int:photo_id>", methods=["POST"])
+def delete_photo(photo_id):
+    photo_db = Photo.query.get_or_404(photo_id)
+    category_id = photo_db.category.id
+    # Удаление файла с сервера, если это необходимо
+    db.session.delete(photo_db)
+    db.session.commit()
+    flash("Фотография успешно удалена!", "success")
+    return redirect(url_for(".edit_category", category_id=category_id))
 
 
 @admin_courses.post("/delete-category/<int:category_id>")
@@ -65,7 +98,7 @@ def delete_category(category_id):
         db.session.commit()
         flash("Категория успешно удалена!", "success")
     else:
-        flash(f"Ошибка при удалении категории!", "danger")
+        flash("Ошибка при удалении категории!", "danger")
 
     return redirect(url_for(".index"))
 
