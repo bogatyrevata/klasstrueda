@@ -5,7 +5,7 @@ from flask_security import current_user, login_required
 from app.ext.core.models import Photo
 from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm
 from app.ext.courses.models import Category, Course, Module, Lesson
-from app.extensions import db, photos
+from app.extensions import db, photos, csrf
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
@@ -81,10 +81,10 @@ def edit_category(category_id):
     return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
 
 
-@admin_courses.route("/delete-photo/<int:photo_id>", methods=["POST"])
-def delete_photo(photo_id):
+@admin_courses.route("/delete-photo/<int:category_id>/<int:photo_id>", methods=["POST"])
+@csrf.exempt
+def delete_photo(category_id, photo_id):
     photo_db = Photo.query.get_or_404(photo_id)
-    category_id = photo_db.category.id
     # Удаление файла с сервера, если это необходимо
     db.session.delete(photo_db)
     db.session.commit()
