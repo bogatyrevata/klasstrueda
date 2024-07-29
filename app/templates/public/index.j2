@@ -76,7 +76,7 @@
               </div>
               <div class="ps-4">
                 <h5>Опытные мастера</h5>
-                <span>Наши мастера имеют профильное образование и опыт в своем деле</span>
+                <span>Вы будете учиться у мастеров с огромным опытом в своем ремесле</span>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </div>
               <div class="ps-4">
                 <h5>Быстрый старт</h5>
-                <span>Вы можете начать заниматься, не дожидаясь набора группы</span>
+                <span>Вы можете начать обучение сразу, в любой момент</span>
               </div>
             </div>
           </div>
@@ -114,17 +114,19 @@
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">О нас</h6>
             <h1 class="display-6 mb-4">Добро пожаловать в Мастерскую Творчества!</h1>
-            <p>Мы стремимся быть вдохновляющим центром творчества, где студенты могут научиться искусствам ювелирного дела, керамики и обработке кожи в комфортной онлайн среде. </p>
-            <p class="mb-4">Наша миссия - поддерживать талантливых творцов, помогая им раскрыть свой потенциал и создавать уникальные произведения искусства.</p>
+            <p>Класс Труда - место где любой человек может погрузиться в мир ручной работы и ремесленного творчества.</p>
+            <p class="mb-4">Более десяти лет мы помогаем взрослым и детям научиться таким ремеслам как ювелирное дело,
+            керамика, столярное дело и обработка кожи. Наша цель - помочь любому человеку погрузиться в мир ремесленного
+            творчества и раскрыть свой потенциал в создании уникальных вещей ручной работы.</p>
             <div class="row g-2 mb-4 pb-2">
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Экспертные преподаватели
+                <i class="fa fa-check text-primary me-2"></i>Опытные мастера-преподаватели
               </div>
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Легкость и доступность
+                <i class="fa fa-check text-primary me-2"></i>Доступность и разнообразие
               </div>
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Гибкий график
+                <i class="fa fa-check text-primary me-2"></i>Удобный график обучения
               </div>
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Сообщество единомышленников
@@ -135,11 +137,8 @@
                 <a class="btn btn-primary py-3 px-5" href="{{ url_for('core.page', page_name='about') }}">Подробнее</a>
               </div>
               <div class="col-sm-6">
-                <a class="d-inline-flex align-items-center btn btn-outline-primary border-2 p-2" href="tel:{{ g.contacts.tel }}">
-                  <span class="flex-shrink-0 btn-square bg-primary">
-                    <i class="fa fa-phone-alt text-white"></i>
-                  </span>
-                  <span class="px-3">{{ g.contacts.phone }}</span>
+                <a class="btn btn-primary py-3 px-5" href="{{ url_for('core.page', page_name='contacts') }}">
+                  Напишите нам
                 </a>
               </div>
             </div>
@@ -155,14 +154,14 @@
     <div class="container">
       <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
         <h6 class="text-primary text-uppercase mb-2">Популярные курсы</h6>
-        <h1 class="display-6 mb-4">Наши курсы помогут вам раскрыть свой творческий потенциал</h1>
+        <h1 class="display-6 mb-4">Наши занятия подходят для «новичков».<br>Эти курсы выбирают чаще всего:</h1>
       </div>
       <div class="row g-4 justify-content-center">
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
             <div class="text-center p-4 pt-0">
               <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$0</div>
-              <h5 class="mb-3">Мастер-класс: кольцо "всмятку"</h5>
+              <h5 class="mb-3">Мастер-класс: кольцо «всмятку»</h5>
               <p>На заняти вы освоите базовые техники и сделаете мятое кольцо из серебра</p>
               <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
@@ -244,8 +243,10 @@
       <div class="row g-5">
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
           <h6 class="text-primary text-uppercase mb-2">Почемы мы?</h6>
-          <h1 class="display-6 mb-4">Уникальная система обучения</h1>
-          <p class="mb-5">Выбирая нашу школу, вы выбираете не просто обучение, а увлекательное погружение в мир творчества и профессионального роста. Давайте вместе создадим нечто великолепное!</p>
+          <h1 class="display-6 mb-4">Опыт и креативность.</h1>
+          <p class="mb-5"> Более десяти лет мы обучаем людей различным видам ремесла и ручной работы. Взрослые и дети,
+          новички и опытные - для всех, кто хочет научиться делать что-то своими руками у нас найдутся полезные и
+          эффективные мастер-классы и курсы. Мир творчества доступен каждому.</p>
           <div class="row gy-5 gx-4">
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
               <div class="d-flex align-items-center mb-3">
@@ -254,7 +255,7 @@
                 </div>
                 <h5 class="mb-0">Мастерство и опыт</h5>
               </div>
-              <span>Наши преподаватели - настоящие мастера своего дела. Они не просто передают знания, а делают это с любовью к искуссвую</span>
+              <span>Наши преподаватели - опытные мастера своего дела. Они не просто передают знания, а делают это с любовью к своему ремеслу.</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
               <div class="d-flex align-items-center mb-3">
@@ -263,16 +264,17 @@
                 </div>
                 <h5 class="mb-0">Индивидуальный подход</h5>
               </div>
-              <span>Наши курсы разработаны так, чтобы каждый мог развиваться в соответствии со своим темпом и стилем.</span>
+              <span>Наши занятия разработаны так, чтобы каждый мог развиваться в соответствии со своим темпом и творческим потенциалом.</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
               <div class="d-flex align-items-center mb-3">
                 <div class="flex-shrink-0 btn-square bg-primary me-3">
                   <i class="fa fa-check text-white"></i>
                 </div>
-                <h5 class="mb-0">Инновации в обучении</h5>
+                <h5 class="mb-0">Практическое обучение</h5>
               </div>
-              <span>Наши уроки не просто передают информацию — они погружают студентов в процесс творчества.</span>
+              <span>Все курсы и мастер-классы включают не только теорию, но и максимальный объем практики. После занятий у
+              каждого ученика будут устойчивые навыки работы своими руками.</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
               <div class="d-flex align-items-center mb-3">
@@ -281,7 +283,8 @@
                 </div>
                 <h5 class="mb-0">Творческое сообщество</h5>
               </div>
-              <span>Вступив в наше онлайн сообщество, вы становитесь частью семьи творческих личностей.</span>
+              <span>Для творческой личности очень важна поддержка. В нашем сообществе мастеров и учеников любой
+              получит помощь, полезные советы и вдохновение от единомышленников.</span>
             </div>
           </div>
         </div>

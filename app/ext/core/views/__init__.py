@@ -89,7 +89,7 @@ def before_app_request():
               "title": "Юридическая информация",
               "href": "legal-info"
           },{
-              "title": "Политика конфеденциальности",
+              "title": "Политика конфиденциальности",
               "href": "privaci"
           }
         ]
