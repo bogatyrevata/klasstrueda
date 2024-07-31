@@ -81,15 +81,14 @@ def edit_category(category_id):
     return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
 
 
-@admin_courses.route("/delete-photo/<int:category_id>/<int:photo_id>", methods=["POST"])
-@csrf.exempt
+@admin_courses.route("/delete-photo/<int:category_id>/<int:photo_id>", methods=["GET"])
 def delete_photo(category_id, photo_id):
     photo_db = Photo.query.get_or_404(photo_id)
     # Удаление файла с сервера, если это необходимо
     db.session.delete(photo_db)
     db.session.commit()
     flash("Фотография успешно удалена!", "success")
-    return redirect(url_for(".edit_category", category_id=category_id))
+    return redirect(url_for(".edit_category", category_id=category_id, photo_id=photo_id))
 
 
 @admin_courses.post("/delete-category/<int:category_id>")
