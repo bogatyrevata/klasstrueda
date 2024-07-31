@@ -1,5 +1,4 @@
 {% extends "base.j2" %}
-{% from "macros/admin_breadcrumbs.j2" import admin_breadcrumbs %}
 {% set is_admin = True %}
 
 {% block head %}
@@ -17,8 +16,6 @@
 {% endblock head %}
 
 {% block content %}
-{# меню page-header #}
-{{ admin_breadcrumbs() }}
 
 {# flash уведомления #}
 <div class="container">
