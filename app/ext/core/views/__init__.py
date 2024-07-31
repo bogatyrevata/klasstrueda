@@ -47,75 +47,78 @@ def before_app_request():
     g.menu = [
       {
         "title": "Главная",
-        "href": ""
+        "href": "",
       }, {
         "title": "О нас",
-        "href": "about"
+        "href": "about",
       }, {
         "title": "Курсы",
-        "href": "courses"
+        "href": "courses",
       }, {
         "title": "Разделы",
         "href": "#",
         "submenu": [
           {
-            "title": "Преимущества",
-            "href": "feature"
-          }, {
             "title": "Наша команда",
-            "href": "team"
+            "href": "team",
           }, {
-            "title": "Отзывы",
-            "href": "testimonial"
+            "title": "Преимущества",
+            "href": "feature",
+          }, {
+            "title": "Курсы",
+            "href": "courses",
           }, {
             "title": "Базовый ювелирный курс",
-            "href": "basic-jewelry"
+            "href": "basic-jewelry",
           }, {
             "title": "Мастер-класс: кольцо всмятку",
-            "href": "jewelry-ring"
+            "href": "jewelry-ring",
           }, {
             "title": "Ювелирный марафон",
-            "href": "jewelry-marathon"
-          }, {
-            "title": "Записаться",
-            "href": "appointment"
-          }, {
-            "title": "Оплата",
-            "href": "payment"
+            "href": "jewelry-marathon",
           }, {
               "title": "FAQ",
-              "href": "faq"
+              "href": "faq",
+          }, {
+            "title": "Записаться",
+            "href": "appointment",
+          }, {
+            "title": "Оплата",
+            "href": "payment",
+          }, {
+            "title": "Отзывы",
+            "href": "testimonial",
           }, {
               "title": "Юридическая информация",
-              "href": "legal-info"
+              "href": "legal-info",
           },{
               "title": "Политика конфиденциальности",
-              "href": "privaci"
-          }
-        ]
+              "href": "privaci",
+          },
+        ],
       }, {
         "title": "Контакты",
-        "href": "contacts"
+        "href": "contacts",
       }
     ]
     g.contacts = {
       "phone": "+7(911)245-40-00",
       "tel": "+79112454000",
       "address": "Санкт-Петербург, Газовая 10",
-      "email": "klasstrueda@gmail.com"
+      "email": "klasstrueda@gmail.com",
     }
     g.social_links = [{
       "title": "facebook-f",
-      "href": "https://www.facebook.com/klasstrueda"
+      "href": "https://www.facebook.com/klasstrueda",
     }, {
       "title": "youtube",
-      "href": "https://www.youtube.com/channel/UCXIbv2Y_Qvy3sxvluUDA6XQ"
+      "href": "https://www.youtube.com/channel/UCXIbv2Y_Qvy3sxvluUDA6XQ",
     },{
       "title": "vk",
-      "href": "https://vk.com/true_da"
+      "href": "https://vk.com/true_da",
     }, {
       "title": "instagram",
-      "href": "https://www.instagram.com/klasstrueda/"
+      "href": "https://www.instagram.com/klasstrueda/",
     }]
 
 
