@@ -28,19 +28,35 @@
                   </ol>
                 </div>
                 <div class="position-relative mt-auto">
-                  {# {{ picture(
-                    class_name='img-fluid',
-                    file_name='upload/' ~ course.image,
-                    alt='Изображение для курсов %s' % course.name,
-                    width=300,
-                    height=300,
-                    bp_tablet=834,
-                    width_tablet=400,
-                    height_tablet=400,
-                    bp_desktop=1440,
-                    width_desktop=500,
-                    height_desktop=500
-                  ) }} #}
+                  {% if course.image %}
+                    {{ picture(
+                      class_name='img-fluid',
+                      file_name='upload/' ~ course.image,
+                      alt='Изображение для курсов %s' % course.name,
+                      width=300,
+                      height=300,
+                      bp_tablet=834,
+                      width_tablet=400,
+                      height_tablet=400,
+                      bp_desktop=1440,
+                      width_desktop=500,
+                      height_desktop=500
+                    ) }}
+                  {% else %}
+                    {{ picture(
+                      class_name='img-fluid',
+                      file_name='img/logo-trueda.png',
+                      alt='Логотип',
+                      width=300,
+                      height=300,
+                      bp_tablet=834,
+                      width_tablet=400,
+                      height_tablet=400,
+                      bp_desktop=1440,
+                      width_desktop=500,
+                      height_desktop=500
+                    ) }}
+                  {% endif %}
                   <div class="courses-overlay">
                     <a class="btn btn-outline-primary border-2" href="{{ url_for('course.course_details', course_id=course.id) }}">Подробнее</a>
                   </div>
