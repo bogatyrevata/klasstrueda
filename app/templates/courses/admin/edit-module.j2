@@ -2,14 +2,22 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form class="row g-3" action="{{ url_for('admin_courses.edit_module', module_id=module_id) }}" method="post">
+  <form class="row g-3" action="{{ url_for('admin_courses.edit_module', module_id=module_id) }}" method="post" enctype="multipart/form-data">
     <h1>Редактирование модуля</h1>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {{ input_form_6(form.course_id) }}
     {{ input_form_6(form.name) }}
     {{ input_form_6(form.alias) }}
     {{ input_form_12(form.description, style="height: 150px") }}
+    {{ input_form_12(form.lessons, style="height: 100px")}}
     {{ btn(form.submit, value="Изменить") }}
     <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
   </form>
+  <h2>Список модулей</h2>
+  <ul>
+    {% for module in modules %}
+      <li><a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}">{{ module.name }} ({{ module.alias }})</a></li>
+    {% endfor %}
+  </ul>
 {% endblock admin_content %}
 

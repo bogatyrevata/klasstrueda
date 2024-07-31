@@ -308,46 +308,91 @@ def delete_course(course_id):
 def add_module():
     form = ModuleForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
 
     if form.validate_on_submit():
         module_db = Module(
             name=form.data["name"],
             alias=form.data["alias"],
-            description=form.data["description"]
+            description=form.data["description"],
         )
+        db.session.add(module_db)
+        db.session.commit()
+
+        # Обновление связи courses вручную
+        selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
+        for course in selected_courses:
+            course.modules.append(module_db)
+
+        # Обновление связи с lessons
+        selected_lessons = [Lesson.query.get(lesson_id) for lesson_id in form.lessons.data]
+        module_db.lessons = selected_lessons
+
         module_db.save()
         flash("Модуль успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    return render_template("courses/admin/add-module.j2", form=form)
+    modules = Module.query.all()  # Получаем все модули из базы данных
+
+    return render_template("courses/admin/add-module.j2", form=form, modules=modules)
 
 
 @admin_courses.route("/edit-module/<int:module_id>", methods=["GET","POST"])
 def edit_module(module_id):
     module_db = Module.query.get_or_404(module_id)
     form = ModuleForm(obj=module_db)
+    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
+
+    # Предзаполнение выбранных курсов
+    form.course_id.data = [course.id for course in module_db.courses]
+
+    # Предзаполнение выбранных уроков
+    form.lessons.data = [lesson.id for lesson in module_db.lessons]
 
     if form.validate_on_submit():
         module_db.name = form.name.data
         module_db.alias = form.alias.data
         module_db.description = form.description.data
+
+        # Обновление связи courses вручную
+        selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
+        module_db.courses = selected_courses
+
+        # Обновление связи lessonsвручную
+        selected_lessons = [Lesson.query.get(lesson_id) for lesson_id in form.lessons.data]
+        module_db.lessons = selected_lessons
+
         db.session.commit()
         flash("Модуль успешно обновлен!", "success")
         return redirect(url_for(".edit_module", module_id=module_id))
 
-    return render_template("courses/admin/edit-module.j2", form=form, module=module_id, module_id=module_id)
+    modules = Module.query.all()  # Получаем все модули из базы данных
+
+    return render_template("courses/admin/edit-module.j2", form=form, module=module_id, module_id=module_id, modules=modules)
 
 
-@admin_courses.post("/delete-module/<int:module_id>")
+@admin_courses.route("/delete-module/<int:module_id>", methods=["GET"])
 def delete_module(module_id):
     module_db = Module.query.get_or_404(module_id)
 
-    if module_db:
-        db.session.delete(module_db)
+    try:
+        # Удаляем модуль из всех связанных курсов
+        for course in module_db.courses:
+            course.modules.remove(module_db)
+
+        # Если модуль больше не связан ни с одним курсом, удаляем его из базы данных
+        if not module_db.courses:
+            db.session.delete(module_db)
+            flash("Модуль успешно удален из базы данных!", "success")
+        else:
+            flash("Модуль удален из курса, но остался в других курсах.", "info")
+
+        # Коммитим изменения в базу данных
         db.session.commit()
-        flash("Модуль успешно удален!", "success")
-    else:
-        flash("Ошибка при удалении модуля!", "danger")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Ошибка при удалении модуля: {str(e)}", "danger")
 
     return redirect(url_for(".index"))
 
