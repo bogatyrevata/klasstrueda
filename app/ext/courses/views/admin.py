@@ -413,28 +413,34 @@ def add_lesson():
         flash("Урок успешно сохранен!", "success")
         return redirect(url_for(".index"))
 
-    return render_template("courses/admin/add-lesson.j2", form=form)
+    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+
+    return render_template("courses/admin/add-lesson.j2", form=form, lessons=lessons)
 
 
 @admin_courses.route("/edit-lesson/<int:lesson_id>", methods=["GET","POST"])
 def edit_lesson(lesson_id):
-    lesson_db = Module.query.get_or_404(lesson_id)
-    form = ModuleForm(obj=lesson_db)
+    lesson_db = Lesson.query.get_or_404(lesson_id)
+    form = LessonForm(obj=lesson_db)
+    form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
 
     if form.validate_on_submit():
+        lesson_db.module_id = form.module_id.data
         lesson_db.name = form.name.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
         db.session.commit()
         flash("Урок успешно обновлен!", "success")
-        return redirect(url_for(".edit_lesson", lesson_id=lesson_id))
+        return redirect(url_for(".edit_lesson", lesson_id=lesson_id, lesson=lesson_db))
 
-    return render_template("courses/admin/edit-lesson.j2", form=form, lesson=lesson_id, lesson_id=lesson_id)
+    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+
+    return render_template("courses/admin/edit-lesson.j2", form=form, lessons=lessons, lesson=lesson_id, lesson_id=lesson_id)
 
 
-@admin_courses.post("/delete-lesson/<int:lesson_id>")
+@admin_courses.route("/delete-lesson/<int:lesson_id>", methods=["GET"])
 def delete_lesson(lesson_id):
-    lesson_db = Module.query.get_or_404(lesson_id)
+    lesson_db = Lesson.query.get_or_404(lesson_id)
 
     if lesson_db:
         db.session.delete(lesson_db)
