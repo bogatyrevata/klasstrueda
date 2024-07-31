@@ -2,7 +2,7 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.add_lesson') }}" method="post">
+  <form action="{{ url_for('admin_courses.add_lesson') }}" method="post" enctype="multipart/form-data">
     <h1>Добавление урока</h1>
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -13,4 +13,10 @@
       {{ btn(form.submit, value="Отправить") }}
     </div>
   </form>
+  <h2>Список уроков</h2>
+  <ul>
+    {% for lesson in lessons %}
+      <li><a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}">{{ lesson.name }} ({{ lesson.alias }})</a></li>
+    {% endfor %}
+  </ul>
 {% endblock admin_content %}

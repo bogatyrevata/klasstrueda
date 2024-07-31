@@ -48,6 +48,7 @@
     {{ input_form_12(form.final_registration_form, style="height: 150px") }}
     {{ input_form_12(form.start_date) }}
     {{ input_form_12(form.end_date) }}
+    {{ input_form_12(form.modules, style="height: 100px")}}
     {{ btn(form.submit, value="Изменить") }}
     <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
   </form>
