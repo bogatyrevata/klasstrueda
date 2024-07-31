@@ -109,6 +109,7 @@ def delete_category(category_id):
 def add_course():
     form = CourseForm()
     form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
 
     if form.validate_on_submit():
         course_db = Course(
@@ -185,6 +186,11 @@ def add_course():
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
 
+        # добавление модулей
+
+        selected_modules = Module.query.filter(Module.id.in_(form.modules.data)).all()
+        course_db.modules.extend(selected_modules)
+
         course_db.save()
         flash("Курс успешно добавлен!", "success")
         return redirect(url_for(".index"))
@@ -197,6 +203,11 @@ def edit_course(course_id):
     course_db = Course.query.get_or_404(course_id)
     form = CourseForm(obj=course_db)  # Передаем объект course_db в форму для предзаполнения полей
     form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
+
+    # Предзаполняем выбранные модули
+    if request.method == "GET":
+        form.modules.data = [module.id for module in course_db.modules]
 
     if form.validate_on_submit():
         course_db.category_id = form.category_id.data
@@ -251,6 +262,11 @@ def edit_course(course_id):
         course_db.final_registration_form = form.final_registration_form.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
+
+        # Обработка загруженных файлов модулей
+
+        course_db.modules = [Module.query.get(module_id) for module_id in form.modules.data]
+
         db.session.commit()
         flash("Курс успешно обновлен!", "success")
         return redirect(url_for(".edit_course", course_id=course_id))
