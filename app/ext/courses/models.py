@@ -192,7 +192,6 @@ class Category(db.Model, ModelMixin):
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     courses = db.relationship("Course", backref="category", lazy=True)
-
     photos = db.relationship("Photo", secondary="photo_category", backref=db.backref("category", lazy="dynamic"))
 
 
@@ -225,7 +224,7 @@ class Course(db.Model, ModelMixin):
     final_registration_form = db.Column(db.String(255))
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    modules = db.relationship("Module", secondary="course_module", backref="courses")
+    modules = db.relationship("Module", secondary="course_module", backref="course")
 
 
 class Module(db.Model, ModelMixin):
@@ -236,6 +235,8 @@ class Module(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
+    lessons = db.relationship("Lesson", cascade="all, delete-orphan", backref="module") # каскадное удаление
+    courses = db.relationship('Course', secondary="course_module", backref="module")
 
 
 class Lesson(db.Model, ModelMixin):
@@ -247,6 +248,7 @@ class Lesson(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
+
 
 class Homework(db.Model, ModelMixin):
     """Модель для хранения домашней работы для курсов."""
