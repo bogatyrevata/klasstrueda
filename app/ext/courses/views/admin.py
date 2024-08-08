@@ -81,15 +81,6 @@ def edit_category(category_id):
     return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
 
 
-@admin_courses.route("/delete-photo/<int:category_id>/<int:photo_id>", methods=["GET"])
-def delete_photo(category_id, photo_id):
-    photo_db = Photo.query.get_or_404(photo_id)
-    # Удаление файла с сервера, если это необходимо
-    db.session.delete(photo_db)
-    db.session.commit()
-    flash("Фотография успешно удалена!", "success")
-    return redirect(url_for(".edit_category", category_id=category_id, photo_id=photo_id))
-
 
 @admin_courses.post("/delete-category/<int:category_id>")
 def delete_category(category_id):
@@ -304,7 +295,7 @@ def delete_course(course_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-module/", methods=["GET","POST"])
+@admin_courses.route("/add-module/", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
@@ -316,6 +307,19 @@ def add_module():
             alias=form.data["alias"],
             description=form.data["description"],
         )
+
+        # Обработка загруженных файлов
+        if form.photo.data:
+            for file in form.photo.data:
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = photos.save(file)
+                    new_photo = Photo(
+                        filename=filename,
+                        alt=f'Изображение для {form.name.data}',
+                    )
+                    module_db.photos.append(new_photo)
+                    db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
+
         db.session.add(module_db)
         db.session.commit()
 
@@ -328,7 +332,7 @@ def add_module():
         selected_lessons = [Lesson.query.get(lesson_id) for lesson_id in form.lessons.data]
         module_db.lessons = selected_lessons
 
-        module_db.save()
+        db.session.commit()  # Сохраняем изменения в базе данных
         flash("Модуль успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
@@ -355,6 +359,17 @@ def edit_module(module_id):
         module_db.alias = form.alias.data
         module_db.description = form.description.data
 
+        if form.photo.data:
+          for file in form.photo.data:
+              if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                  filename = photos.save(file)
+                  new_photo = Photo(
+                      filename=filename,
+                      alt=f'Изображение для {form.name.data}',
+                  )
+                  module_db.photos.append(new_photo)
+                  db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
+
         # Обновление связи courses вручную
         selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
         module_db.courses = selected_courses
@@ -372,27 +387,18 @@ def edit_module(module_id):
     return render_template("courses/admin/edit-module.j2", form=form, module=module_id, module_id=module_id, modules=modules)
 
 
-@admin_courses.route("/delete-module/<int:module_id>", methods=["GET"])
-def delete_module(module_id):
+@admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
+def delete_module(course_id, module_id):
     module_db = Module.query.get_or_404(module_id)
+    course_db = Course.query.get_or_404(course_id)
 
-    try:
-        # Удаляем модуль из всех связанных курсов
-        for course in module_db.courses:
-            course.modules.remove(module_db)
-
-        # Если модуль больше не связан ни с одним курсом, удаляем его из базы данных
-        if not module_db.courses:
-            db.session.delete(module_db)
-            flash("Модуль успешно удален из базы данных!", "success")
-        else:
-            flash("Модуль удален из курса, но остался в других курсах.", "info")
-
-        # Коммитим изменения в базу данных
+    # Удаляем модуль из указанного курса
+    if module_db in course_db.modules:
+        course_db.modules.remove(module_db)
         db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        flash(f"Ошибка при удалении модуля: {str(e)}", "danger")
+        flash("Модуль успешно удален из курса!", "success")
+    else:
+        flash("Модуль не найден в указанном курсе!", "warning")
 
     return redirect(url_for(".index"))
 
@@ -450,3 +456,26 @@ def delete_lesson(lesson_id):
         flash("Ошибка при удалении урока!", "danger")
 
     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/delete-photo/<string:entity_type>/<int:entity_id>/<int:photo_id>", methods=["GET"])
+def delete_photo(entity_type, entity_id, photo_id):
+    photo_db = Photo.query.get_or_404(photo_id)
+
+    # Удаление файла с сервера, если это необходимо
+    db.session.delete(photo_db)
+    db.session.commit()
+    flash("Фотография успешно удалена!", "success")
+
+    # Определение редиректа на основе типа сущности
+    if entity_type == "category":
+        return redirect(url_for(".edit_category", category_id=entity_id))
+    elif entity_type == "course":
+        return redirect(url_for(".edit_course", course_id=entity_id))
+    elif entity_type == "module":
+        return redirect(url_for(".edit_module", module_id=entity_id))
+    elif entity_type == "lesson":
+        return redirect(url_for(".edit_lesson", lesson_id=entity_id))
+    else:
+        flash("Неизвестный тип сущности!", "danger")
+        return redirect(url_for(".index"))
