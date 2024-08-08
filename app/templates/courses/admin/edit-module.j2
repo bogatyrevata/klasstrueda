@@ -9,6 +9,7 @@
     {{ input_form_6(form.name) }}
     {{ input_form_6(form.alias) }}
     {{ input_form_12(form.description, style="height: 150px") }}
+    {{ input_form_12(form.photo) }}
     {{ input_form_12(form.lessons, style="height: 100px")}}
     {{ btn(form.submit, value="Изменить") }}
     <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
@@ -19,5 +20,18 @@
       <li><a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}">{{ module.name }} ({{ module.alias }})</a></li>
     {% endfor %}
   </ul>
+
+  <h2>Текущие фотографии</h2>
+  <ul>
+  {% set entity = module %}
+  {% set entity_type = 'module' %}
+  {% for photo in entity.photos %}
+    {% set filename = "upload/%s" % photo.filename %}
+    <li>
+      <img src="{{ url_for('static', filename=filename) }}" alt="{{ photo.alt }}" width="100">
+      <a href="{{ url_for('.delete_photo', entity_type=entity_type, entity_id=entity.id, photo_id=photo.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту фотографию?');">Удалить</a>
+    </li>
+  {% endfor %}
+</ul>
 {% endblock admin_content %}
 

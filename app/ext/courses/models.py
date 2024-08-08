@@ -60,6 +60,14 @@ video_feedback_table = db.Table(
 )
 
 
+video_homework_table = db.Table(
+    "video_homework",
+    db.Model.metadata,
+    db.Column("video_id", db.Integer, db.ForeignKey("video.id")),
+    db.Column("homework_id", db.Integer, db.ForeignKey("homework.id")),
+)
+
+
 photo_category_table = db.Table(
     "photo_category",
     db.Model.metadata,
@@ -234,9 +242,10 @@ class Module(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
+    description = db.Column(db.Text)
     lessons = db.relationship("Lesson", cascade="all, delete-orphan", backref="module") # каскадное удаление
-    courses = db.relationship('Course', secondary="course_module", backref="module")
+    courses = db.relationship("Course", secondary="course_module", backref="module")
+    photos = db.relationship("Photo", secondary="photo_module", backref=db.backref("module", lazy="dynamic"))
 
 
 class Lesson(db.Model, ModelMixin):
@@ -247,7 +256,10 @@ class Lesson(db.Model, ModelMixin):
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"), nullable=False)
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
+    description = db.Column(db.Text)
+    file = db.Column(db.String(255))
+    photos = db.relationship("Photo", secondary="photo_lesson", backref=db.backref("lesson", lazy="dynamic"))
+    videos = db.relationship("Video", secondary="video_lesson", backref=db.backref("lesson", lazy="dynamic"))
 
 
 class Homework(db.Model, ModelMixin):
@@ -257,8 +269,11 @@ class Homework(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
     name = db.Column(db.String(255))
-    description = db.Column(db.String(2048))
+    description = db.Column(db.Text)
     file = db.Column(db.String(255))
+    photos = db.relationship("Photo", secondary="photo_homework", backref=db.backref("homework", lazy="dynamic"))
+    videos = db.relationship("Video", secondary="video_homework", backref=db.backref("homework", lazy="dynamic"))
+    homeworks=db.relationship("Homework", secondary="homework_module", backref=db.backref("homework", lazy="dynamic"))
 
 
 class Feedback(db.Model, ModelMixin):
@@ -270,6 +285,9 @@ class Feedback(db.Model, ModelMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     subject = db.Column(db.String(255))
     message = db.Column(db.Text)
+    photos = db.relationship("Photo", secondary="photo_feedback", backref=db.backref("feedback", lazy="dynamic"))
+    videos = db.relationship("Video", secondary="video_feedback", backref=db.backref("feedback", lazy="dynamic"))
+
 
 
 class Artist(db.Model, ModelMixin):
@@ -281,6 +299,8 @@ class Artist(db.Model, ModelMixin):
     avatar = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     contacts = db.Column(db.String(255))
+    courses = db.relationship("Course", secondary="artist_course",backref=db.backref("artists", lazy="dynamic"))
+    modules=db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
 
 
 class Payment(db.Model, ModelMixin):

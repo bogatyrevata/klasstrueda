@@ -55,6 +55,7 @@ class ModuleForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание модуля")
+    photo = MultipleFileField("Фотографии к модулю курса",  validators=[FileAllowed(["jpg", "png"], "Только jpg или png!")])
     lessons = SelectMultipleField("Уроки", coerce=int)
     submit = SubmitField("Добавить модуль")
 
