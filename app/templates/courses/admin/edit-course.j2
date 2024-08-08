@@ -7,6 +7,7 @@
     method="post" enctype="multipart/form-data">
     <h1>Редактирование курса</h1>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
     {{ input_form_6(form.category_id) }}
     {{ input_form_6(form.name) }}
     {{ input_form_6(form.alias) }}
