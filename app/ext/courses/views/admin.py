@@ -2,9 +2,9 @@ import werkzeug
 from flask import Blueprint, current_app, flash, g, redirect, render_template, request, url_for
 from flask_security import current_user, login_required
 
-from app.ext.core.models import Photo
-from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm
-from app.ext.courses.models import Category, Course, Module, Lesson
+from app.ext.core.models import Photo, User
+from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm
+from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork
 from app.extensions import db, photos, csrf
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
@@ -384,7 +384,7 @@ def edit_module(module_id):
 
     modules = Module.query.all()  # Получаем все модули из базы данных
 
-    return render_template("courses/admin/edit-module.j2", form=form, module=module_id, module_id=module_id, modules=modules)
+    return render_template("courses/admin/edit-module.j2", form=form, module=module_db, module_id=module_id, modules=modules)
 
 
 @admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
@@ -479,3 +479,249 @@ def delete_photo(entity_type, entity_id, photo_id):
     else:
         flash("Неизвестный тип сущности!", "danger")
         return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-studentwork/", methods=["GET", "POST"])
+def add_studentwork():
+    form = StudentWorkForm()
+    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+
+    if form.validate_on_submit():
+        studentwork_db = StudentWork(
+            name=form.data["name"],
+            description=form.data["description"],
+        )
+        filename = ""
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                studentwork_db.photo = filename  # Сохранение имени файла в поле photo
+
+        db.session.add(studentwork_db)
+        db.session.commit()
+
+        # Обновление связи courses вручную
+        selected_courses = Course.query.filter(Course.id.in_(form.course_id.data)).all()
+        for course in selected_courses:
+            course.student_works.append(studentwork_db)  # Используем уже существующее отношение
+
+        db.session.commit()
+
+        flash("Работа студента успешно добавлена!", "success")
+        return redirect(url_for(".index"))
+
+    studentworks = StudentWork.query.all()  # Получаем все работы из базы данных
+
+    return render_template("courses/admin/add-studentwork.j2", form=form, studentworks=studentworks)
+
+
+
+@admin_courses.route("/edit-studentwork/<int:studentwork_id>", methods=["GET", "POST"])
+def edit_studentwork(studentwork_id):
+    studentwork_db = StudentWork.query.get_or_404(studentwork_id)
+    form = StudentWorkForm(obj=studentwork_db)
+    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+
+    # Предзаполнение выбранных курсов
+    form.course_id.data = [course.id for course in studentwork_db.courses]
+
+    if form.validate_on_submit():
+        studentwork_db.name = form.name.data
+        studentwork_db.description = form.description.data
+
+        # Обработка загруженного файла (одно фото)
+        if form.photo.data:
+            file = form.photo.data[0]  # Берем только первое фото из списка
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                studentwork_db.photo = filename  # Сохраняем новое имя файла
+
+        # Обновление связи courses вручную
+        selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
+        studentwork_db.courses = selected_courses
+
+        db.session.commit()
+        flash("Работа студента успешно обновлена!", "success")
+        return redirect(url_for(".edit_studentwork", studentwork_id=studentwork_id))
+
+    studentworks = StudentWork.query.all()  # Получаем все работы студентов из базы данных
+
+    return render_template(
+        "courses/admin/edit-studentwork.j2",
+        form=form,
+        studentworks=studentworks,
+        studentwork=studentwork_db,
+        studentwork_id=studentwork_id,
+    )
+
+
+@admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
+def delete_studentwork(stusentwork_id):
+    studentwork_db = StudentWork.query.get_or_404(stusentwork_id)
+
+    if studentwork_db:
+        db.session.delete(studentwork_db)
+        db.session.commit()
+        flash("Работа студента успешно удалена!", "success")
+    else:
+        flash("Ошибка при удалении работы студента!", "danger")
+
+    return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-artist/", methods=["GET", "POST"])
+def add_artist():
+    form = ArtistForm()
+    # Заполнение выбора для user_id с именами пользователей
+    form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
+
+    if form.validate_on_submit():
+        artist_db = Artist(
+            user_id=form.user_id.data,
+            bio=form.bio.data,
+            contacts=form.contacts.data,
+        )
+
+        # Обработка загруженного файла (одно фото)
+        if form.avatar.data:
+            # Загружается только одна фотография
+            file = form.avatar.data[0]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                artist_db.avatar = filename  # Сохранение имени файла в поле avatar
+
+        db.session.add(artist_db)
+        db.session.commit()
+
+        flash("Мастер успешно добавлен!", "success")
+        return redirect(url_for(".index"))
+
+    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+
+    return render_template("courses/admin/add-artist.j2", form=form, artists=artists)
+
+
+@admin_courses.route("/edit-artist/<int:artist_id>", methods=["GET", "POST"])
+def edit_artist(artist_id):
+    artist_db = Artist.query.get_or_404(artist_id)  # Получаем объект Artist или возвращаем 404
+    form = ArtistForm(obj=artist_db)  # Создаем форму, используя объект Artist
+
+    # Заполнение выбора для user_id с именами пользователей
+    form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
+
+    if form.validate_on_submit():
+        artist_db.user_id = form.user_id.data
+        artist_db.bio = form.bio.data
+        artist_db.contacts = form.contacts.data
+
+        # Обработка загруженного файла (одно фото)
+        if form.avatar.data:
+            file = form.avatar.data[0]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                artist_db.avatar = filename  # Обновление имени файла в поле avatar
+
+        db.session.commit()  # Сохранение изменений в базе данных
+        flash("Информация о мастере успешно обновлена!", "success")
+        return redirect(url_for(".index"))
+
+    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+
+    return render_template("courses/admin/edit-artist.j2", form=form, artists=artists, artist_id=artist_id, artist=artist_db,)
+
+
+@admin_courses.route("/delete-artist/<int:artistwork_id>", methods=["GET"])
+def delete_artist(artist_id):
+     artist_db = Artist.query.get_or_404(artist_id)
+
+     if artist_db:
+        db.session.delete(artist_db)
+        db.session.commit()
+        flash("Работа мастера успешно удалена!", "success")
+     else:
+        flash("Ошибка при удалении работы мастера!", "danger")
+
+     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-artistwork/", methods=["GET", "POST"])
+def add_artistwork():
+    form = ArtistWorkForm()
+    form.artist_id.choices = [(artist.id, artist.user_id) for artist in Artist.query.all()]
+
+    if form.validate_on_submit():
+        artistwork_db = ArtistWork(
+            name=form.data["name"],
+            description=form.data["description"],
+            artist_id=form.data["artist_id"],
+        )
+        filename = ""
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                artistwork_db.photo = filename  # Сохранение имени файла в поле photo
+
+        db.session.add(artistwork_db)
+        db.session.commit()
+
+        flash("Работа мастера успешно добавлена!", "success")
+        return redirect(url_for(".index"))
+
+    artistworks = ArtistWork.query.all()  # Получаем все работы из базы данных
+
+    return render_template("courses/admin/add-artistwork.j2", form=form, artistworks=artistworks)
+
+
+@admin_courses.route("/edit-artistwork/<int:artistwork_id>", methods=["GET", "POST"])
+def edit_artistwork(artistwork_id):
+    artistwork_db = ArtistWork.query.get_or_404(artistwork_id)
+    form = ArtistWorkForm(obj=artistwork_db)
+    form.artist.choices = [(artist.id, artist.name) for artist in Artist.query.all()]
+
+    # Предзаполнение выбранного мастера
+    form.artist.data = artistwork_db.artist_id
+
+    if form.validate_on_submit():
+        artistwork_db.name = form.name.data
+        artistwork_db.description = form.description.data
+        artistwork_db.artist_id = form.artist.data
+
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                artistwork_db.photo = filename  # Обновление имени файла в поле photo
+
+        db.session.commit()
+        flash("Работа мастера успешно обновлена!", "success")
+        return redirect(url_for(".edit_artistwork", artistwork_id=artistwork_id))
+
+    artistworks = ArtistWork.query.all()  # Получаем все работы мастера из базы данных
+
+    return render_template(
+        "courses/admin/edit-artistwork.j2",
+        form=form,
+        artistworks=artistworks,
+        artistwork_id=artistwork_id,
+        artistwork=artistwork_db,
+        )
+
+
+@admin_courses.route("/delete-artistwork/<int:artistwork_id>", methods=["GET"])
+def delete_artistwork(artistwork_id):
+    artistwork_db = ArtistWork.query.get_or_404(artistwork_id)
+
+    if artistwork_db:
+        db.session.delete(artistwork_db)
+        db.session.commit()
+        flash("Работа мастера успешно удалена!", "success")
+    else:
+        flash("Ошибка при удалении работы мастера!", "danger")
+
+    return redirect(url_for(".index"))
+

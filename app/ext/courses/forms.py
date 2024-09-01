@@ -78,7 +78,31 @@ class HomeworkForm(FlaskForm):
         FileRequired(),
         FileAllowed(['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'], 'Только файлы с расширениями: jpg, jpeg, png, pdf, doc, docx!')
     ])
-    submit = SubmitField("Добавить урок")
+    submit = SubmitField("Добавить домашнюю работу")
+
+
+class StudentWorkForm(FlaskForm):
+    course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
+    name = StringField("Имя студента", validators=[DataRequired()])
+    description = TextAreaField("Описание работы")
+    photo = MultipleFileField("Фотография работы студента", [FileAllowed(["jpg", "png"])])
+    submit = SubmitField("Добавить работу студента")
+
+
+class ArtistForm(FlaskForm):
+    user_id = SelectField("Имя мастера", coerce=int, validators=[DataRequired()])
+    avatar = MultipleFileField("Фотография мастера", [FileAllowed(["jpg", "png"])])
+    bio = TextAreaField("Информация о мастере")
+    contacts = TextAreaField("Контакты")
+    submit = SubmitField("Добавить мастера")
+
+
+class ArtistWorkForm(FlaskForm):
+    name = StringField("Название работы", validators=[DataRequired()])
+    description = TextAreaField("Описание работы")
+    photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
+    artist_id = SelectField("Мастер", coerce=int, validators=[DataRequired()])
+    submit = SubmitField("Добавить работу мастера")
 
 
 class CourseRegistrationForm(FlaskForm):
