@@ -74,7 +74,7 @@ def before_app_request():
             "title": "Мастер-класс: кольцо всмятку",
             "href": "jewelry-ring",
           }, {
-            "title": "Ювелирный марафон",
+            "title": "Ювелирный марафон: кольца",
             "href": "jewelry-marathon",
           }, {
               "title": "FAQ",
@@ -93,7 +93,7 @@ def before_app_request():
               "href": "legal-info",
           },{
               "title": "Политика конфиденциальности",
-              "href": "privaci",
+              "href": "privacy",
           },
         ],
       }, {

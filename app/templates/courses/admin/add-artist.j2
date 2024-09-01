@@ -1,0 +1,23 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+
+{% block admin_content %}
+  <form action="{{ url_for('admin_courses.add_artist') }}" method="post" enctype="multipart/form-data">
+  <h1>Добавление мастера</h1>
+    <div class="row g-3">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      {{ input_form_6(form.user_id) }}
+      {{ input_form_6(form.avatar) }}
+      {{ input_form_12(form.bio, style="height: 150px") }}
+      {{ input_form_12(form.contacts, style="height: 100px")}}
+      {{ btn(form.submit, value="Отправить") }}
+
+    </div>
+  </form>
+  <h2>Список мастеров</h2>
+  <ul>
+    {% for artist in artists %}
+      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.user_id }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock admin_content %}
