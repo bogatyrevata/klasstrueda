@@ -139,6 +139,13 @@ course_payment_table = db.Table(
     db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
 )
 
+course_studentwork_table = db.Table(
+    "course_studentwork",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("studentwork_id", db.Integer, db.ForeignKey("studentwork.id")),
+)
+
 
 course_tariff_table = db.Table(
     "course_tariff",
@@ -199,6 +206,7 @@ class Category(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
+
     courses = db.relationship("Course", backref="category", lazy=True)
     photos = db.relationship("Photo", secondary="photo_category", backref=db.backref("category", lazy="dynamic"))
 
@@ -232,7 +240,10 @@ class Course(db.Model, ModelMixin):
     final_registration_form = db.Column(db.String(255))
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
     modules = db.relationship("Module", secondary="course_module", backref="course")
+    student_works = db.relationship("StudentWork", secondary="course_studentwork", backref=db.backref("course", lazy="dynamic"))
+
 
 
 class Module(db.Model, ModelMixin):
@@ -243,6 +254,7 @@ class Module(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
+
     lessons = db.relationship("Lesson", cascade="all, delete-orphan", backref="module") # каскадное удаление
     courses = db.relationship("Course", secondary="course_module", backref="module")
     photos = db.relationship("Photo", secondary="photo_module", backref=db.backref("module", lazy="dynamic"))
@@ -258,6 +270,7 @@ class Lesson(db.Model, ModelMixin):
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
+
     photos = db.relationship("Photo", secondary="photo_lesson", backref=db.backref("lesson", lazy="dynamic"))
     videos = db.relationship("Video", secondary="video_lesson", backref=db.backref("lesson", lazy="dynamic"))
 
@@ -271,6 +284,7 @@ class Homework(db.Model, ModelMixin):
     name = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
+
     photos = db.relationship("Photo", secondary="photo_homework", backref=db.backref("homework", lazy="dynamic"))
     videos = db.relationship("Video", secondary="video_homework", backref=db.backref("homework", lazy="dynamic"))
     homeworks=db.relationship("Homework", secondary="homework_module", backref=db.backref("homework", lazy="dynamic"))
@@ -285,6 +299,7 @@ class Feedback(db.Model, ModelMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     subject = db.Column(db.String(255))
     message = db.Column(db.Text)
+
     photos = db.relationship("Photo", secondary="photo_feedback", backref=db.backref("feedback", lazy="dynamic"))
     videos = db.relationship("Video", secondary="video_feedback", backref=db.backref("feedback", lazy="dynamic"))
 
@@ -299,6 +314,8 @@ class Artist(db.Model, ModelMixin):
     avatar = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     contacts = db.Column(db.String(255))
+
+    works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
     courses = db.relationship("Course", secondary="artist_course",backref=db.backref("artists", lazy="dynamic"))
     modules=db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
 
@@ -326,3 +343,27 @@ class Tariff(db.Model, ModelMixin):
     description = db.Column(db.String(2048))
     price = db.Column(db.Numeric(precision=10, scale=2))
     discount = db.Column(db.Integer)
+
+
+class StudentWork(db.Model, ModelMixin):
+    """Модель для хранения работ студентов."""
+
+    __tablename__= "studentwork"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    description = db.Column(db.String(2048))
+    photo = db.Column(db.String(255))
+
+
+class ArtistWork(db.Model, ModelMixin):
+    """Модель для хранения работ мастера."""
+
+    __tablename__= "artistwork"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    descriptions = db.Column(db.String(2048))
+    photo = db.Column(db.String(255))
+    artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)  # Внешний ключ на таблицу Artist
+
+    # Определение отношения
+    artist = db.relationship("Artist", back_populates="works")
