@@ -16,6 +16,12 @@ class User(db.Model, FsUserMixin):
     last_name = db.Column(db.String(255))
     userphoto = db.Column(db.String(255))
 
+    artists = db.relationship("Artist", backref="user", lazy="dynamic")
+
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Photo(db.Model, ModelMixin):
     """Модель для хранения изображений сайта."""
