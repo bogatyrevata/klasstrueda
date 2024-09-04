@@ -649,7 +649,7 @@ def delete_artist(artist_id):
 @admin_courses.route("/add-artistwork", methods=["GET", "POST"])
 def add_artistwork():
     form = ArtistWorkForm()
-    form.artist_id.choices = [(artist.id, artist.user_id) for artist in Artist.query.all()]
+    form.artist_id.choices = [(artist.id, artist.user.name) for artist in Artist.query.all()]
 
     if form.validate_on_submit():
         artistwork_db = ArtistWork(
@@ -680,7 +680,7 @@ def add_artistwork():
 def edit_artistwork(artistwork_id):
     artistwork_db = ArtistWork.query.get_or_404(artistwork_id)
     form = ArtistWorkForm(obj=artistwork_db)
-    form.artist.choices = [(artist.id, artist.name) for artist in Artist.query.all()]
+    form.artist_id.choices = [(artist.id, artist.user.name) for artist in Artist.query.all()]
 
     # Предзаполнение выбранного мастера
     form.artist.data = artistwork_db.artist_id
