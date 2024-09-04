@@ -15,8 +15,10 @@
   </form>
   <h2>Список работ всех студентов</h2>
   <ul>
-    {% for artistwork in artistworks %}
-      <li><a href="{{ url_for('admin_courses.edit_astudentwork', studentwork_id=studentwork.id) }}">{{ studentwork.name }} </a></li>
+    {% for studentwork in studentworks %}
+      <li><a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=studentwork.id) }}">{{ studentwork.name }} </a>
+      <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=studentwork.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
+      </li>
     {% endfor %}
   </ul>
 {% endblock admin_content %}
