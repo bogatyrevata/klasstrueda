@@ -96,7 +96,7 @@ def delete_category(category_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-course/", methods=["GET", "POST"])
+@admin_courses.route("/add-course", methods=["GET", "POST"])
 def add_course():
     form = CourseForm()
     form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
@@ -295,7 +295,7 @@ def delete_course(course_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-module/", methods=["GET", "POST"])
+@admin_courses.route("/add-module", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
@@ -403,7 +403,7 @@ def delete_module(course_id, module_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-lesson/", methods=["GET","POST"])
+@admin_courses.route("/add-lesson", methods=["GET","POST"])
 def add_lesson():
     form = LessonForm()
     form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
@@ -481,7 +481,7 @@ def delete_photo(entity_type, entity_id, photo_id):
         return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-studentwork/", methods=["GET", "POST"])
+@admin_courses.route("/add-studentwork", methods=["GET", "POST"])
 def add_studentwork():
     form = StudentWorkForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
@@ -571,7 +571,7 @@ def delete_studentwork(stusentwork_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-artist/", methods=["GET", "POST"])
+@admin_courses.route("/add-artist", methods=["GET", "POST"])
 def add_artist():
     form = ArtistForm()
     # Заполнение выбора для user_id с именами пользователей
@@ -646,7 +646,7 @@ def delete_artist(artist_id):
      return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-artistwork/", methods=["GET", "POST"])
+@admin_courses.route("/add-artistwork", methods=["GET", "POST"])
 def add_artistwork():
     form = ArtistWorkForm()
     form.artist_id.choices = [(artist.id, artist.user_id) for artist in Artist.query.all()]
