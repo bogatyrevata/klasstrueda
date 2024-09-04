@@ -683,12 +683,12 @@ def edit_artistwork(artistwork_id):
     form.artist_id.choices = [(artist.id, artist.user.name) for artist in Artist.query.all()]
 
     # Предзаполнение выбранного мастера
-    form.artist.data = artistwork_db.artist_id
+    form.artist_id.data = artistwork_db.artist_id
 
     if form.validate_on_submit():
         artistwork_db.name = form.name.data
         artistwork_db.description = form.description.data
-        artistwork_db.artist_id = form.artist.data
+        artistwork_db.artist_id = form.artist_id.data
 
         # Обработка загруженного файла (одно фото)
         if "photo" in request.files and request.files["photo"]:
