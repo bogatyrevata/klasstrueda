@@ -558,8 +558,8 @@ def edit_studentwork(studentwork_id):
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
-def delete_studentwork(stusentwork_id):
-    studentwork_db = StudentWork.query.get_or_404(stusentwork_id)
+def delete_studentwork(studentwork_id):
+    studentwork_db = StudentWork.query.get_or_404(studentwork_id)
 
     if studentwork_db:
         db.session.delete(studentwork_db)
@@ -632,7 +632,7 @@ def edit_artist(artist_id):
     return render_template("courses/admin/edit-artist.j2", form=form, artists=artists, artist_id=artist_id, artist=artist_db,)
 
 
-@admin_courses.route("/delete-artist/<int:artistwork_id>", methods=["GET"])
+@admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
 def delete_artist(artist_id):
      artist_db = Artist.query.get_or_404(artist_id)
 
