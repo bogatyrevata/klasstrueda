@@ -17,7 +17,9 @@
   <h2>Список мастеров</h2>
   <ul>
     {% for artist in artists %}
-      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.user_id }}</a></li>
+      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.user.name }}</a>
+      <a href="{{ url_for('admin_courses.delete_artist', artist_id=artist.id) }}" onclick="return confirm('Вы уверены, что хотите удалить мастера?');">Удалить</a>
+      </li>
     {% endfor %}
   </ul>
 {% endblock admin_content %}

@@ -318,6 +318,7 @@ class Artist(db.Model, ModelMixin):
     works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
     courses = db.relationship("Course", secondary="artist_course",backref=db.backref("artists", lazy="dynamic"))
     modules=db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
+    # users = db.relationship("User", backref="artist") # one-to-many
 
 
 class Payment(db.Model, ModelMixin):
@@ -354,6 +355,8 @@ class StudentWork(db.Model, ModelMixin):
     description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
 
+    courses = db.relationship("Course", secondary="course_studentwork", backref="studentworks")
+
 
 class ArtistWork(db.Model, ModelMixin):
     """Модель для хранения работ мастера."""
@@ -361,7 +364,7 @@ class ArtistWork(db.Model, ModelMixin):
     __tablename__= "artistwork"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    descriptions = db.Column(db.String(2048))
+    description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
     artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)  # Внешний ключ на таблицу Artist
 

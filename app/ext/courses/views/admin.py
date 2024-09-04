@@ -96,7 +96,7 @@ def delete_category(category_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-course/", methods=["GET", "POST"])
+@admin_courses.route("/add-course", methods=["GET", "POST"])
 def add_course():
     form = CourseForm()
     form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
@@ -295,7 +295,7 @@ def delete_course(course_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-module/", methods=["GET", "POST"])
+@admin_courses.route("/add-module", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
@@ -403,7 +403,7 @@ def delete_module(course_id, module_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-lesson/", methods=["GET","POST"])
+@admin_courses.route("/add-lesson", methods=["GET","POST"])
 def add_lesson():
     form = LessonForm()
     form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
@@ -481,7 +481,7 @@ def delete_photo(entity_type, entity_id, photo_id):
         return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-studentwork/", methods=["GET", "POST"])
+@admin_courses.route("/add-studentwork", methods=["GET", "POST"])
 def add_studentwork():
     form = StudentWorkForm()
     form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
@@ -558,8 +558,8 @@ def edit_studentwork(studentwork_id):
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
-def delete_studentwork(stusentwork_id):
-    studentwork_db = StudentWork.query.get_or_404(stusentwork_id)
+def delete_studentwork(studentwork_id):
+    studentwork_db = StudentWork.query.get_or_404(studentwork_id)
 
     if studentwork_db:
         db.session.delete(studentwork_db)
@@ -571,7 +571,7 @@ def delete_studentwork(stusentwork_id):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-artist/", methods=["GET", "POST"])
+@admin_courses.route("/add-artist", methods=["GET", "POST"])
 def add_artist():
     form = ArtistForm()
     # Заполнение выбора для user_id с именами пользователей
@@ -632,7 +632,7 @@ def edit_artist(artist_id):
     return render_template("courses/admin/edit-artist.j2", form=form, artists=artists, artist_id=artist_id, artist=artist_db,)
 
 
-@admin_courses.route("/delete-artist/<int:artistwork_id>", methods=["GET"])
+@admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
 def delete_artist(artist_id):
      artist_db = Artist.query.get_or_404(artist_id)
 
@@ -646,10 +646,10 @@ def delete_artist(artist_id):
      return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-artistwork/", methods=["GET", "POST"])
+@admin_courses.route("/add-artistwork", methods=["GET", "POST"])
 def add_artistwork():
     form = ArtistWorkForm()
-    form.artist_id.choices = [(artist.id, artist.user_id) for artist in Artist.query.all()]
+    form.artist_id.choices = [(artist.id, artist.user.name) for artist in Artist.query.all()]
 
     if form.validate_on_submit():
         artistwork_db = ArtistWork(
@@ -680,15 +680,15 @@ def add_artistwork():
 def edit_artistwork(artistwork_id):
     artistwork_db = ArtistWork.query.get_or_404(artistwork_id)
     form = ArtistWorkForm(obj=artistwork_db)
-    form.artist.choices = [(artist.id, artist.name) for artist in Artist.query.all()]
+    form.artist_id.choices = [(artist.id, artist.user.name) for artist in Artist.query.all()]
 
     # Предзаполнение выбранного мастера
-    form.artist.data = artistwork_db.artist_id
+    form.artist_id.data = artistwork_db.artist_id
 
     if form.validate_on_submit():
         artistwork_db.name = form.name.data
         artistwork_db.description = form.description.data
-        artistwork_db.artist_id = form.artist.data
+        artistwork_db.artist_id = form.artist_id.data
 
         # Обработка загруженного файла (одно фото)
         if "photo" in request.files and request.files["photo"]:
