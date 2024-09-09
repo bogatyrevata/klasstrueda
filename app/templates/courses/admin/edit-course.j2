@@ -26,9 +26,23 @@
     {{ input_form_12(form.information, style="height: 150px") }}
     {{ input_form_12(form.features, style="height: 150px") }}
     {{ input_form_12(form.skills, style="height: 150px") }}
-    {{ input_form_12(form.students_work, id="students_work_input", data_input="students_work_input") }}
+    {# {{ input_form_12(form.students_work, id="students_work_input", data_input="students_work_input") }}
 
-    {{ display_image(students_work, course.name, "students_work_input") }}
+    {{ display_image(students_work, course.name, "students_work_input") }} #}
+
+    <h2>Работы студентов</h2>
+    <ul>
+    {% for studentwork in studentworks %}
+      <li>
+        <a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=studentwork.id) }}">
+            <img src="{{ url_for('static', filename='upload/' + studentwork.photo) }}" alt="{{ studentwork.name }}" width="100" height="100">
+        </a>
+        <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=studentwork.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
+      </li>
+    {% endfor %}
+    </ul>
+    <a class="btn btn-secondary mt-3" href="{{ url_for('admin_courses.add_studentwork') }}">Добавить работу студента</a>
+
 
     {{ input_form_12(form.promo, style="height: 150px") }}
     {{ input_form_12(form.registration_form, style="height: 150px") }}
@@ -41,9 +55,24 @@
     {{ display_image(artist_photo, course.name, "artist_photo_input") }}
 
     {{ input_form_12(form.artist, style="height: 150px") }}
-    {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
+    {# {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
 
-    {{ display_image(artist_work, course.name, "artist_work_input") }}
+    {{ display_image(artist_work, course.name, "artist_work_input") }} #}
+
+    <!-- Вывод всех работ мастера курса -->
+    <h2>Работы мастера</h2>
+    <ul>
+    {% for artistwork in artistworks %}
+      <li>
+        <a href="{{ url_for('admin_courses.edit_artistwork', artistwork_id=artistwork.id) }}">
+            <img src="{{ url_for('static', filename='upload/' + artistwork.photo) }}" alt="{{ artistwork.name }}" width="100">
+        </a>
+        <a href="{{ url_for('admin_courses.delete_artistwork', artistwork_id=artistwork.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу мастера?');">Удалить</a>
+      </li>
+    {% endfor %}
+    </ul>
+    <a class="btn btn-secondary mt-3" href="{{ url_for('admin_courses.add_artistwork') }}">Добавить работу мастера</a>
+
 
     {{ input_form_12(form.price, style="height: 150px") }}
     {{ input_form_12(form.final_registration_form, style="height: 150px") }}

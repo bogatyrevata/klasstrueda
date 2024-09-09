@@ -18,13 +18,19 @@
       {{ input_form_12(form.information, style="height: 150px") }}
       {{ input_form_12(form.features, style="height: 150px") }}
       {{ input_form_12(form.skills, style="height: 150px") }}
-      {{ input_form_12(form.students_work) }}
+      <div class="col-12">
+        <label>Работы студентов</label>
+        <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-primary">Добавить работу студента</a>
+      </div>
       {{ input_form_12(form.promo, style="height: 150px") }}
       {{ input_form_12(form.registration_form, style="height: 150px") }}
       {{ input_form_12(form.registration_photo) }}
       {{ input_form_12(form.artist_photo) }}
       {{ input_form_12(form.artist, style="height: 150px") }}
-      {{ input_form_12(form.artist_work, style="height: 150px") }}
+      <div class="col-12">
+        <label>Работы мастера</label>
+        <a href="{{ url_for('admin_courses.add_artistwork') }}" class="btn btn-primary">Добавить работу мастера</a>
+      </div>
       {{ input_form_12(form.price, style="height: 150px") }}
       {{ input_form_12(form.final_registration_form, style="height: 150px") }}
       {{ input_form_12(form.start_date ) }}
