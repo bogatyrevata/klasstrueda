@@ -20,7 +20,9 @@
       </div>
       <div class="h-100 d-inline-flex align-items-center mx-n2">
         {% for link in g.social_links %}
-          <a class="{% if not loop.last %}btn btn-square btn-link rounded-0 border-0 border-end border-secondary{% else %}btn btn-square btn-link rounded-0{% endif %}" href="{{ link.href }}">
+          <a class="{% if not loop.last %}btn btn-square btn-link rounded-0 border-0 border-end border-secondary{% else %}btn btn-square btn-link rounded-0{% endif %}"
+          href="{{ link.href }}"
+          target="_blank">
             <i class="fab fa-{{ link.title }} text-primary"></i>
           </a>
         {% endfor %}
