@@ -30,6 +30,6 @@ class RegistrationForm(FlaskForm):
         DataRequired("Email обязателен для заполнения"),
         Email("Неверный формат Email, адрес должен содержать символ @")
         ])
-    course_name = StringField("Название курса", [DataRequired()])
-    question = StringField("Ваш вопрос", [DataRequired()])
+    course_name = StringField("Название курса")
+    question = StringField("Ваш вопрос")
     message = TextAreaField("Сообщение", [DataRequired()])

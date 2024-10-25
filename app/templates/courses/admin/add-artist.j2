@@ -11,7 +11,7 @@
       {{ input_form_12(form.bio, style="height: 150px") }}
       {{ input_form_12(form.contacts, style="height: 100px")}}
       {{ btn(form.submit, value="Отправить") }}
-
+      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
     </div>
   </form>
   <h2>Список мастеров</h2>
