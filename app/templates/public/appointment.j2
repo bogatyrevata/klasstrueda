@@ -16,18 +16,17 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <h6 class="text-danger text-uppercase mb-2">Записаться</h6>
           <h1 class="display-6 mb-4">Запишитесь на курс, марафон или мастер-класс</h1>
-          <form action="{{ url_for('core.form_proc') }}" method="post">
-            <div class="row g-3">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-             {{ input_form_6(form.first_name) }}
-             {{ input_form_6(form.email) }}
-             {{ input_form_12(form.course_name) }}
-             {{ input_form_12(form.message, style="height: 150px") }}
-              <div class="col-12">
-                <button class="btn btn-danger w-100 py-3" type="submit">Отправить</button>
+          <form action="{{ url_for('core.form_proc') }}", method="post" novalidate>
+              <div class="row g-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {{ input_form_6(form.first_name) }}
+                {{ input_form_6(form.email) }}
+                {{ input_form_12(form.message, style="height: 100px") }}
+                <div class="col-12">
+                  <button class="btn btn-primary w-100 py-3" type="submit">Отправить сообщение</button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
         </div>
       </div>
     </div>

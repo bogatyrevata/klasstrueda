@@ -217,9 +217,9 @@
         <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
           <div class="bg-primary text-center p-5">
             <h1 class="mb-4">Записаться на курс</h1>
-            <form action="{{ url_for('core.form_proc') }}", method="post">
+            <form action="{{ url_for('core.form_proc') }}", method="post" novalidate>
               <div class="row g-3">
-                {{ form.csrf_token }}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 {{ input_form_6(form.first_name) }}
                 {{ input_form_6(form.email) }}
                 {{ input_form_12(form.course_name) }}
