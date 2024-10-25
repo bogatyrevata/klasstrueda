@@ -68,7 +68,20 @@ class LessonForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание урока")
+    videos = FileField("Загрузить видео", validators=[
+        FileAllowed(['mp4', 'avi', 'mov'], 'Только видео с расширениями: mp4, avi, mov!')
+    ])
+    fotos = FileField("Загрузить фото", validators=[
+        FileAllowed(['jpg', 'jpeg', 'png'], 'Только фото с расширениями: jpg, jpeg, png!')
+    ])
+    file = FileField("Загрузить файл", validators=[
+        FileRequired(),
+        FileAllowed(['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'], 'Только файлы с расширениями: jpg, jpeg, png, pdf, doc, docx!')
+    ])
     submit = SubmitField("Добавить урок")
+
+    # mp4, avi, mov
+
 
 class HomeworkForm(FlaskForm):
     module_id = SelectField("Название модуля", coerce=int, validators=[DataRequired()])
