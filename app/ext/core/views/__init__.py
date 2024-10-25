@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, g, redirect, render_template, request, url_for
-from flask_security import hash_password
+from flask import Blueprint, abort, g, flash, redirect, render_template, request, url_for
+from flask_security import hash_password, current_user
 from jinja2.exceptions import TemplateNotFound
 from sqlalchemy.exc import OperationalError
 
@@ -9,6 +9,8 @@ from app.ext.core.models import user_datastore
 from app.extensions import csrf, db
 from config import TZ
 from app.ext.core.forms import RegistrationForm
+
+from app.utils import send_to_telegram, send_to_email
 
 
 core = Blueprint("core", __name__, template_folder="templates")
@@ -179,10 +181,45 @@ def jewelry_ring():
     return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
 
 
-@core.post("/form-processing")
+@core.route("/form-processing", methods=["GET", "POST"])
 def form_proc():
-  form = RegistrationForm(request.form)
-  if form.validate():
-      print(form.data)
-      return redirect(url_for("index"))
-  return render_template("public/contacts.j2", form=form, active_item="form-processing")
+    if current_user.is_authenticated:
+        form = RegistrationForm(
+            first_name=current_user.first_name,
+            email=current_user.email
+        )
+    else:
+        form = RegistrationForm(request.form)
+
+    if form.validate_on_submit():
+        first_name = form.first_name.data
+        email = form.email.data
+        course_name = form.course_name.data
+        message = form.message.data
+
+        # Формируем сообщение для отправки уведомления
+        send_message = (
+            f"Новая заявка на курс:\n"
+            f"Имя: {first_name}\n"
+            f"Email: {email}\n"
+            f"Курс: {course_name}\n"
+            f"Сообщение: {message}"
+        )
+
+        # Отправляем сообщение в Телеграм
+        send_to_telegram(send_message, send_to_admin=True)
+
+        # Отправка сообщения на email
+        email_subject = "Новая заявка на курс"
+        send_to_email(
+            subject=email_subject,
+            body=send_message,
+            recipients=['bogatyrevata@gmail.com'],
+            sender='klasstruedaru@gmail.com',
+            reply_to=['klasstruedaru@gmail.com']
+        )
+
+        flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
+        return redirect(url_for("core.contacts"))
+
+    return render_template("public/contacts.j2", form=form, active_item="form-processing")
