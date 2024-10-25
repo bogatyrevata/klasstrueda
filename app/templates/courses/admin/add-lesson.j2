@@ -11,6 +11,7 @@
       {{ input_form_6(form.alias) }}
       {{ input_form_12(form.description, style="height: 150px") }}
       {{ btn(form.submit, value="Отправить") }}
+      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
     </div>
   </form>
   <h2>Список уроков</h2>
