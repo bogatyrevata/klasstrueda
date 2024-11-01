@@ -25,10 +25,10 @@
       {% for course in category.courses %}
         <div class="card" style="width: 18rem;">
           <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
-            {% if course.image %}
+            {% if course.preview_photo %}
               {{ picture(
                 class_name='card-img-top',
-                file_name='upload/' ~ course.image,
+                file_name='upload/' ~ course.preview_photo,
                 alt='Изображение для курса %s' % course.title,
                 width=200,
                 height=200,
@@ -43,7 +43,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ course.title }}</h5>
               <p class="card-text">{{ course.alias }}</p>
-              <p class="card-text">{{ course.description }}</p>
+              <p class="card-text">{{ course.preview_description }}</p>
               <form action="{{ url_for('admin_courses.delete_course', course_id=course.id) }}" method="post" style="display:inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="card-link" onclick="return confirm('Вы уверены, что хотите удалить этот курс?');">Удалить</button>

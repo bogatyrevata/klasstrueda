@@ -11,10 +11,10 @@
     {{ input_form_6(form.category_id) }}
     {{ input_form_6(form.title) }}
     {{ input_form_6(form.alias) }}
-    {{ input_form_12(form.description) }}
-    {{ input_form_12(form.image, id="image_input", data_input="image_input") }}
+    {{ input_form_12(form.preview_description) }}
+    {{ input_form_12(form.preview_photo, id="image_input", data_input="image_input") }}
 
-    {{ display_image(image, course.title, "image_input") }}
+    {{ display_image(preview_photo, course.title, "image_input") }}
 
     {{ input_form_12(form.level) }}
     {{ input_form_12(form.duration) }}
@@ -49,7 +49,7 @@
 
     {{ display_image(artist_photo, course.title, "artist_photo_input") }}
 
-    {{ input_form_12(form.artist, style="height: 150px") }}
+    {{ input_form_12(form.artist_description, style="height: 150px") }}
     {# {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
 
     {{ display_image(artist_work, course.title, "artist_work_input") }} #}

@@ -115,7 +115,7 @@ def add_course():
             category_id=form.data["category_id"],
             title=form.data["title"],
             alias=form.data["alias"],
-            description=form.data["description"],
+            preview_description=form.data["preview_description"],
             level=form.data["level"],
             duration=form.data["duration"],
             about=form.data["about"],
@@ -123,18 +123,18 @@ def add_course():
             features=form.data["features"],
             skills=form.data["skills"],
             registration_form=form.data["registration_form"],
-            artist=form.data["artist"],
+            artist_description=form.data["artist_description"],
             price=form.data["price"],
             start_date=form.data["start_date"],
             end_date=form.data["end_date"],
             final_registration_form=form.data["final_registration_form"],
         )
 
-        # Проверяем наличие и непустоту файла image
-        if "image" in request.files and request.files["image"]:
+        # Проверяем наличие и непустоту файла preview_photo
+        if "preview_photo" in request.files and request.files["preview_photo"]:
             try:
-                filename = photos.save(request.files["image"])
-                course_db.image = filename
+                filename = photos.save(request.files["preview_photo"])
+                course_db.preview_photo = filename
             except Exception as e:
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
@@ -203,12 +203,12 @@ def edit_course(course_id):
         course_db.category_id = form.category_id.data
         course_db.title = form.title.data
         course_db.alias = form.alias.data
-        course_db.description = form.description.data
+        course_db.preview_description = form.preview_description.data
 
-        # Проверяем наличие и непустоту файла image
-        if "image" in request.files and request.files["image"]:
-            filename = photos.save(request.files["image"])
-            course_db.image = filename
+        # Проверяем наличие и непустоту файла preview_photo
+        if "preview_photo" in request.files and request.files["preview_photo"]:
+            filename = photos.save(request.files["preview_photo"])
+            course_db.preview_photo = filename
 
         course_db.level = form.level.data
         course_db.duration = form.duration.data
@@ -230,7 +230,7 @@ def edit_course(course_id):
             filename = photos.save(request.files["registration_photo"])
             course_db.registration_photo = filename
 
-        course_db.artist = form.artist.data
+        course_db.artist_description = form.artist_description.data
 
         # Проверяем наличие и непустоту файла artist_photo
         if "artist_photo" in request.files and request.files["artist_photo"]:
@@ -256,13 +256,13 @@ def edit_course(course_id):
         return redirect(url_for(".edit_course", course_id=course_id))
 
      # Предзаполняем поля формы и фото
-    form.image.data = course_db.image
+    form.preview_photo.data = course_db.preview_photo
     form.about_photo.data = course_db.about_photo
     form.registration_photo.data = course_db.registration_photo
     form.artist_photo.data = course_db.artist_photo
     form.artist_work.data = course_db.artist_work
 
-    image = course_db.image
+    preview_photo = course_db.preview_photo
     about_photo = course_db.about_photo
     registration_photo = course_db.registration_photo
     student_works = course_db.student_works
@@ -273,7 +273,7 @@ def edit_course(course_id):
         form=form,
         course=course_id,
         course_id=course_id,
-        image=image,
+        preview_photo=preview_photo,
         about_photo=about_photo,
         registration_photo=registration_photo,
         student_works=student_works,
