@@ -3,16 +3,14 @@
 
 {% block content %}
    <div class="container">
-    <h1>{{ course.name }}</h1>
-    <p>{{ course.description }}</p>
-    <img src="{{ url_for('static', filename='upload/' ~ course.image) }}" alt="{{ course.name }}" width="300" height="300">
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.preview_description }}</p>
+    <img src="{{ url_for('static', filename='upload/' ~ course.preview_photo) }}" alt="{{ course.title }}" width="300" height="300">
     {{ course.about }}
     {{ course.about_photo }}
     {{ course.information }}
     {{ course.features }}
     {{ course.skills }}
-    {{ course.students_work }}
-    {{ course.promo }}
    </div>
    <!-- Start Registration Form -->
     <div class="container-xxl py-6" id="consultation">

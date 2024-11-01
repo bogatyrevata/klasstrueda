@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.extensions import db
 from app.models import ModelMixin
@@ -139,6 +139,14 @@ course_payment_table = db.Table(
     db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
 )
 
+
+course_promo_table = db.Table(
+    "course_promo",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("promo_id", db.Integer, db.ForeignKey("promo.id")),
+)
+
 course_studentwork_table = db.Table(
     "course_studentwork",
     db.Model.metadata,
@@ -192,7 +200,7 @@ class Video(db.Model, ModelMixin):
 
     __tablename__ = "video"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     duration_seconds = db.Column(db.Integer)
@@ -203,7 +211,7 @@ class Category(db.Model, ModelMixin):
 
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
 
@@ -218,31 +226,43 @@ class Course(db.Model, ModelMixin):
     __tablename__ = "course"
     id = db.Column(db.Integer, primary_key=True)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    image = db.Column(db.String(255))
     level = db.Column(db.String(255))
-    duration = db.Column(db.String(255))
+
+    # Поля для карточки курса
+    preview_description = db.Column(db.String(255))# Краткое описание курса для карточки
+    preview_photo = db.Column(db.String(255)) # Фото курса для карточки
+
+    # Текстовые поля курса
     about = db.Column(db.Text)
-    about_photo = db.Column(db.String(255))
     information = db.Column(db.Text)
     features = db.Column(db.Text)
     skills = db.Column(db.Text)
-    students_work = db.Column(db.Text)
-    promo = db.Column(db.Text)
-    registration_form = db.Column(db.String(255))
-    registration_photo = db.Column(db.String(255))
-    artist = db.Column(db.Text)
+    artist_description = db.Column(db.Text) # Описание мастера с точки зрения конкретного курса, поменять название
+    artists = db.relationship("Artist", secondary="artist_course", backref=db.backref("courses", lazy="dynamic"))
+    promos = db.relationship("Promo", secondary="course_promo", backref="course")
+
+    # Фотографии для описания курса
+    about_photo = db.Column(db.String(255))
     artist_photo = db.Column(db.String(255))
-    artist_work = db.Column(db.Text)
-    price = db.Column(db.Text)
+    registration_photo = db.Column(db.String(255))
+
+    # Карусели
+    artist_work = db.Column(db.Text) #Нет связи работ мастера с курсом, работы мастера хранятся в Artist в поле works
+    student_works = db.relationship("StudentWork", secondary="course_studentwork", backref="course")
+
+    # Формы
+    registration_form = db.Column(db.String(255))
     final_registration_form = db.Column(db.String(255))
-    start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Метрики курса
+    duration = db.Column(db.String(255)) #длительность, можно не хранить а высчитывать
+    price = db.Column(db.Text)
+    start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
+    end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
 
     modules = db.relationship("Module", secondary="course_module", backref="course")
-    student_works = db.relationship("StudentWork", secondary="course_studentwork", backref=db.backref("course", lazy="dynamic"))
 
 
 
@@ -251,13 +271,13 @@ class Module(db.Model, ModelMixin):
 
     __tablename__ = "module"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
 
     lessons = db.relationship("Lesson", cascade="all, delete-orphan", backref="module") # каскадное удаление
     courses = db.relationship("Course", secondary="course_module", backref="module")
-    photos = db.relationship("Photo", secondary="photo_module", backref=db.backref("module", lazy="dynamic"))
+    photos = db.relationship("Photo", secondary="photo_module", backref="module")
 
 
 class Lesson(db.Model, ModelMixin):
@@ -266,13 +286,13 @@ class Lesson(db.Model, ModelMixin):
     __tablename__ = "lesson"
     id = db.Column(db.Integer, primary_key=True)
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"), nullable=False)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
 
-    photos = db.relationship("Photo", secondary="photo_lesson", backref=db.backref("lesson", lazy="dynamic"))
-    videos = db.relationship("Video", secondary="video_lesson", backref=db.backref("lesson", lazy="dynamic"))
+    photos = db.relationship("Photo", secondary="photo_lesson", backref="lesson")
+    videos = db.relationship("Video", secondary="video_lesson", backref="lesson")
 
 
 class Homework(db.Model, ModelMixin):
@@ -281,7 +301,7 @@ class Homework(db.Model, ModelMixin):
     __tablename__ = "homework"
     id = db.Column(db.Integer, primary_key=True)
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
 
@@ -316,8 +336,8 @@ class Artist(db.Model, ModelMixin):
     contacts = db.Column(db.String(255))
 
     works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
-    courses = db.relationship("Course", secondary="artist_course",backref=db.backref("artists", lazy="dynamic"))
-    modules=db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
+    # courses = db.relationship("Course", secondary="artist_course", backref=db.backref("artists", lazy="dynamic"))
+    modules = db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
     # users = db.relationship("User", backref="artist") # one-to-many
 
 
@@ -340,7 +360,7 @@ class Tariff(db.Model, ModelMixin):
 
     __tablename__ = "tariff"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     price = db.Column(db.Numeric(precision=10, scale=2))
     discount = db.Column(db.Integer)
@@ -351,7 +371,7 @@ class StudentWork(db.Model, ModelMixin):
 
     __tablename__= "studentwork"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
 
@@ -363,10 +383,27 @@ class ArtistWork(db.Model, ModelMixin):
 
     __tablename__= "artistwork"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
     artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)  # Внешний ключ на таблицу Artist
 
     # Определение отношения
     artist = db.relationship("Artist", back_populates="works")
+
+
+class Promo(db.Model, ModelMixin):
+    """Модель для хранения информации о акциях."""
+
+    __tablename__ = "promo"
+    id = db.Column(db.Integer, primary_key=True)
+    alias = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    description = db.Column(db.String(2048))
+    photo = db.Column(db.String(255))
+    price = db.Column(db.Numeric(precision=10, scale=2))
+    discount = db.Column(db.Integer)
+    start_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
+    end_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
+
+    courses = db.relationship("Course", secondary="course_promo", backref="promo")

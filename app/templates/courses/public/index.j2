@@ -11,7 +11,7 @@
       <div class="row g-4 justify-content-center">
       {% for category in categories %}
       <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="">
-        <h2>{{ category.name }}</h2>
+        <h2>{{ category.title }}</h2>
         <p>{{ category.description }}</p>
       </div>
         {% for course in courses %}
@@ -20,19 +20,19 @@
               <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
                 <div class="text-center p-4 pt-0">
                   <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price }}</div>
-                  <h5 class="mb-3">{{ course.name }}</h5>
-                  <p>{{ course.description }}</p>
+                  <h5 class="mb-3">{{ course.title }}</h5>
+                  <p>{{ course.preview_description }}</p>
                   <ol class="breadcrumb justify-content-center mb-0">
                     <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>{{ course.level }}</li>
                     <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ course.duration }}</li>
                   </ol>
                 </div>
                 <div class="position-relative mt-auto">
-                  {% if course.image %}
+                  {% if course.preview_photo %}
                     {{ picture(
                       class_name='img-fluid',
-                      file_name='upload/' ~ course.image,
-                      alt='Изображение для курсов %s' % course.name,
+                      file_name='upload/' ~ course.preview_photo,
+                      alt='Изображение для курсов %s' % course.title,
                       width=300,
                       height=300,
                       bp_tablet=834,

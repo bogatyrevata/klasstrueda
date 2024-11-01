@@ -20,8 +20,12 @@ def index():
     courses_db = Course.query.all()
     modules_db = Module.query.all()
     lessons_db = Lesson.query.all()
-    return render_template("courses/admin/index.j2", categories=categories_db, courses=courses_db,
-                           modules=modules_db, lessons=lessons_db)
+    return render_template(
+        "courses/admin/index.j2",
+        categories=categories_db,
+        courses=courses_db,
+        modules=modules_db,
+        lessons=lessons_db)
 
 
 @admin_courses.route("/add-category", methods=["GET", "POST"])
@@ -30,7 +34,7 @@ def add_category():
 
     if form.validate_on_submit():
         category_db = Category(
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
         )
@@ -42,7 +46,7 @@ def add_category():
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.data["name"]}',
+                        alt=f'Изображение для {form.data["title"]}',
                     )
                     category_db.photos.append(new_photo)
 
@@ -59,7 +63,7 @@ def edit_category(category_id):
     form = CategoryForm(obj=category_db)
 
     if form.validate_on_submit():
-        category_db.name = form.name.data
+        category_db.title = form.title.data
         category_db.alias = form.alias.data
         category_db.description = form.description.data
 
@@ -70,7 +74,7 @@ def edit_category(category_id):
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.name.data}',
+                        alt=f'Изображение для {form.title.data}',
                     )
                     category_db.photos.append(new_photo)
 
@@ -78,7 +82,11 @@ def edit_category(category_id):
         flash("Категория успешно обновлена!", "success")
         return redirect(url_for(".edit_category", category_id=category_id))
 
-    return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
+    return render_template(
+        "courses/admin/edit-category.j2",
+        form=form,
+        category=category_db,
+        category_id=category_id)
 
 
 
@@ -99,35 +107,34 @@ def delete_category(category_id):
 @admin_courses.route("/add-course", methods=["GET", "POST"])
 def add_course():
     form = CourseForm()
-    form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
-    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.category_id.choices = [(category.id, category.title) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         course_db = Course(
             category_id=form.data["category_id"],
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
-            description=form.data["description"],
+            preview_description=form.data["preview_description"],
             level=form.data["level"],
             duration=form.data["duration"],
             about=form.data["about"],
             information=form.data["information"],
             features=form.data["features"],
             skills=form.data["skills"],
-            promo=form.data["promo"],
             registration_form=form.data["registration_form"],
-            artist=form.data["artist"],
+            artist_description=form.data["artist_description"],
             price=form.data["price"],
             start_date=form.data["start_date"],
             end_date=form.data["end_date"],
             final_registration_form=form.data["final_registration_form"],
         )
 
-        # Проверяем наличие и непустоту файла image
-        if "image" in request.files and request.files["image"]:
+        # Проверяем наличие и непустоту файла preview_photo
+        if "preview_photo" in request.files and request.files["preview_photo"]:
             try:
-                filename = photos.save(request.files["image"])
-                course_db.image = filename
+                filename = photos.save(request.files["preview_photo"])
+                course_db.preview_photo = filename
             except Exception as e:
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
@@ -137,15 +144,6 @@ def add_course():
             try:
                 filename = photos.save(request.files["about_photo"])
                 course_db.about_photo = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
-        # Проверяем наличие и непустоту файла students_work
-        if "students_work" in request.files and request.files["students_work"]:
-            try:
-                filename = photos.save(request.files["students_work"])
-                course_db.students_work = filename
             except Exception as e:
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
@@ -193,8 +191,9 @@ def add_course():
 def edit_course(course_id):
     course_db = Course.query.get_or_404(course_id)
     form = CourseForm(obj=course_db)  # Передаем объект course_db в форму для предзаполнения полей
-    form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
-    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
+    artists = course_db.artists
+    form.category_id.choices = [(category.id, category.title) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
     # Предзаполняем выбранные модули
     if request.method == "GET":
@@ -202,14 +201,14 @@ def edit_course(course_id):
 
     if form.validate_on_submit():
         course_db.category_id = form.category_id.data
-        course_db.name = form.name.data
+        course_db.title = form.title.data
         course_db.alias = form.alias.data
-        course_db.description = form.description.data
+        course_db.preview_description = form.preview_description.data
 
-        # Проверяем наличие и непустоту файла image
-        if "image" in request.files and request.files["image"]:
-            filename = photos.save(request.files["image"])
-            course_db.image = filename
+        # Проверяем наличие и непустоту файла preview_photo
+        if "preview_photo" in request.files and request.files["preview_photo"]:
+            filename = photos.save(request.files["preview_photo"])
+            course_db.preview_photo = filename
 
         course_db.level = form.level.data
         course_db.duration = form.duration.data
@@ -224,12 +223,6 @@ def edit_course(course_id):
         course_db.features = form.features.data
         course_db.skills = form.skills.data
 
-        # Проверяем наличие и непустоту файла students_work
-        if "students_work" in request.files and request.files["students_work"]:
-            filename = photos.save(request.files["students_work"])
-            course_db.students_work = filename
-
-        course_db.promo = form.promo.data
         course_db.registration_form = form.registration_form.data
 
         # Проверяем наличие и непустоту файла registration_photo
@@ -237,7 +230,7 @@ def edit_course(course_id):
             filename = photos.save(request.files["registration_photo"])
             course_db.registration_photo = filename
 
-        course_db.artist = form.artist.data
+        course_db.artist_description = form.artist_description.data
 
         # Проверяем наличие и непустоту файла artist_photo
         if "artist_photo" in request.files and request.files["artist_photo"]:
@@ -263,22 +256,30 @@ def edit_course(course_id):
         return redirect(url_for(".edit_course", course_id=course_id))
 
      # Предзаполняем поля формы и фото
-    form.image.data = course_db.image
+    form.preview_photo.data = course_db.preview_photo
     form.about_photo.data = course_db.about_photo
     form.registration_photo.data = course_db.registration_photo
-    form.students_work.data = course_db.students_work
     form.artist_photo.data = course_db.artist_photo
     form.artist_work.data = course_db.artist_work
 
-    image = course_db.image
+    preview_photo = course_db.preview_photo
     about_photo = course_db.about_photo
     registration_photo = course_db.registration_photo
-    students_work = course_db.students_work
+    student_works = course_db.student_works
     artist_photo = course_db.artist_photo
     artist_work = course_db.artist_work
-    return render_template("courses/admin/edit-course.j2", form=form, course=course_id,
-                           course_id=course_id, image=image, about_photo=about_photo, registration_photo=registration_photo,
-                           students_work=students_work, artist_photo=artist_photo, artist_work=artist_work)
+    return render_template(
+        "courses/admin/edit-course.j2",
+        form=form,
+        course=course_id,
+        course_id=course_id,
+        preview_photo=preview_photo,
+        about_photo=about_photo,
+        registration_photo=registration_photo,
+        student_works=student_works,
+        artist_photo=artist_photo,
+        artist_work=artist_work,
+        artists=artists)
 
 
 @admin_courses.post("/delete-course/<int:course_id>")
@@ -298,12 +299,12 @@ def delete_course(course_id):
 @admin_courses.route("/add-module", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
-    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.title) for lesson in Lesson.query.all()]
 
     if form.validate_on_submit():
         module_db = Module(
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
         )
@@ -315,7 +316,7 @@ def add_module():
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.name.data}',
+                        alt=f'Изображение для {form.title.data}',
                     )
                     module_db.photos.append(new_photo)
                     db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
@@ -336,17 +337,20 @@ def add_module():
         flash("Модуль успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    modules = Module.query.all()  # Получаем все модули из базы данных
+    modules_db = Module.query.all()  # Получаем все модули из базы данных
 
-    return render_template("courses/admin/add-module.j2", form=form, modules=modules)
+    return render_template(
+        "courses/admin/add-module.j2",
+        form=form,
+        modules=modules_db)
 
 
 @admin_courses.route("/edit-module/<int:module_id>", methods=["GET","POST"])
 def edit_module(module_id):
     module_db = Module.query.get_or_404(module_id)
     form = ModuleForm(obj=module_db)
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
-    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.title) for lesson in Lesson.query.all()]
 
     # Предзаполнение выбранных курсов
     form.course_id.data = [course.id for course in module_db.courses]
@@ -355,7 +359,7 @@ def edit_module(module_id):
     form.lessons.data = [lesson.id for lesson in module_db.lessons]
 
     if form.validate_on_submit():
-        module_db.name = form.name.data
+        module_db.title = form.title.data
         module_db.alias = form.alias.data
         module_db.description = form.description.data
 
@@ -365,7 +369,7 @@ def edit_module(module_id):
                   filename = photos.save(file)
                   new_photo = Photo(
                       filename=filename,
-                      alt=f'Изображение для {form.name.data}',
+                      alt=f'Изображение для {form.title.data}',
                   )
                   module_db.photos.append(new_photo)
                   db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
@@ -382,9 +386,14 @@ def edit_module(module_id):
         flash("Модуль успешно обновлен!", "success")
         return redirect(url_for(".edit_module", module_id=module_id))
 
-    modules = Module.query.all()  # Получаем все модули из базы данных
+    modules_db = Module.query.all()  # Получаем все модули из базы данных
 
-    return render_template("courses/admin/edit-module.j2", form=form, module=module_db, module_id=module_id, modules=modules)
+    return render_template(
+        "courses/admin/edit-module.j2",
+        form=form,
+        module=module_db,
+        module_id=module_id,
+        modules=modules_db)
 
 
 @admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
@@ -406,12 +415,12 @@ def delete_module(course_id, module_id):
 @admin_courses.route("/add-lesson", methods=["GET","POST"])
 def add_lesson():
     form = LessonForm()
-    form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         lesson_db = Lesson(
             module_id = form.data["module_id"],
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"]
         )
@@ -419,29 +428,37 @@ def add_lesson():
         flash("Урок успешно сохранен!", "success")
         return redirect(url_for(".index"))
 
-    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+    lessons_db = Lesson.query.all()  # Получаем все уроки из базы данных
 
-    return render_template("courses/admin/add-lesson.j2", form=form, lessons=lessons)
+    return render_template(
+        "courses/admin/add-lesson.j2",
+        form=form,
+        lessons=lessons_db)
 
 
 @admin_courses.route("/edit-lesson/<int:lesson_id>", methods=["GET","POST"])
 def edit_lesson(lesson_id):
     lesson_db = Lesson.query.get_or_404(lesson_id)
     form = LessonForm(obj=lesson_db)
-    form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         lesson_db.module_id = form.module_id.data
-        lesson_db.name = form.name.data
+        lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
         db.session.commit()
         flash("Урок успешно обновлен!", "success")
         return redirect(url_for(".edit_lesson", lesson_id=lesson_id, lesson=lesson_db))
 
-    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+    lessons_db = Lesson.query.all()  # Получаем все уроки из базы данных
 
-    return render_template("courses/admin/edit-lesson.j2", form=form, lessons=lessons, lesson=lesson_id, lesson_id=lesson_id)
+    return render_template(
+        "courses/admin/edit-lesson.j2",
+        form=form,
+        lessons=lessons_db,
+        lesson=lesson_id,
+        lesson_id=lesson_id)
 
 
 @admin_courses.route("/delete-lesson/<int:lesson_id>", methods=["GET"])
@@ -484,11 +501,11 @@ def delete_photo(entity_type, entity_id, photo_id):
 @admin_courses.route("/add-studentwork", methods=["GET", "POST"])
 def add_studentwork():
     form = StudentWorkForm()
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
     if form.validate_on_submit():
         studentwork_db = StudentWork(
-            name=form.data["name"],
+            title=form.data["title"],
             description=form.data["description"],
         )
         filename = ""
@@ -512,9 +529,12 @@ def add_studentwork():
         flash("Работа студента успешно добавлена!", "success")
         return redirect(url_for(".index"))
 
-    studentworks = StudentWork.query.all()  # Получаем все работы из базы данных
+    studentworks_db = StudentWork.query.all()  # Получаем все работы из базы данных
 
-    return render_template("courses/admin/add-studentwork.j2", form=form, studentworks=studentworks)
+    return render_template(
+        "courses/admin/add-studentwork.j2",
+        form=form,
+        studentworks=studentworks_db)
 
 
 
@@ -522,13 +542,13 @@ def add_studentwork():
 def edit_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
     form = StudentWorkForm(obj=studentwork_db)
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
     # Предзаполнение выбранных курсов
     form.course_id.data = [course.id for course in studentwork_db.courses]
 
     if form.validate_on_submit():
-        studentwork_db.name = form.name.data
+        studentwork_db.title = form.title.data
         studentwork_db.description = form.description.data
 
         # Обработка загруженного файла (одно фото)
@@ -546,15 +566,14 @@ def edit_studentwork(studentwork_id):
         flash("Работа студента успешно обновлена!", "success")
         return redirect(url_for(".edit_studentwork", studentwork_id=studentwork_id))
 
-    studentworks = StudentWork.query.all()  # Получаем все работы студентов из базы данных
+    studentworks_db = StudentWork.query.all()  # Получаем все работы студентов из базы данных
 
     return render_template(
         "courses/admin/edit-studentwork.j2",
         form=form,
-        studentworks=studentworks,
+        studentworks=studentworks_db,
         studentwork=studentwork_db,
-        studentwork_id=studentwork_id,
-    )
+        studentwork_id=studentwork_id,)
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
@@ -562,6 +581,10 @@ def delete_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
 
     if studentwork_db:
+         # Удаление всех связей перед удалением `StudentWork`
+        studentwork_db.courses = []
+        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+
         db.session.delete(studentwork_db)
         db.session.commit()
         flash("Работа студента успешно удалена!", "success")
@@ -598,9 +621,12 @@ def add_artist():
         flash("Мастер успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+    artists_db = Artist.query.all()  # Получаем всх мастеров из базы данных
 
-    return render_template("courses/admin/add-artist.j2", form=form, artists=artists)
+    return render_template(
+        "courses/admin/add-artist.j2",
+        form=form,
+        artists=artists_db)
 
 
 @admin_courses.route("/edit-artist/<int:artist_id>", methods=["GET", "POST"])
@@ -627,9 +653,14 @@ def edit_artist(artist_id):
         flash("Информация о мастере успешно обновлена!", "success")
         return redirect(url_for(".index"))
 
-    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+    artists_db = Artist.query.all()  # Получаем всх мастеров из базы данных
 
-    return render_template("courses/admin/edit-artist.j2", form=form, artists=artists, artist_id=artist_id, artist=artist_db,)
+    return render_template(
+        "courses/admin/edit-artist.j2",
+        form=form,
+        artists=artists_db,
+        artist_id=artist_id,
+        artist=artist_db)
 
 
 @admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
@@ -653,7 +684,7 @@ def add_artistwork():
 
     if form.validate_on_submit():
         artistwork_db = ArtistWork(
-            name=form.data["name"],
+            title=form.data["title"],
             description=form.data["description"],
             artist_id=form.data["artist_id"],
         )
@@ -671,9 +702,12 @@ def add_artistwork():
         flash("Работа мастера успешно добавлена!", "success")
         return redirect(url_for(".index"))
 
-    artistworks = ArtistWork.query.all()  # Получаем все работы из базы данных
+    artistworks_db = ArtistWork.query.all()  # Получаем все работы из базы данных
 
-    return render_template("courses/admin/add-artistwork.j2", form=form, artistworks=artistworks)
+    return render_template(
+        "courses/admin/add-artistwork.j2",
+        form=form,
+        artistworks=artistworks_db)
 
 
 @admin_courses.route("/edit-artistwork/<int:artistwork_id>", methods=["GET", "POST"])
@@ -686,7 +720,7 @@ def edit_artistwork(artistwork_id):
     form.artist_id.data = artistwork_db.artist_id
 
     if form.validate_on_submit():
-        artistwork_db.name = form.name.data
+        artistwork_db.title = form.title.data
         artistwork_db.description = form.description.data
         artistwork_db.artist_id = form.artist_id.data
 
@@ -699,14 +733,16 @@ def edit_artistwork(artistwork_id):
 
         db.session.commit()
         flash("Работа мастера успешно обновлена!", "success")
-        return redirect(url_for(".edit_artistwork", artistwork_id=artistwork_id))
+        return redirect(url_for(
+            ".edit_artistwork",
+            artistwork_id=artistwork_id))
 
-    artistworks = ArtistWork.query.all()  # Получаем все работы мастера из базы данных
+    artistworks_db = ArtistWork.query.all()  # Получаем все работы мастера из базы данных
 
     return render_template(
         "courses/admin/edit-artistwork.j2",
         form=form,
-        artistworks=artistworks,
+        artistworks=artistworks_db,
         artistwork_id=artistwork_id,
         artistwork=artistwork_db,
         )

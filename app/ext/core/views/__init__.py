@@ -194,7 +194,7 @@ def form_proc():
     if form.validate_on_submit():
         first_name = form.first_name.data
         email = form.email.data
-        course_name = form.course_name.data
+        course_title = form.course_title.data
         message = form.message.data
 
         # Формируем сообщение для отправки уведомления
@@ -202,7 +202,7 @@ def form_proc():
             f"Новая заявка на курс:\n"
             f"Имя: {first_name}\n"
             f"Email: {email}\n"
-            f"Курс: {course_name}\n"
+            f"Курс: {course_title}\n"
             f"Сообщение: {message}"
         )
 
