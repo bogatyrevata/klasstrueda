@@ -267,7 +267,7 @@ class Module(db.Model, ModelMixin):
 
     lessons = db.relationship("Lesson", cascade="all, delete-orphan", backref="module") # каскадное удаление
     courses = db.relationship("Course", secondary="course_module", backref="module")
-    photos = db.relationship("Photo", secondary="photo_module", backref=db.backref("module", lazy="dynamic"))
+    photos = db.relationship("Photo", secondary="photo_module", backref="module")
 
 
 class Lesson(db.Model, ModelMixin):
@@ -281,8 +281,8 @@ class Lesson(db.Model, ModelMixin):
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
 
-    photos = db.relationship("Photo", secondary="photo_lesson", backref=db.backref("lesson", lazy="dynamic"))
-    videos = db.relationship("Video", secondary="video_lesson", backref=db.backref("lesson", lazy="dynamic"))
+    photos = db.relationship("Photo", secondary="photo_lesson", backref="lesson")
+    videos = db.relationship("Video", secondary="video_lesson", backref="lesson")
 
 
 class Homework(db.Model, ModelMixin):
@@ -326,8 +326,8 @@ class Artist(db.Model, ModelMixin):
     contacts = db.Column(db.String(255))
 
     works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
-    courses = db.relationship("Course", secondary="artist_course",backref=db.backref("artists", lazy="dynamic"))
-    modules=db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
+    # courses = db.relationship("Course", secondary="artist_course", backref=db.backref("artists", lazy="dynamic"))
+    modules = db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
     # users = db.relationship("User", backref="artist") # one-to-many
 
 
