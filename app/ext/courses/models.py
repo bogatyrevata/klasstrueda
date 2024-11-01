@@ -200,7 +200,7 @@ class Video(db.Model, ModelMixin):
 
     __tablename__ = "video"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255)) #title
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     duration_seconds = db.Column(db.Integer)
@@ -211,7 +211,7 @@ class Category(db.Model, ModelMixin):
 
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255)) #title
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
 

@@ -140,15 +140,6 @@ def add_course():
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
 
-        # Проверяем наличие и непустоту файла students_work
-        if "students_work" in request.files and request.files["students_work"]:
-            try:
-                filename = photos.save(request.files["students_work"])
-                course_db.students_work = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
         # Проверяем наличие и непустоту файла registration_photo
         if "registration_photo" in request.files and request.files["registration_photo"]:
             try:
@@ -223,11 +214,6 @@ def edit_course(course_id):
         course_db.features = form.features.data
         course_db.skills = form.skills.data
 
-        # Проверяем наличие и непустоту файла students_work
-        if "students_work" in request.files and request.files["students_work"]:
-            filename = photos.save(request.files["students_work"])
-            course_db.students_work = filename
-
         course_db.registration_form = form.registration_form.data
 
         # Проверяем наличие и непустоту файла registration_photo
@@ -264,7 +250,6 @@ def edit_course(course_id):
     form.image.data = course_db.image
     form.about_photo.data = course_db.about_photo
     form.registration_photo.data = course_db.registration_photo
-    form.students_work.data = course_db.students_work
     form.artist_photo.data = course_db.artist_photo
     form.artist_work.data = course_db.artist_work
 
