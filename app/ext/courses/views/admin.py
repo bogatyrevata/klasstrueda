@@ -271,12 +271,21 @@ def edit_course(course_id):
     image = course_db.image
     about_photo = course_db.about_photo
     registration_photo = course_db.registration_photo
-    students_work = course_db.students_work
+    student_works = course_db.student_works
     artist_photo = course_db.artist_photo
     artist_work = course_db.artist_work
-    return render_template("courses/admin/edit-course.j2", form=form, course=course_id,
-                           course_id=course_id, image=image, about_photo=about_photo, registration_photo=registration_photo,
-                           students_work=students_work, artist_photo=artist_photo, artist_work=artist_work)
+    return render_template(
+        "courses/admin/edit-course.j2",
+        form=form,
+        course=course_id,
+        course_id=course_id,
+        image=image,
+        about_photo=about_photo,
+        registration_photo=registration_photo,
+        student_works=student_works,
+        artist_photo=artist_photo,
+        artist_work=artist_work,
+        artists=artists)
 
 
 @admin_courses.post("/delete-course/<int:course_id>")

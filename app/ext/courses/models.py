@@ -246,12 +246,12 @@ class Course(db.Model, ModelMixin):
     artist_photo = db.Column(db.String(255))
     artist_work = db.Column(db.Text)
     price = db.Column(db.Text)
+    student_works = db.relationship("StudentWork", secondary="course_studentwork", backref="course")
     final_registration_form = db.Column(db.String(255))
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     modules = db.relationship("Module", secondary="course_module", backref="course")
-    student_works = db.relationship("StudentWork", secondary="course_studentwork", backref=db.backref("course", lazy="dynamic"))
 
 
 
