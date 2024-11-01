@@ -228,28 +228,37 @@ class Course(db.Model, ModelMixin):
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
     title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    image = db.Column(db.String(255))
     level = db.Column(db.String(255))
-    duration = db.Column(db.String(255))
+
+    # Поля для карточки курса
+    preview_description = db.Column(db.String(255))# Краткое описание курса для карточки
+    preview_photo = db.Column(db.String(255)) # Фото курса для карточки
+
+    # Текстовые поля курса
     about = db.Column(db.Text)
-    about_photo = db.Column(db.String(255))
     information = db.Column(db.Text)
     features = db.Column(db.Text)
     skills = db.Column(db.Text)
-    students_work = db.Column(db.Text)
-    registration_form = db.Column(db.String(255))
-    registration_photo = db.Column(db.String(255))
-    artist = db.Column(db.Text)
+    artist_description = db.Column(db.Text) # Описание мастера с точки зрения конкретного курса, поменять название
     artists = db.relationship("Artist", secondary="artist_course", backref=db.backref("courses", lazy="dynamic"))
     promos = db.relationship("Promo", secondary="course_promo", backref="course")
 
+    # Фотографии для описания курса
+    about_photo = db.Column(db.String(255))
     artist_photo = db.Column(db.String(255))
-    artist_work = db.Column(db.Text)
-    price = db.Column(db.Text)
+    registration_photo = db.Column(db.String(255))
+
+    # Карусели
+    artist_work = db.Column(db.Text) #Нет связи работ мастера с курсом, работы мастера хранятся в Artist в поле works
     student_works = db.relationship("StudentWork", secondary="course_studentwork", backref="course")
+
+    # Формы
+    registration_form = db.Column(db.String(255))
     final_registration_form = db.Column(db.String(255))
 
+    # Метрики курса
+    duration = db.Column(db.String(255)) #длительность, можно не хранить а высчитывать
+    price = db.Column(db.Text)
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
 
