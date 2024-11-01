@@ -34,7 +34,7 @@ def add_category():
 
     if form.validate_on_submit():
         category_db = Category(
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
         )
@@ -46,7 +46,7 @@ def add_category():
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.data["name"]}',
+                        alt=f'Изображение для {form.data["title"]}',
                     )
                     category_db.photos.append(new_photo)
 
@@ -63,7 +63,7 @@ def edit_category(category_id):
     form = CategoryForm(obj=category_db)
 
     if form.validate_on_submit():
-        category_db.name = form.name.data
+        category_db.title = form.title.data
         category_db.alias = form.alias.data
         category_db.description = form.description.data
 
@@ -74,7 +74,7 @@ def edit_category(category_id):
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.name.data}',
+                        alt=f'Изображение для {form.title.data}',
                     )
                     category_db.photos.append(new_photo)
 
@@ -107,13 +107,13 @@ def delete_category(category_id):
 @admin_courses.route("/add-course", methods=["GET", "POST"])
 def add_course():
     form = CourseForm()
-    form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
-    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.category_id.choices = [(category.id, category.title) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         course_db = Course(
             category_id=form.data["category_id"],
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
             level=form.data["level"],
@@ -191,8 +191,8 @@ def add_course():
 def edit_course(course_id):
     course_db = Course.query.get_or_404(course_id)
     form = CourseForm(obj=course_db)  # Передаем объект course_db в форму для предзаполнения полей
-    form.category_id.choices = [(category.id, category.name) for category in Category.query.all()]
-    form.modules.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.category_id.choices = [(category.id, category.title) for category in Category.query.all()]
+    form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
     # Предзаполняем выбранные модули
     if request.method == "GET":
@@ -200,7 +200,7 @@ def edit_course(course_id):
 
     if form.validate_on_submit():
         course_db.category_id = form.category_id.data
-        course_db.name = form.name.data
+        course_db.title = form.title.data
         course_db.alias = form.alias.data
         course_db.description = form.description.data
 
@@ -298,12 +298,12 @@ def delete_course(course_id):
 @admin_courses.route("/add-module", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
-    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.title) for lesson in Lesson.query.all()]
 
     if form.validate_on_submit():
         module_db = Module(
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
         )
@@ -315,7 +315,7 @@ def add_module():
                     filename = photos.save(file)
                     new_photo = Photo(
                         filename=filename,
-                        alt=f'Изображение для {form.name.data}',
+                        alt=f'Изображение для {form.title.data}',
                     )
                     module_db.photos.append(new_photo)
                     db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
@@ -348,8 +348,8 @@ def add_module():
 def edit_module(module_id):
     module_db = Module.query.get_or_404(module_id)
     form = ModuleForm(obj=module_db)
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
-    form.lessons.choices = [(lesson.id, lesson.name) for lesson in Lesson.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.lessons.choices = [(lesson.id, lesson.title) for lesson in Lesson.query.all()]
 
     # Предзаполнение выбранных курсов
     form.course_id.data = [course.id for course in module_db.courses]
@@ -358,7 +358,7 @@ def edit_module(module_id):
     form.lessons.data = [lesson.id for lesson in module_db.lessons]
 
     if form.validate_on_submit():
-        module_db.name = form.name.data
+        module_db.title = form.title.data
         module_db.alias = form.alias.data
         module_db.description = form.description.data
 
@@ -368,7 +368,7 @@ def edit_module(module_id):
                   filename = photos.save(file)
                   new_photo = Photo(
                       filename=filename,
-                      alt=f'Изображение для {form.name.data}',
+                      alt=f'Изображение для {form.title.data}',
                   )
                   module_db.photos.append(new_photo)
                   db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
@@ -414,12 +414,12 @@ def delete_module(course_id, module_id):
 @admin_courses.route("/add-lesson", methods=["GET","POST"])
 def add_lesson():
     form = LessonForm()
-    form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         lesson_db = Lesson(
             module_id = form.data["module_id"],
-            name=form.data["name"],
+            title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"]
         )
@@ -439,11 +439,11 @@ def add_lesson():
 def edit_lesson(lesson_id):
     lesson_db = Lesson.query.get_or_404(lesson_id)
     form = LessonForm(obj=lesson_db)
-    form.module_id.choices = [(module.id, module.name) for module in Module.query.all()]
+    form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
         lesson_db.module_id = form.module_id.data
-        lesson_db.name = form.name.data
+        lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
         db.session.commit()
@@ -500,11 +500,11 @@ def delete_photo(entity_type, entity_id, photo_id):
 @admin_courses.route("/add-studentwork", methods=["GET", "POST"])
 def add_studentwork():
     form = StudentWorkForm()
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
     if form.validate_on_submit():
         studentwork_db = StudentWork(
-            name=form.data["name"],
+            title=form.data["title"],
             description=form.data["description"],
         )
         filename = ""
@@ -541,13 +541,13 @@ def add_studentwork():
 def edit_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
     form = StudentWorkForm(obj=studentwork_db)
-    form.course_id.choices = [(course.id, course.name) for course in Course.query.all()]
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
     # Предзаполнение выбранных курсов
     form.course_id.data = [course.id for course in studentwork_db.courses]
 
     if form.validate_on_submit():
-        studentwork_db.name = form.name.data
+        studentwork_db.title = form.title.data
         studentwork_db.description = form.description.data
 
         # Обработка загруженного файла (одно фото)
@@ -683,7 +683,7 @@ def add_artistwork():
 
     if form.validate_on_submit():
         artistwork_db = ArtistWork(
-            name=form.data["name"],
+            title=form.data["title"],
             description=form.data["description"],
             artist_id=form.data["artist_id"],
         )
@@ -719,7 +719,7 @@ def edit_artistwork(artistwork_id):
     form.artist_id.data = artistwork_db.artist_id
 
     if form.validate_on_submit():
-        artistwork_db.name = form.name.data
+        artistwork_db.title = form.title.data
         artistwork_db.description = form.description.data
         artistwork_db.artist_id = form.artist_id.data
 

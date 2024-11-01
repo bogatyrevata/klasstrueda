@@ -3,9 +3,9 @@
 
 {% block content %}
    <div class="container">
-    <h1>{{ course.name }}</h1>
+    <h1>{{ course.title }}</h1>
     <p>{{ course.description }}</p>
-    <img src="{{ url_for('static', filename='upload/' ~ course.image) }}" alt="{{ course.name }}" width="300" height="300">
+    <img src="{{ url_for('static', filename='upload/' ~ course.image) }}" alt="{{ course.title }}" width="300" height="300">
     {{ course.about }}
     {{ course.about_photo }}
     {{ course.information }}

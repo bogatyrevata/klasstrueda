@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Regexp, Email
 
 
 class CategoryForm(FlaskForm):
-    name = StringField("Название категории", validators=[DataRequired("Название обязательно для заполнения")])
+    title = StringField("Название категории", validators=[DataRequired("Название обязательно для заполнения")])
     alias = StringField("Алиас категории", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -17,7 +17,7 @@ class CategoryForm(FlaskForm):
 
 
 class CourseForm(FlaskForm):
-    name = StringField("Название курса", validators=[DataRequired("Название обязательно для заполнения")])
+    title = StringField("Название курса", validators=[DataRequired("Название обязательно для заполнения")])
     alias = StringField("Алиас курса", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -47,7 +47,7 @@ class CourseForm(FlaskForm):
 
 class ModuleForm(FlaskForm):
     course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
-    name = StringField("Название модуля", validators=[DataRequired()])
+    title = StringField("Название модуля", validators=[DataRequired()])
     alias = StringField("Алиас модуля", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -60,7 +60,7 @@ class ModuleForm(FlaskForm):
 
 class LessonForm(FlaskForm):
     module_id = SelectField("Название модуля", coerce=int, validators=[DataRequired()])
-    name = StringField("Название урока", validators=[DataRequired()])
+    title = StringField("Название урока", validators=[DataRequired()])
     alias = StringField("Алиас урока", validators=[
         DataRequired(),
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
@@ -83,7 +83,7 @@ class LessonForm(FlaskForm):
 
 class HomeworkForm(FlaskForm):
     module_id = SelectField("Название модуля", coerce=int, validators=[DataRequired()])
-    name = StringField("Название домашней работы", validators=[DataRequired()])
+    title = StringField("Название домашней работы", validators=[DataRequired()])
     description = TextAreaField("Описание урока")
     file = FileField("Загрузить файл", validators=[
         FileRequired(),
@@ -94,7 +94,7 @@ class HomeworkForm(FlaskForm):
 
 class StudentWorkForm(FlaskForm):
     course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
-    name = StringField("Имя студента", validators=[DataRequired()])
+    title = StringField("Имя студента", validators=[DataRequired()])
     description = TextAreaField("Описание работы")
     photo = MultipleFileField("Фотография работы студента", [FileAllowed(["jpg", "png"])])
     submit = SubmitField("Добавить работу студента")
@@ -109,7 +109,7 @@ class ArtistForm(FlaskForm):
 
 
 class ArtistWorkForm(FlaskForm):
-    name = StringField("Название работы", validators=[DataRequired()])
+    title = StringField("Название работы", validators=[DataRequired()])
     description = TextAreaField("Описание работы")
     photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
     artist_id = SelectField("Мастер", coerce=int, validators=[DataRequired()])
