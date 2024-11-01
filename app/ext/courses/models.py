@@ -200,7 +200,7 @@ class Video(db.Model, ModelMixin):
 
     __tablename__ = "video"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255)) #title
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     duration_seconds = db.Column(db.Integer)
@@ -211,7 +211,7 @@ class Category(db.Model, ModelMixin):
 
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255)) #title
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(2048))
 
@@ -226,7 +226,7 @@ class Course(db.Model, ModelMixin):
     __tablename__ = "course"
     id = db.Column(db.Integer, primary_key=True)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.String(255))
     image = db.Column(db.String(255))
@@ -260,7 +260,7 @@ class Module(db.Model, ModelMixin):
 
     __tablename__ = "module"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
 
@@ -275,7 +275,7 @@ class Lesson(db.Model, ModelMixin):
     __tablename__ = "lesson"
     id = db.Column(db.Integer, primary_key=True)
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"), nullable=False)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
@@ -290,7 +290,7 @@ class Homework(db.Model, ModelMixin):
     __tablename__ = "homework"
     id = db.Column(db.Integer, primary_key=True)
     module_id = db.Column(db.Integer, db.ForeignKey("module.id"))
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
 
@@ -349,7 +349,7 @@ class Tariff(db.Model, ModelMixin):
 
     __tablename__ = "tariff"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     price = db.Column(db.Numeric(precision=10, scale=2))
     discount = db.Column(db.Integer)
@@ -360,7 +360,7 @@ class StudentWork(db.Model, ModelMixin):
 
     __tablename__= "studentwork"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
 
@@ -372,7 +372,7 @@ class ArtistWork(db.Model, ModelMixin):
 
     __tablename__= "artistwork"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     photo = db.Column(db.String(255))
     artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)  # Внешний ключ на таблицу Artist
