@@ -20,8 +20,12 @@ def index():
     courses_db = Course.query.all()
     modules_db = Module.query.all()
     lessons_db = Lesson.query.all()
-    return render_template("courses/admin/index.j2", categories=categories_db, courses=courses_db,
-                           modules=modules_db, lessons=lessons_db)
+    return render_template(
+        "courses/admin/index.j2",
+        categories=categories_db,
+        courses=courses_db,
+        modules=modules_db,
+        lessons=lessons_db)
 
 
 @admin_courses.route("/add-category", methods=["GET", "POST"])
@@ -78,7 +82,11 @@ def edit_category(category_id):
         flash("Категория успешно обновлена!", "success")
         return redirect(url_for(".edit_category", category_id=category_id))
 
-    return render_template("courses/admin/edit-category.j2", form=form, category=category_db, category_id=category_id)
+    return render_template(
+        "courses/admin/edit-category.j2",
+        form=form,
+        category=category_db,
+        category_id=category_id)
 
 
 
@@ -328,9 +336,12 @@ def add_module():
         flash("Модуль успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    modules = Module.query.all()  # Получаем все модули из базы данных
+    modules_db = Module.query.all()  # Получаем все модули из базы данных
 
-    return render_template("courses/admin/add-module.j2", form=form, modules=modules)
+    return render_template(
+        "courses/admin/add-module.j2",
+        form=form,
+        modules=modules_db)
 
 
 @admin_courses.route("/edit-module/<int:module_id>", methods=["GET","POST"])
@@ -374,9 +385,14 @@ def edit_module(module_id):
         flash("Модуль успешно обновлен!", "success")
         return redirect(url_for(".edit_module", module_id=module_id))
 
-    modules = Module.query.all()  # Получаем все модули из базы данных
+    modules_db = Module.query.all()  # Получаем все модули из базы данных
 
-    return render_template("courses/admin/edit-module.j2", form=form, module=module_db, module_id=module_id, modules=modules)
+    return render_template(
+        "courses/admin/edit-module.j2",
+        form=form,
+        module=module_db,
+        module_id=module_id,
+        modules=modules_db)
 
 
 @admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
@@ -411,9 +427,12 @@ def add_lesson():
         flash("Урок успешно сохранен!", "success")
         return redirect(url_for(".index"))
 
-    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+    lessons_db = Lesson.query.all()  # Получаем все уроки из базы данных
 
-    return render_template("courses/admin/add-lesson.j2", form=form, lessons=lessons)
+    return render_template(
+        "courses/admin/add-lesson.j2",
+        form=form,
+        lessons=lessons_db)
 
 
 @admin_courses.route("/edit-lesson/<int:lesson_id>", methods=["GET","POST"])
@@ -431,9 +450,14 @@ def edit_lesson(lesson_id):
         flash("Урок успешно обновлен!", "success")
         return redirect(url_for(".edit_lesson", lesson_id=lesson_id, lesson=lesson_db))
 
-    lessons = Lesson.query.all()  # Получаем все уроки из базы данных
+    lessons_db = Lesson.query.all()  # Получаем все уроки из базы данных
 
-    return render_template("courses/admin/edit-lesson.j2", form=form, lessons=lessons, lesson=lesson_id, lesson_id=lesson_id)
+    return render_template(
+        "courses/admin/edit-lesson.j2",
+        form=form,
+        lessons=lessons_db,
+        lesson=lesson_id,
+        lesson_id=lesson_id)
 
 
 @admin_courses.route("/delete-lesson/<int:lesson_id>", methods=["GET"])
@@ -504,9 +528,12 @@ def add_studentwork():
         flash("Работа студента успешно добавлена!", "success")
         return redirect(url_for(".index"))
 
-    studentworks = StudentWork.query.all()  # Получаем все работы из базы данных
+    studentworks_db = StudentWork.query.all()  # Получаем все работы из базы данных
 
-    return render_template("courses/admin/add-studentwork.j2", form=form, studentworks=studentworks)
+    return render_template(
+        "courses/admin/add-studentwork.j2",
+        form=form,
+        studentworks=studentworks_db)
 
 
 
@@ -538,15 +565,14 @@ def edit_studentwork(studentwork_id):
         flash("Работа студента успешно обновлена!", "success")
         return redirect(url_for(".edit_studentwork", studentwork_id=studentwork_id))
 
-    studentworks = StudentWork.query.all()  # Получаем все работы студентов из базы данных
+    studentworks_db = StudentWork.query.all()  # Получаем все работы студентов из базы данных
 
     return render_template(
         "courses/admin/edit-studentwork.j2",
         form=form,
-        studentworks=studentworks,
+        studentworks=studentworks_db,
         studentwork=studentwork_db,
-        studentwork_id=studentwork_id,
-    )
+        studentwork_id=studentwork_id,)
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
@@ -590,9 +616,12 @@ def add_artist():
         flash("Мастер успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+    artists_db = Artist.query.all()  # Получаем всх мастеров из базы данных
 
-    return render_template("courses/admin/add-artist.j2", form=form, artists=artists)
+    return render_template(
+        "courses/admin/add-artist.j2",
+        form=form,
+        artists=artists_db)
 
 
 @admin_courses.route("/edit-artist/<int:artist_id>", methods=["GET", "POST"])
@@ -619,9 +648,14 @@ def edit_artist(artist_id):
         flash("Информация о мастере успешно обновлена!", "success")
         return redirect(url_for(".index"))
 
-    artists = Artist.query.all()  # Получаем всх мастеров из базы данных
+    artists_db = Artist.query.all()  # Получаем всх мастеров из базы данных
 
-    return render_template("courses/admin/edit-artist.j2", form=form, artists=artists, artist_id=artist_id, artist=artist_db,)
+    return render_template(
+        "courses/admin/edit-artist.j2",
+        form=form,
+        artists=artists_db,
+        artist_id=artist_id,
+        artist=artist_db)
 
 
 @admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
@@ -663,9 +697,12 @@ def add_artistwork():
         flash("Работа мастера успешно добавлена!", "success")
         return redirect(url_for(".index"))
 
-    artistworks = ArtistWork.query.all()  # Получаем все работы из базы данных
+    artistworks_db = ArtistWork.query.all()  # Получаем все работы из базы данных
 
-    return render_template("courses/admin/add-artistwork.j2", form=form, artistworks=artistworks)
+    return render_template(
+        "courses/admin/add-artistwork.j2",
+        form=form,
+        artistworks=artistworks_db)
 
 
 @admin_courses.route("/edit-artistwork/<int:artistwork_id>", methods=["GET", "POST"])
@@ -691,14 +728,16 @@ def edit_artistwork(artistwork_id):
 
         db.session.commit()
         flash("Работа мастера успешно обновлена!", "success")
-        return redirect(url_for(".edit_artistwork", artistwork_id=artistwork_id))
+        return redirect(url_for(
+            ".edit_artistwork",
+            artistwork_id=artistwork_id))
 
-    artistworks = ArtistWork.query.all()  # Получаем все работы мастера из базы данных
+    artistworks_db = ArtistWork.query.all()  # Получаем все работы мастера из базы данных
 
     return render_template(
         "courses/admin/edit-artistwork.j2",
         form=form,
-        artistworks=artistworks,
+        artistworks=artistworks_db,
         artistwork_id=artistwork_id,
         artistwork=artistwork_db,
         )
