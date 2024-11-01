@@ -139,6 +139,14 @@ course_payment_table = db.Table(
     db.Column("payment_id", db.Integer, db.ForeignKey("payment.id")),
 )
 
+
+course_promo_table = db.Table(
+    "course_promo",
+    db.Model.metadata,
+    db.Column("course_id", db.Integer, db.ForeignKey("course.id")),
+    db.Column("promo_id", db.Integer, db.ForeignKey("promo.id")),
+)
+
 course_studentwork_table = db.Table(
     "course_studentwork",
     db.Model.metadata,
@@ -234,6 +242,8 @@ class Course(db.Model, ModelMixin):
     registration_form = db.Column(db.String(255))
     registration_photo = db.Column(db.String(255))
     artist = db.Column(db.Text)
+    promos = db.relationship("Promo", secondary="course_promo", backref="course")
+
     artist_photo = db.Column(db.String(255))
     artist_work = db.Column(db.Text)
     price = db.Column(db.Text)
@@ -370,3 +380,20 @@ class ArtistWork(db.Model, ModelMixin):
 
     # Определение отношения
     artist = db.relationship("Artist", back_populates="works")
+
+
+class Promo(db.Model, ModelMixin):
+    """Модель для хранения информации о акциях."""
+
+    __tablename__ = "promo"
+    id = db.Column(db.Integer, primary_key=True)
+    alias = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    description = db.Column(db.String(2048))
+    photo = db.Column(db.String(255))
+    price = db.Column(db.Numeric(precision=10, scale=2))
+    discount = db.Column(db.Integer)
+    start_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
+    end_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
+
+    courses = db.relationship("Course", secondary="course_promo", backref="promo")
