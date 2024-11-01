@@ -28,7 +28,7 @@ def course_details(course_id):
     if form.validate_on_submit():
         name = form.name.data
         email = form.email.data
-        course_name = course.name  # Получаем название курса из объекта course
+        course_title = course.title  # Получаем название курса из объекта course
         message = form.message.data
 
         # Формируем сообщение для отправки
@@ -36,7 +36,7 @@ def course_details(course_id):
             f"Новая заявка на курс:\n"
             f"Имя: {name}\n"
             f"Email: {email}\n"
-            f"Курс: {course_name}\n"
+            f"Курс: {course_title}\n"
             f"Сообщение: {message}"
         )
 
