@@ -580,6 +580,10 @@ def delete_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
 
     if studentwork_db:
+         # Удаление всех связей перед удалением `StudentWork`
+        studentwork_db.courses = []
+        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+
         db.session.delete(studentwork_db)
         db.session.commit()
         flash("Работа студента успешно удалена!", "success")
