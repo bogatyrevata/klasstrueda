@@ -238,7 +238,6 @@ class Course(db.Model, ModelMixin):
     features = db.Column(db.Text)
     skills = db.Column(db.Text)
     students_work = db.Column(db.Text)
-    promo = db.Column(db.Text)
     registration_form = db.Column(db.String(255))
     registration_photo = db.Column(db.String(255))
     artist = db.Column(db.Text)

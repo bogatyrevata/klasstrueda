@@ -114,7 +114,6 @@ def add_course():
             information=form.data["information"],
             features=form.data["features"],
             skills=form.data["skills"],
-            promo=form.data["promo"],
             registration_form=form.data["registration_form"],
             artist=form.data["artist"],
             price=form.data["price"],
@@ -229,7 +228,6 @@ def edit_course(course_id):
             filename = photos.save(request.files["students_work"])
             course_db.students_work = filename
 
-        course_db.promo = form.promo.data
         course_db.registration_form = form.registration_form.data
 
         # Проверяем наличие и непустоту файла registration_photo

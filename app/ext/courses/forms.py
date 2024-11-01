@@ -33,7 +33,6 @@ class CourseForm(FlaskForm):
     features = TextAreaField("Преимущества")
     skills = TextAreaField("Чему вы научитесь")
     students_work = MultipleFileField("Работы студентов", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
-    promo = TextAreaField("Акция")
     registration_form = TextAreaField("Форма регистрации")
     registration_photo = MultipleFileField("Фотография для формы регистрации", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
     artist = TextAreaField("Информация о мастере")
