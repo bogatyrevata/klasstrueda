@@ -55,18 +55,21 @@
     {{ display_image(artist_work, course.title, "artist_work_input") }} #}
 
     <!-- Вывод всех работ мастера курса -->
-    <h2>Работы мастера</h2>
+    <h2>Работы мастеров</h2>
     <ul>
-    {% for artistwork in artistworks %}
+    {% for artist in artists %}
       <li>
-        <a href="{{ url_for('admin_courses.edit_artistwork', artistwork_id=artistwork.id) }}">
-            <img src="{{ url_for('static', filename='upload/' + artistwork.photo) }}" alt="{{ artistwork.name }}" width="100">
+      {{ loop.index }}
+        <h6>{{ artist.user.first_name }}</h6>
+        {#
+        <a href="{{ url_for('admin_courses.edit_artistwork', artist_id=artist.id) }}">
+            <img src="{{ url_for('static', filename='upload/' + artistwork.photo) }}" alt="{{ artistwork.title }}" width="100">
         </a>
         <a href="{{ url_for('admin_courses.delete_artistwork', artistwork_id=artistwork.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу мастера?');">Удалить</a>
+        #}
       </li>
     {% endfor %}
     </ul>
-    <a class="btn btn-secondary mt-3" href="{{ url_for('admin_courses.add_artistwork') }}">Добавить работу мастера</a>
 
 
     {{ input_form_12(form.price, style="height: 150px") }}

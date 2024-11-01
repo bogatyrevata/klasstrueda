@@ -241,6 +241,7 @@ class Course(db.Model, ModelMixin):
     registration_form = db.Column(db.String(255))
     registration_photo = db.Column(db.String(255))
     artist = db.Column(db.Text)
+    artists = db.relationship("Artist", secondary="artist_course", backref=db.backref("courses", lazy="dynamic"))
     promos = db.relationship("Promo", secondary="course_promo", backref="course")
 
     artist_photo = db.Column(db.String(255))

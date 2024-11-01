@@ -191,6 +191,7 @@ def add_course():
 def edit_course(course_id):
     course_db = Course.query.get_or_404(course_id)
     form = CourseForm(obj=course_db)  # Передаем объект course_db в форму для предзаполнения полей
+    artists = course_db.artists
     form.category_id.choices = [(category.id, category.title) for category in Category.query.all()]
     form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
