@@ -73,7 +73,6 @@ class LessonForm(FlaskForm):
         FileAllowed(['jpg', 'jpeg', 'png'], 'Только фото с расширениями: jpg, jpeg, png!')
     ])
     file = FileField("Загрузить файл", validators=[
-        FileRequired(),
         FileAllowed(['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'], 'Только файлы с расширениями: jpg, jpeg, png, pdf, doc, docx!')
     ])
     submit = SubmitField("Добавить урок")
