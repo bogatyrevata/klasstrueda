@@ -627,6 +627,9 @@ def add_artist():
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
+    # Заполнение выбора для курсов
+    form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
+
     if form.validate_on_submit():
         artist_db = Artist(
             user_id=form.user_id.data,
@@ -641,6 +644,9 @@ def add_artist():
             if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Сохранение имени файла в поле avatar
+
+        # Добавление курсов
+        artist_db.courses.extend(Course.query.filter(Course.id.in_(form.courses.data)).all())
 
         db.session.add(artist_db)
         db.session.commit()
@@ -664,6 +670,10 @@ def edit_artist(artist_id):
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
+     # Заполнение выбора для курсов
+    form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.courses.data = [course.id for course in artist_db.courses]  # Заполнение выбранных курсов
+
     if form.validate_on_submit():
         artist_db.user_id = form.user_id.data
         artist_db.bio = form.bio.data
@@ -675,6 +685,9 @@ def edit_artist(artist_id):
             if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Обновление имени файла в поле avatar
+
+        # Обновление курсов
+        artist_db.courses = Course.query.filter(Course.id.in_(form.courses.data)).all()
 
         db.session.commit()  # Сохранение изменений в базе данных
         flash("Информация о мастере успешно обновлена!", "success")

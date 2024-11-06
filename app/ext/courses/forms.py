@@ -109,6 +109,7 @@ class ArtistForm(FlaskForm):
     avatar = MultipleFileField("Фотография мастера", [FileAllowed(["jpg", "png"])])
     bio = TextAreaField("Информация о мастере")
     contacts = TextAreaField("Контакты")
+    courses = SelectMultipleField("Courses", coerce=int)
     submit = SubmitField("Добавить мастера")
 
 
