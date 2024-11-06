@@ -423,18 +423,23 @@ def edit_module(module_id):
         modules=modules_db)
 
 
+@admin_courses.route("/delete-module/<int:module_id>", methods=["GET"])
 @admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
-def delete_module(course_id, module_id):
+def delete_module(course_id=None, module_id=None):
     module_db = Module.query.get_or_404(module_id)
-    course_db = Course.query.get_or_404(course_id)
+    if course_id:
+        course_db = Course.query.get_or_404(course_id)
 
     # Удаляем модуль из указанного курса
-    if module_db in course_db.modules:
+    if course_id and module_db in course_db.modules:
         course_db.modules.remove(module_db)
+        db.session.delete(module_db)  # Удаляем модуль из базы данных
         db.session.commit()
         flash("Модуль успешно удален из курса!", "success")
     else:
-        flash("Модуль не найден в указанном курсе!", "warning")
+        db.session.delete(module_db)
+        db.session.commit()
+        flash("Модуль успешно удален без курса!", "warning")
 
     return redirect(url_for(".index"))
 
