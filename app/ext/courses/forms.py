@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, DecimalField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email
 
 
@@ -130,3 +130,11 @@ class CourseRegistrationForm(FlaskForm):
     ])
     message = TextAreaField("Сообщение", [DataRequired()])
     submit = SubmitField("Отправить сообщение")
+
+
+class TariffForm(FlaskForm):
+    title = StringField("Навзвание тарифа", validators=[DataRequired()])
+    description = TextAreaField("Описание тарифа")
+    price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
+    discount = DecimalField("Скидка", places=2, default=0.0)
+    submit = SubmitField("Добавить тариф")
