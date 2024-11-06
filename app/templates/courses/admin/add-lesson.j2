@@ -4,6 +4,9 @@
 {% block admin_content %}
   <form action="{{ url_for('admin_courses.add_lesson') }}" method="post" enctype="multipart/form-data">
     <h1>Добавление урока</h1>
+    {% if form.errors %}
+      <b style="color:red">{% for error in form.errors %}{{ error }}<br>{% endfor %}</b>
+    {% endif %}
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.module_id) }}
@@ -21,3 +24,4 @@
     {% endfor %}
   </ul>
 {% endblock admin_content %}
+
