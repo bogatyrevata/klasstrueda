@@ -12,20 +12,23 @@
     {{ input_form_6(form.title) }}
     {{ input_form_6(form.alias) }}
     {{ input_form_12(form.preview_description) }}
-    {{ input_form_12(form.preview_photo, id="image_input", data_input="image_input") }}
 
+    {{ input_form_12(form.preview_photo, id="image_input", data_input="image_input") }}
     {{ display_image(preview_photo, course.title, "image_input") }}
 
     {{ input_form_12(form.level) }}
     {{ input_form_12(form.duration) }}
     {{ input_form_12(form.about, style="height: 150px") }}
-    {{ input_form_12(form.about_photo, id="about_photo_input", data_input="about_photo_input") }}
 
+    {{ input_form_12(form.about_photo, id="about_photo_input", data_input="about_photo_input") }}
     {{ display_image(about_photo, course.title, "about_photo_input") }}
 
-    {{ input_form_12(form.information, style="height: 150px") }}
-    {{ input_form_12(form.features, style="height: 150px") }}
-    {{ input_form_12(form.skills, style="height: 150px") }}
+    {{ input_form_12(form.learning_process_title) }}
+    {{ input_form_12(form.learning_process_description, style="height: 150px") }}
+    {{ input_form_12(form.features_title) }}
+    {{ input_form_12(form.features_description, style="height: 150px") }}
+    {{ input_form_12(form.skills_title) }}
+    {{ input_form_12(form.skills_description, style="height: 150px") }}
 
     <h2>Работы студентов</h2>
     <ul>
@@ -41,14 +44,16 @@
     </ul>
 
     {{ input_form_12(form.registration_form, style="height: 150px") }}
-    {{ input_form_12(form.registration_photo, id="registration_photo_input", data_input="registration_photo_input") }}
 
+    {{ input_form_12(form.registration_photo, id="registration_photo_input", data_input="registration_photo_input") }}
     {{ display_image(registration_photo, course.title, "registration_photo_input") }}
 
     {{ input_form_12(form.artist_photo, id="artist_photo_input", data_input="artist_photo_input") }}
-
     {{ display_image(artist_photo, course.title, "artist_photo_input") }}
 
+    {{ input_form_12(form.artist_photo_preview, id="artist_photo_preview_input", data_input="artist_photo_preview_input") }}
+
+    {{ input_form_12(form.artist_title)}}
     {{ input_form_12(form.artist_description, style="height: 150px") }}
     {# {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
 
