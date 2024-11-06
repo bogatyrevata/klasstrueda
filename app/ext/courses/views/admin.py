@@ -444,9 +444,9 @@ def delete_module(course_id=None, module_id=None):
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-lesson", methods=["GET","POST"])
+@admin_courses.route("/add-lesson", methods=["GET", "POST"])
 def add_lesson():
-    form = LessonForm()
+    form = LessonForm(request.form)
     form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
@@ -454,7 +454,7 @@ def add_lesson():
             module_id = form.data["module_id"],
             title=form.data["title"],
             alias=form.data["alias"],
-            description=form.data["description"]
+            description=form.data["description"],
         )
         lesson_db.save()
         flash("Урок успешно сохранен!", "success")
@@ -706,6 +706,21 @@ def edit_artist(artist_id):
         artists=artists_db,
         artist_id=artist_id,
         artist=artist_db)
+
+@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["POST"])
+def remove_artist_from_course(course_id, artist_id):
+    course_db = Course.query.get_or_404(course_id)
+    artist_db = Artist.query.get_or_404(artist_id)
+
+    if artist_db in course_db.artists:
+        course_db.artists.remove(artist_db)
+        db.session.delete(artist_db)
+        db.session.commit()  # Просто удаляем связь
+        flash("Мастер успешно удален из курса!", "success")
+    else:
+        flash("Мастер не найден в этом курсе!", "warning")
+
+    return redirect(url_for(".edit_course", course_id=course_id))
 
 
 @admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
