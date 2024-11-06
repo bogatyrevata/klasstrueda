@@ -710,16 +710,19 @@ def edit_artist(artist_id):
 
 @admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
 def delete_artist(artist_id):
-     artist_db = Artist.query.get_or_404(artist_id)
+    artist_db = Artist.query.get_or_404(artist_id)
 
-     if artist_db:
+    if artist_db:
+        # Удаление всех связанных ArtistWork перед удалением мастера
+        artist_db.works.delete()
+
         db.session.delete(artist_db)
         db.session.commit()
-        flash("Работа мастера успешно удалена!", "success")
-     else:
-        flash("Ошибка при удалении работы мастера!", "danger")
+        flash("Мастер и его работы успешно удалены!", "success")
+    else:
+        flash("Ошибка при удалении мастера!", "danger")
 
-     return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
 
 
 @admin_courses.route("/add-artistwork", methods=["GET", "POST"])
