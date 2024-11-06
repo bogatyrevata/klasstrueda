@@ -236,9 +236,13 @@ class Course(db.Model, ModelMixin):
 
     # Текстовые поля курса
     about = db.Column(db.Text)
-    information = db.Column(db.Text)
-    features = db.Column(db.Text)
-    skills = db.Column(db.Text)
+    learning_process_title = db.Column(db.Text)
+    learning_process_description = db.Column(db.Text)
+    features_title = db.Column(db.Text)
+    features_description = db.Column(db.Text)
+    skills_title = db.Column(db.Text)
+    skills_description = db.Column(db.Text)
+    artist_title = db.Column(db.Text)
     artist_description = db.Column(db.Text) # Описание мастера с точки зрения конкретного курса, поменять название
     artists = db.relationship("Artist", secondary="artist_course", backref=db.backref("courses", lazy="dynamic"))
     promos = db.relationship("Promo", secondary="course_promo", backref="course")
@@ -246,12 +250,12 @@ class Course(db.Model, ModelMixin):
     # Фотографии для описания курса
     about_photo = db.Column(db.String(255))
     artist_photo = db.Column(db.String(255))
+    artist_photo_preview = db.Column(db.String(255))
     registration_photo = db.Column(db.String(255))
 
     # Карусели
     artist_work = db.Column(db.Text) #Нет связи работ мастера с курсом, работы мастера хранятся в Artist в поле works
     student_works = db.relationship("StudentWork", secondary="course_studentwork", backref="course")
-
     # Формы
     registration_form = db.Column(db.String(255))
     final_registration_form = db.Column(db.String(255))
