@@ -119,10 +119,14 @@ def add_course():
             level=form.data["level"],
             duration=form.data["duration"],
             about=form.data["about"],
-            information=form.data["information"],
-            features=form.data["features"],
-            skills=form.data["skills"],
+            learning_process_title = form.data["learning_process_title"],
+            learning_process_description=form.data["learning_process_description"],
+            features_title=form.data["features_title"],
+            features_description=form.data["features_description"],
+            skills_title=form.data["skills_title"],
+            skills_description=form.data["skills_description"],
             registration_form=form.data["registration_form"],
+            artist_title=form.data["artist_title"],
             artist_description=form.data["artist_description"],
             price=form.data["price"],
             start_date=form.data["start_date"],
@@ -162,6 +166,15 @@ def add_course():
             try:
                 filename = photos.save(request.files["artist_photo"])
                 course_db.artist_photo = filename
+            except Exception as e:
+                flash(f"Ошибка при сохранении изображения: {e}", "danger")
+                return redirect(url_for(".add_course"))
+
+        # Проверяем наличие и непустоту файла artist_photo_preview
+        if "artist_photo_preview" in request.files and request.files["artist_photo_preview"]:
+            try:
+                filename = photos.save(request.files["artist_photo_preview"])
+                course_db.artist_photo_preview = filename
             except Exception as e:
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
@@ -219,9 +232,12 @@ def edit_course(course_id):
             filename = photos.save(request.files["about_photo"])
             course_db.about_photo = filename
 
-        course_db.information = form.information.data
-        course_db.features = form.features.data
-        course_db.skills = form.skills.data
+        course_db.learning_process_title  = form.learning_process_title.data
+        course_db.learning_process_description = form.learning_process_description.data
+        course_db.features_title = form.features_title.data
+        course_db.features_description = form.features_description.data
+        course_db.skills_title = form.skills_title.data
+        course_db.skills_description = form.skills_description.data
 
         course_db.registration_form = form.registration_form.data
 
@@ -230,12 +246,20 @@ def edit_course(course_id):
             filename = photos.save(request.files["registration_photo"])
             course_db.registration_photo = filename
 
+        course_db.artist_title = form.artist_title.data
         course_db.artist_description = form.artist_description.data
 
         # Проверяем наличие и непустоту файла artist_photo
         if "artist_photo" in request.files and request.files["artist_photo"]:
             filename = photos.save(request.files["artist_photo"])
             course_db.artist_photo = filename
+
+
+        # Проверяем наличие и непустоту файла artist_photo_preview
+        if "artist_photo_preview" in request.files and request.files["artist_photo_preview"]:
+            filename = photos.save(request.files["artist_photo_preview"])
+            course_db.artist_photo_preview = filename
+
 
         # Проверяем наличие и непустоту файла artist_work
         if "artist_work" in request.files and request.files["artist_work"]:
@@ -260,6 +284,7 @@ def edit_course(course_id):
     form.about_photo.data = course_db.about_photo
     form.registration_photo.data = course_db.registration_photo
     form.artist_photo.data = course_db.artist_photo
+    form.artist_photo_preview.data = course_db.artist_photo_preview
     form.artist_work.data = course_db.artist_work
 
     preview_photo = course_db.preview_photo
@@ -267,6 +292,7 @@ def edit_course(course_id):
     registration_photo = course_db.registration_photo
     student_works = course_db.student_works
     artist_photo = course_db.artist_photo
+    artist_photo_preview = course_db.artist_photo_preview
     artist_work = course_db.artist_work
     return render_template(
         "courses/admin/edit-course.j2",
@@ -278,6 +304,7 @@ def edit_course(course_id):
         registration_photo=registration_photo,
         student_works=student_works,
         artist_photo=artist_photo,
+        artist_photo_preview=artist_photo_preview,
         artist_work=artist_work,
         artists=artists)
 
@@ -378,7 +405,7 @@ def edit_module(module_id):
         selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
         module_db.courses = selected_courses
 
-        # Обновление связи lessonsвручную
+        # Обновление связи lessons вручную
         selected_lessons = [Lesson.query.get(lesson_id) for lesson_id in form.lessons.data]
         module_db.lessons = selected_lessons
 
@@ -396,25 +423,30 @@ def edit_module(module_id):
         modules=modules_db)
 
 
+@admin_courses.route("/delete-module/<int:module_id>", methods=["GET"])
 @admin_courses.route("/delete-module/<int:course_id>/<int:module_id>", methods=["GET"])
-def delete_module(course_id, module_id):
+def delete_module(course_id=None, module_id=None):
     module_db = Module.query.get_or_404(module_id)
-    course_db = Course.query.get_or_404(course_id)
+    if course_id:
+        course_db = Course.query.get_or_404(course_id)
 
     # Удаляем модуль из указанного курса
-    if module_db in course_db.modules:
+    if course_id and module_db in course_db.modules:
         course_db.modules.remove(module_db)
+        db.session.delete(module_db)  # Удаляем модуль из базы данных
         db.session.commit()
         flash("Модуль успешно удален из курса!", "success")
     else:
-        flash("Модуль не найден в указанном курсе!", "warning")
+        db.session.delete(module_db)
+        db.session.commit()
+        flash("Модуль успешно удален без курса!", "warning")
 
     return redirect(url_for(".index"))
 
 
-@admin_courses.route("/add-lesson", methods=["GET","POST"])
+@admin_courses.route("/add-lesson", methods=["GET", "POST"])
 def add_lesson():
-    form = LessonForm()
+    form = LessonForm(request.form)
     form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
@@ -422,7 +454,7 @@ def add_lesson():
             module_id = form.data["module_id"],
             title=form.data["title"],
             alias=form.data["alias"],
-            description=form.data["description"]
+            description=form.data["description"],
         )
         lesson_db.save()
         flash("Урок успешно сохранен!", "success")
@@ -600,6 +632,9 @@ def add_artist():
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
+    # Заполнение выбора для курсов
+    form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
+
     if form.validate_on_submit():
         artist_db = Artist(
             user_id=form.user_id.data,
@@ -614,6 +649,9 @@ def add_artist():
             if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Сохранение имени файла в поле avatar
+
+        # Добавление курсов
+        artist_db.courses.extend(Course.query.filter(Course.id.in_(form.courses.data)).all())
 
         db.session.add(artist_db)
         db.session.commit()
@@ -637,6 +675,10 @@ def edit_artist(artist_id):
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
+     # Заполнение выбора для курсов
+    form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
+    form.courses.data = [course.id for course in artist_db.courses]  # Заполнение выбранных курсов
+
     if form.validate_on_submit():
         artist_db.user_id = form.user_id.data
         artist_db.bio = form.bio.data
@@ -648,6 +690,9 @@ def edit_artist(artist_id):
             if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Обновление имени файла в поле avatar
+
+        # Обновление курсов
+        artist_db.courses = Course.query.filter(Course.id.in_(form.courses.data)).all()
 
         db.session.commit()  # Сохранение изменений в базе данных
         flash("Информация о мастере успешно обновлена!", "success")
@@ -662,19 +707,37 @@ def edit_artist(artist_id):
         artist_id=artist_id,
         artist=artist_db)
 
+@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["POST"])
+def remove_artist_from_course(course_id, artist_id):
+    course_db = Course.query.get_or_404(course_id)
+    artist_db = Artist.query.get_or_404(artist_id)
+
+    if artist_db in course_db.artists:
+        course_db.artists.remove(artist_db)
+        db.session.delete(artist_db)
+        db.session.commit()  # Просто удаляем связь
+        flash("Мастер успешно удален из курса!", "success")
+    else:
+        flash("Мастер не найден в этом курсе!", "warning")
+
+    return redirect(url_for(".edit_course", course_id=course_id))
+
 
 @admin_courses.route("/delete-artist/<int:artist_id>", methods=["GET"])
 def delete_artist(artist_id):
-     artist_db = Artist.query.get_or_404(artist_id)
+    artist_db = Artist.query.get_or_404(artist_id)
 
-     if artist_db:
+    if artist_db:
+        # Удаление всех связанных ArtistWork перед удалением мастера
+        artist_db.works.delete()
+
         db.session.delete(artist_db)
         db.session.commit()
-        flash("Работа мастера успешно удалена!", "success")
-     else:
-        flash("Ошибка при удалении работы мастера!", "danger")
+        flash("Мастер и его работы успешно удалены!", "success")
+    else:
+        flash("Ошибка при удалении мастера!", "danger")
 
-     return redirect(url_for(".index"))
+    return redirect(url_for(".index"))
 
 
 @admin_courses.route("/add-artistwork", methods=["GET", "POST"])

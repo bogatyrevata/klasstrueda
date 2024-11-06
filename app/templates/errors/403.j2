@@ -1,11 +1,21 @@
 {% extends "base.j2" %}
 
 {% block content %}
-  <section class="page pt-5">
-    <div class="page__container container pt-5">
-      <h2>{{ _('Access denied') }}</h2>
-      <p>{{ _('You probably do not have permission to view this page, if you think it is an error — contact your administrator.') }}</p>
-      <div hidden>{{ error }}</div>
+ <div class="container-xxl py-6 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+          <h1 class="display-1">403</h1>
+          <h1 class="mb-4">Доступ ограничен</h1>
+          <p class="mb-4">Нам жаль, но возможно, у вас нет прав на просмотр этой страницы. Если вы считает, что это ошибка - напишите нам.</p>
+          <div class="error-actions d-flex flex-wrap gap-2 justify-content-center">
+              <a href="{{ url_for('core.index') }}" class="btn btn-primary py-sm-3 px-sm-5">Вернуться на главную</a>
+              <a href="{{ url_for('core.page', page_name='contacts') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Связаться с нами</a>
+          </div>
+          <div hidden>{{ error }}</div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 {% endblock content %}

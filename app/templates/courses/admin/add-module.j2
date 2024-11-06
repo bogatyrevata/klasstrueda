@@ -20,6 +20,13 @@
   <ul>
     {% for module in modules %}
       <li><a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}">{{ module.title }} ({{ module.alias }})</a></li>
+      {% if module.courses %}
+        <a href="{{ url_for('admin_courses.delete_module', course_id=module.courses[0].id, module_id=module.id) }}"
+            onclick="return confirm('Вы уверены, что хотите удалить этот модуль?');">Удалить</a>
+      {% else %}
+        <a href="{{ url_for('admin_courses.delete_module', module_id=module.id) }}"
+            onclick="return confirm('Вы уверены, что хотите удалить этот модуль без курса?');">Удалить (без курса)</a>
+      {% endif %}
     {% endfor %}
   </ul>
 {% endblock admin_content %}

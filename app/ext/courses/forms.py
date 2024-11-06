@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, DecimalField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email
 
 
@@ -29,13 +29,18 @@ class CourseForm(FlaskForm):
     duration = TextAreaField("Продолжительность курса")
     about = TextAreaField("Описание курса")
     about_photo = MultipleFileField("Фотография к описанию курса", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
-    information = TextAreaField("Процесс обучени на курсе")
-    features = TextAreaField("Преимущества")
-    skills = TextAreaField("Чему вы научитесь")
+    learning_process_title = TextAreaField("Заголовок раздела о процессе обучения")
+    learning_process_description = TextAreaField("Процесс обучения на курсе")
+    features_title = TextAreaField("Заголовок раздела о преимуществах курса")
+    features_description = TextAreaField("Преимущества")
+    skills_title = TextAreaField("Заголовок раздела о том чему вы научитесь")
+    skills_description = TextAreaField("Чему вы научитесь")
     registration_form = TextAreaField("Форма регистрации")
     registration_photo = MultipleFileField("Фотография для формы регистрации", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
-    artist_description = TextAreaField("Информация о мастере")
+    artist_title = TextAreaField("Заголовок раздела о мастере")
+    artist_description = TextAreaField("Описание раздела о мастере")
     artist_photo = MultipleFileField("Фото мастера", [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    artist_photo_preview = MultipleFileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
     artist_work = MultipleFileField("Работы мастера", [FileAllowed(["jpg", "png"])])
     price = TextAreaField("Стоимость курса")
     final_registration_form = TextAreaField("Форма регистрации")
@@ -104,6 +109,7 @@ class ArtistForm(FlaskForm):
     avatar = MultipleFileField("Фотография мастера", [FileAllowed(["jpg", "png"])])
     bio = TextAreaField("Информация о мастере")
     contacts = TextAreaField("Контакты")
+    courses = SelectMultipleField("Courses", coerce=int)
     submit = SubmitField("Добавить мастера")
 
 
@@ -124,3 +130,11 @@ class CourseRegistrationForm(FlaskForm):
     ])
     message = TextAreaField("Сообщение", [DataRequired()])
     submit = SubmitField("Отправить сообщение")
+
+
+class TariffForm(FlaskForm):
+    title = StringField("Навзвание тарифа", validators=[DataRequired()])
+    description = TextAreaField("Описание тарифа")
+    price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
+    discount = DecimalField("Скидка", places=2, default=0.0)
+    submit = SubmitField("Добавить тариф")

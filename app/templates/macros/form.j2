@@ -91,7 +91,7 @@
 
 {# Макросы для полей форм#}
 
-{% macro input_form_6(field, style="", id="", data_input="", value="") %}
+{% macro input_form_6(field) %}
   <div class="col-md-6">
     <div class="form-floating">
       {% if field.errors %}
@@ -99,7 +99,8 @@
       {% else %}
         {% set className = 'form-control border-0 bg-light' %}
       {% endif %}
-      {{ field(class=className, placeholder="", style=style, id=id, data_input=data_input, value=value) }}
+      {{ field(class=className) }}
+      {#{ field(class=className, placeholder="", style=style, id=id, data_input=data_input, value=value) }#}
       {{ field.label() }}
       {% if field.errors %}
         <div class="invalid-feedback">
