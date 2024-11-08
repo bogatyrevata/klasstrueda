@@ -41,9 +41,7 @@ class CourseForm(FlaskForm):
     artist_description = TextAreaField("Описание раздела о мастере")
     artist_photo = MultipleFileField("Фото мастера", [FileAllowed(["jpg","png"],"Только jpg и png!")])
     artist_photo_preview = MultipleFileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
-    artist_work = MultipleFileField("Работы мастера", [FileAllowed(["jpg", "png"])])
     price = TextAreaField("Стоимость курса")
-    final_registration_form = TextAreaField("Форма регистрации")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
     modules = SelectMultipleField("Модули", coerce=int)  # добавляем поле для выбора модулей
@@ -133,8 +131,10 @@ class CourseRegistrationForm(FlaskForm):
 
 
 class TariffForm(FlaskForm):
-    title = StringField("Навзвание тарифа", validators=[DataRequired()])
+    course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
+    title = StringField("Название тарифа", validators=[DataRequired()])
     description = TextAreaField("Описание тарифа")
     price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
     discount = DecimalField("Скидка", places=2, default=0.0)
+    photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
     submit = SubmitField("Добавить тариф")

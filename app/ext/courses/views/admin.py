@@ -3,8 +3,8 @@ from flask import Blueprint, current_app, flash, g, redirect, render_template, r
 from flask_security import current_user, login_required
 
 from app.ext.core.models import Photo, User
-from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm
-from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork
+from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm, TariffForm
+from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff
 from app.extensions import db, photos, csrf
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
@@ -131,7 +131,6 @@ def add_course():
             price=form.data["price"],
             start_date=form.data["start_date"],
             end_date=form.data["end_date"],
-            final_registration_form=form.data["final_registration_form"],
         )
 
         # Проверяем наличие и непустоту файла preview_photo
@@ -179,14 +178,6 @@ def add_course():
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
 
-        # Проверяем наличие и непустоту файла artist_work
-        if "artist_work" in request.files and request.files["artist_work"]:
-            try:
-                filename = photos.save(request.files["artist_work"])
-                course_db.artist_work = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
 
         # добавление модулей
 
@@ -261,13 +252,7 @@ def edit_course(course_id):
             course_db.artist_photo_preview = filename
 
 
-        # Проверяем наличие и непустоту файла artist_work
-        if "artist_work" in request.files and request.files["artist_work"]:
-            filename = photos.save(request.files["artist_work"])
-            course_db.artist_work = filename
-
         course_db.price = form.price.data
-        course_db.final_registration_form = form.final_registration_form.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
 
@@ -285,7 +270,6 @@ def edit_course(course_id):
     form.registration_photo.data = course_db.registration_photo
     form.artist_photo.data = course_db.artist_photo
     form.artist_photo_preview.data = course_db.artist_photo_preview
-    form.artist_work.data = course_db.artist_work
 
     preview_photo = course_db.preview_photo
     about_photo = course_db.about_photo
@@ -293,7 +277,6 @@ def edit_course(course_id):
     student_works = course_db.student_works
     artist_photo = course_db.artist_photo
     artist_photo_preview = course_db.artist_photo_preview
-    artist_work = course_db.artist_work
     return render_template(
         "courses/admin/edit-course.j2",
         form=form,
@@ -305,7 +288,6 @@ def edit_course(course_id):
         student_works=student_works,
         artist_photo=artist_photo,
         artist_photo_preview=artist_photo_preview,
-        artist_work=artist_work,
         artists=artists)
 
 
@@ -574,10 +556,12 @@ def add_studentwork():
 def edit_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
     form = StudentWorkForm(obj=studentwork_db)
+
     form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
-    # Предзаполнение выбранных курсов
-    form.course_id.data = [course.id for course in studentwork_db.courses]
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.course_id.data = [course.id for course in studentwork_db.courses]
 
     if form.validate_on_submit():
         studentwork_db.title = form.title.data
@@ -590,8 +574,11 @@ def edit_studentwork(studentwork_id):
                 filename = photos.save(file)
                 studentwork_db.photo = filename  # Сохраняем новое имя файла
 
-        # Обновление связи courses вручную
-        selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
+        # Обновление связанных курсов
+        selected_course_ids = form.course_id.data
+        # Получение объектов курсов по выбранным ID
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        # Присвоение новых курсов (это автоматически обновит связи)
         studentwork_db.courses = selected_courses
 
         db.session.commit()
@@ -605,7 +592,8 @@ def edit_studentwork(studentwork_id):
         form=form,
         studentworks=studentworks_db,
         studentwork=studentwork_db,
-        studentwork_id=studentwork_id,)
+        studentwork_id=studentwork_id)
+
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
@@ -675,9 +663,12 @@ def edit_artist(artist_id):
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
-     # Заполнение выбора для курсов
+    # Заполнение выбора для курсов
     form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
-    form.courses.data = [course.id for course in artist_db.courses]  # Заполнение выбранных курсов
+
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.courses.data = [course.id for course in artist_db.courses]
 
     if form.validate_on_submit():
         artist_db.user_id = form.user_id.data
@@ -691,8 +682,10 @@ def edit_artist(artist_id):
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Обновление имени файла в поле avatar
 
-        # Обновление курсов
-        artist_db.courses = Course.query.filter(Course.id.in_(form.courses.data)).all()
+        # Обновление связанных курсов
+        selected_course_ids = form.courses.data
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        artist_db.courses = selected_courses
 
         db.session.commit()  # Сохранение изменений в базе данных
         flash("Информация о мастере успешно обновлена!", "success")
@@ -707,14 +700,13 @@ def edit_artist(artist_id):
         artist_id=artist_id,
         artist=artist_db)
 
-@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["POST"])
+@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["GET"])
 def remove_artist_from_course(course_id, artist_id):
     course_db = Course.query.get_or_404(course_id)
     artist_db = Artist.query.get_or_404(artist_id)
 
     if artist_db in course_db.artists:
         course_db.artists.remove(artist_db)
-        db.session.delete(artist_db)
         db.session.commit()  # Просто удаляем связь
         flash("Мастер успешно удален из курса!", "success")
     else:
@@ -821,6 +813,114 @@ def delete_artistwork(artistwork_id):
         flash("Работа мастера успешно удалена!", "success")
     else:
         flash("Ошибка при удалении работы мастера!", "danger")
+
+    return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-tariff", methods=["GET", "POST"])
+def add_tariff():
+    form = TariffForm()
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+
+    if form.validate_on_submit():
+        tariff_db = Tariff(
+          title=form.data["title"],
+          description = form.data["description"],
+          price = form.data["price"],
+          discount = form.data["discount"],
+        )
+
+        filename = ""
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                tariff_db.photo = filename  # Сохранение имени файла в поле photo
+
+        db.session.add(tariff_db)
+        db.session.commit()
+
+        # Обновление связи courses вручную
+        selected_courses = Course.query.filter(Course.id.in_(form.course_id.data)).all()
+        for course in selected_courses:
+            course.tariffes.append(tariff_db)  # Используем уже существующее отношение
+
+        db.session.commit()
+
+        flash("Тариф успешно добавлен!", "success")
+        return redirect(url_for(".index"))
+
+    tariffs_db = Tariff.query.all() #Получаем все тарифы из базы данных
+
+    return render_template(
+        "courses/admin/add-tariff.j2",
+        form=form,
+        tariffs=tariffs_db)
+
+
+@admin_courses.route("/edit-tariff/<int:tariff_id>", methods=["GET", "POST"])
+def edit_tariff(tariff_id):
+    tariff_db = Tariff.query.get_or_404(tariff_id)
+    form = TariffForm(obj=tariff_db)
+
+     # Заполнение выборок для курсов
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.course_id.data = [course.id for course in tariff_db.courses]
+
+    if form.validate_on_submit():
+        tariff_db.title = form.title.data
+        tariff_db.description = form.description.data
+        tariff_db.price = form.price.data
+        tariff_db.discount = form.discount.data
+
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                tariff_db.photo = filename  # Обновление имени файла в поле photo
+
+        # Обновление связанных курсов
+        selected_course_ids = form.course_id.data
+        # Получение объектов курсов по выбранным ID
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        # Присвоение новых курсов (это автоматически обновит связи)
+        tariff_db.courses = selected_courses
+
+        db.session.commit()
+        flash("Тариф успешно обновлен!", "success")
+        return redirect(url_for(".edit_tariff", tariff_id=tariff_id))
+
+    tariffs_db = Tariff.query.all()  # Получаем все тарифы из базы данных
+
+    return render_template(
+        "courses/admin/edit-tariff.j2",
+        form=form,
+        tariffs=tariffs_db,
+        tariff_id=tariff_id,
+        tariff=tariff_db,
+        )
+
+
+
+@admin_courses.route("/delete-tariff/<int:tariff_id>", methods=["GET"])
+def delete_tariff(tariff_id):
+    tariff_db = Tariff.query.get_or_404(tariff_id)
+
+    if tariff_db:
+        # Удаление всех связей перед удалением `Tariff`
+        tariff_db.courses = []
+        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+
+        db.session.delete(tariff_db)
+        db.session.commit()
+        flash("Тариф успешно удален!", "success")
+    else:
+        flash("Ошибка при удалении тарифа!", "danger")
 
     return redirect(url_for(".index"))
 

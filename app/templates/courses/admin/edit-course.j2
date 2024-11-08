@@ -55,9 +55,6 @@
 
     {{ input_form_12(form.artist_title)}}
     {{ input_form_12(form.artist_description, style="height: 150px") }}
-    {# {{ input_form_12(form.artist_work, id="artist_work_input", data_input="artist_work_input") }}
-
-    {{ display_image(artist_work, course.title, "artist_work_input") }} #}
 
     <!-- Вывод всех работ мастера курса -->
     <h2>Работы мастеров</h2>
@@ -68,11 +65,11 @@
                 <h6>{{ artist.user.first_name }}</h6>
 
                 <!-- Ссылка для удаления мастера из курса -->
-                {# <a href="{{ url_for('admin_courses.remove_artist_from_course', course_id=course_id, artist_id=artist.id) }}"
+                <a href="{{ url_for('admin_courses.remove_artist_from_course', course_id=course_id, artist_id=artist.id) }}"
                   class="btn btn-danger btn-sm"
                   onclick="return confirm('Вы уверены, что хотите удалить мастера из курса?');">
                   Удалить из курса
-                </a> #}
+                </a>
 
                 {% for artistwork in artist.works %}  {# Добавлен вложенный цикл для работ мастера #}
                     <a href="{{ url_for('admin_courses.edit_artistwork', artistwork_id=artistwork.id) }}">
@@ -88,7 +85,6 @@
 
 
     {{ input_form_12(form.price, style="height: 150px") }}
-    {{ input_form_12(form.final_registration_form, style="height: 150px") }}
     {{ input_form_12(form.start_date) }}
     {{ input_form_12(form.end_date) }}
     {{ input_form_12(form.modules, style="height: 100px")}}
