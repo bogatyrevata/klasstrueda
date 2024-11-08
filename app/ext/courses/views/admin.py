@@ -556,10 +556,12 @@ def add_studentwork():
 def edit_studentwork(studentwork_id):
     studentwork_db = StudentWork.query.get_or_404(studentwork_id)
     form = StudentWorkForm(obj=studentwork_db)
+
     form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
-    # Предзаполнение выбранных курсов
-    form.course_id.data = [course.id for course in studentwork_db.courses]
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.course_id.data = [course.id for course in studentwork_db.courses]
 
     if form.validate_on_submit():
         studentwork_db.title = form.title.data
@@ -572,8 +574,11 @@ def edit_studentwork(studentwork_id):
                 filename = photos.save(file)
                 studentwork_db.photo = filename  # Сохраняем новое имя файла
 
-        # Обновление связи courses вручную
-        selected_courses = [Course.query.get(course_id) for course_id in form.course_id.data]
+        # Обновление связанных курсов
+        selected_course_ids = form.course_id.data
+        # Получение объектов курсов по выбранным ID
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        # Присвоение новых курсов (это автоматически обновит связи)
         studentwork_db.courses = selected_courses
 
         db.session.commit()
@@ -587,7 +592,8 @@ def edit_studentwork(studentwork_id):
         form=form,
         studentworks=studentworks_db,
         studentwork=studentwork_db,
-        studentwork_id=studentwork_id,)
+        studentwork_id=studentwork_id)
+
 
 
 @admin_courses.route("/delete-studentwork/<int:studentwork_id>", methods=["GET"])
@@ -657,9 +663,12 @@ def edit_artist(artist_id):
     # Заполнение выбора для user_id с именами пользователей
     form.user_id.choices = [(user.id, f"{user.first_name} {user.last_name}") for user in User.query.all()]
 
-     # Заполнение выбора для курсов
+    # Заполнение выбора для курсов
     form.courses.choices = [(course.id, course.title) for course in Course.query.all()]
-    form.courses.data = [course.id for course in artist_db.courses]  # Заполнение выбранных курсов
+
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.courses.data = [course.id for course in artist_db.courses]
 
     if form.validate_on_submit():
         artist_db.user_id = form.user_id.data
@@ -673,8 +682,10 @@ def edit_artist(artist_id):
                 filename = photos.save(file)
                 artist_db.avatar = filename  # Обновление имени файла в поле avatar
 
-        # Обновление курсов
-        artist_db.courses = Course.query.filter(Course.id.in_(form.courses.data)).all()
+        # Обновление связанных курсов
+        selected_course_ids = form.courses.data
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        artist_db.courses = selected_courses
 
         db.session.commit()  # Сохранение изменений в базе данных
         flash("Информация о мастере успешно обновлена!", "success")
