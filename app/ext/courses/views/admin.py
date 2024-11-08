@@ -689,14 +689,13 @@ def edit_artist(artist_id):
         artist_id=artist_id,
         artist=artist_db)
 
-@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["POST"])
+@admin_courses.route("/remove-artist-from-course/<int:course_id>/<int:artist_id>", methods=["GET"])
 def remove_artist_from_course(course_id, artist_id):
     course_db = Course.query.get_or_404(course_id)
     artist_db = Artist.query.get_or_404(artist_id)
 
     if artist_db in course_db.artists:
         course_db.artists.remove(artist_db)
-        db.session.delete(artist_db)
         db.session.commit()  # Просто удаляем связь
         flash("Мастер успешно удален из курса!", "success")
     else:
