@@ -133,8 +133,10 @@ class CourseRegistrationForm(FlaskForm):
 
 
 class TariffForm(FlaskForm):
-    title = StringField("Навзвание тарифа", validators=[DataRequired()])
+    course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
+    title = StringField("Название тарифа", validators=[DataRequired()])
     description = TextAreaField("Описание тарифа")
     price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
     discount = DecimalField("Скидка", places=2, default=0.0)
+    photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
     submit = SubmitField("Добавить тариф")
