@@ -254,11 +254,14 @@ class Course(db.Model, ModelMixin):
     registration_photo = db.Column(db.String(255))
 
     # Карусели
-    artist_work = db.Column(db.Text) #Нет связи работ мастера с курсом, работы мастера хранятся в Artist в поле works
     student_works = db.relationship("StudentWork", secondary="course_studentwork", backref="course")
-    # Формы
+    # карусель с работами мастера хранится в Artist в поле works (связь с моделью ArtistWork)
+
+    # Форма
     registration_form = db.Column(db.String(255))
-    final_registration_form = db.Column(db.String(255))
+
+    # Тарифы
+    tariffes = db.relationship("Tariff", secondary="course_tariff", backref="course")
 
     # Метрики курса
     duration = db.Column(db.String(255)) #длительность, можно не хранить а высчитывать
@@ -340,9 +343,7 @@ class Artist(db.Model, ModelMixin):
     contacts = db.Column(db.String(255))
 
     works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
-    # courses = db.relationship("Course", secondary="artist_course", backref=db.backref("artists", lazy="dynamic"))
     modules = db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
-    # users = db.relationship("User", backref="artist") # one-to-many
 
 
 class Payment(db.Model, ModelMixin):
@@ -367,7 +368,10 @@ class Tariff(db.Model, ModelMixin):
     title = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     price = db.Column(db.Numeric(precision=10, scale=2))
+    photo = db.Column(db.String(255))
     discount = db.Column(db.Integer)
+
+    courses = db.relationship("Course", secondary="course_tariff", backref="tariffs")
 
 
 class StudentWork(db.Model, ModelMixin):
