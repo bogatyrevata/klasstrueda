@@ -41,9 +41,7 @@ class CourseForm(FlaskForm):
     artist_description = TextAreaField("Описание раздела о мастере")
     artist_photo = MultipleFileField("Фото мастера", [FileAllowed(["jpg","png"],"Только jpg и png!")])
     artist_photo_preview = MultipleFileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
-    artist_work = MultipleFileField("Работы мастера", [FileAllowed(["jpg", "png"])])
     price = TextAreaField("Стоимость курса")
-    final_registration_form = TextAreaField("Форма регистрации")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
     modules = SelectMultipleField("Модули", coerce=int)  # добавляем поле для выбора модулей

@@ -131,7 +131,6 @@ def add_course():
             price=form.data["price"],
             start_date=form.data["start_date"],
             end_date=form.data["end_date"],
-            final_registration_form=form.data["final_registration_form"],
         )
 
         # Проверяем наличие и непустоту файла preview_photo
@@ -179,14 +178,6 @@ def add_course():
                 flash(f"Ошибка при сохранении изображения: {e}", "danger")
                 return redirect(url_for(".add_course"))
 
-        # Проверяем наличие и непустоту файла artist_work
-        if "artist_work" in request.files and request.files["artist_work"]:
-            try:
-                filename = photos.save(request.files["artist_work"])
-                course_db.artist_work = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
 
         # добавление модулей
 
@@ -261,13 +252,7 @@ def edit_course(course_id):
             course_db.artist_photo_preview = filename
 
 
-        # Проверяем наличие и непустоту файла artist_work
-        if "artist_work" in request.files and request.files["artist_work"]:
-            filename = photos.save(request.files["artist_work"])
-            course_db.artist_work = filename
-
         course_db.price = form.price.data
-        course_db.final_registration_form = form.final_registration_form.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
 
@@ -285,7 +270,6 @@ def edit_course(course_id):
     form.registration_photo.data = course_db.registration_photo
     form.artist_photo.data = course_db.artist_photo
     form.artist_photo_preview.data = course_db.artist_photo_preview
-    form.artist_work.data = course_db.artist_work
 
     preview_photo = course_db.preview_photo
     about_photo = course_db.about_photo
@@ -293,7 +277,6 @@ def edit_course(course_id):
     student_works = course_db.student_works
     artist_photo = course_db.artist_photo
     artist_photo_preview = course_db.artist_photo_preview
-    artist_work = course_db.artist_work
     return render_template(
         "courses/admin/edit-course.j2",
         form=form,
@@ -305,7 +288,6 @@ def edit_course(course_id):
         student_works=student_works,
         artist_photo=artist_photo,
         artist_photo_preview=artist_photo_preview,
-        artist_work=artist_work,
         artists=artists)
 
 
