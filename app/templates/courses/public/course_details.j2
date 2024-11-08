@@ -101,7 +101,7 @@
                 <h5>Юрий Петров</h5>
                 <span>Профессия</span>
               </div>
-              {% for student_work in student_works %}
+              {% for student_work in course.student_works %}
                 <div class="workphoto-item text-center">
                   <div class="position-relative mb-5">
                     <img class="img-fluid mx-auto" src="{{ url_for('static', filename='upload/' + student_work.photo) }}" alt="{{ student_work.title }}">
@@ -193,7 +193,7 @@
                 <h5>Кольцо «Два плывуна» из серии «Корни»</h5>
                 <p>Материал: титан, гипоаллергенный сплав</p>
               </div>
-              {% for artist in artists %}
+              {% for artist in course.artists %}
                 {% for artistwork in artist.works %}
                   <div class="workphoto-item text-center">
                     <div class="position-relative mb-5">
