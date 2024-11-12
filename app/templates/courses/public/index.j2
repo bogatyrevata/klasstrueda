@@ -17,7 +17,7 @@
         {% for course in courses %}
         {% if course.category_id == category.id %}
             <div class="col-lg-4 col-md-6 mb-5 wow fadeInUp" data-wow-delay="0.1s">
-              <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
+              <div class="courses-item courses-card d-flex flex-column bg-white overflow-hidden h-100">
                 <div class="text-center p-4 pt-0">
                   <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price }}</div>
                   <h5 class="mb-3">{{ course.title }}</h5>
