@@ -537,7 +537,7 @@ def edit_lesson(lesson_id):
         "courses/admin/edit-lesson.j2",
         form=form,
         lessons=lessons_db,
-        lesson=lesson_id,
+        lesson=lesson_db,
         lesson_id=lesson_id)
 
 
