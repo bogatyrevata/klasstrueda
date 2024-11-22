@@ -11,6 +11,8 @@ from app.ext.core.models import Role, Setting, User, user_datastore
 from app.extensions import db
 from config import EXT_DIR
 from version import __version__
+from flask import g
+
 
 admin = Blueprint("admin", __name__, template_folder="templates")
 
@@ -20,6 +22,7 @@ admin = Blueprint("admin", __name__, template_folder="templates")
 @roles_accepted("admin")
 def index():
     """Главная страница админки."""
+    g.is_admin = True  # Добавление флага для админки
     g.breadcrumbs = [{"title": "Админка"}]
     admin_links = [
         {

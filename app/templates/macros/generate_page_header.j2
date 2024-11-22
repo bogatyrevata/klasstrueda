@@ -1,6 +1,14 @@
-{% macro generate_page_header(active_item='index') %}
-  {% set title = g.menu | selectattr('href', '==', active_item) | map(attribute='title') | first %}
-  <div class="container-fluid page-header py-6 my-6 mt-0 wow fadeIn" data-wow-delay="0.1s">
+{% macro generate_page_header(is_admin=False) %}
+  {% if is_admin %}
+    {% set breadcrumbs = g.breadcrumbs %}
+    {% set title = breadcrumbs | map(attribute='title') | first %}
+  {% else %}
+    {% set menu = g.menu %}
+    {% set active_item = request.path.strip('/') %}
+    {% set title = menu | selectattr('href', '==', active_item) | map(attribute='title') | first %}
+  {% endif %}
+
+  <div class="container-fluid page-header py-6 my-4 mt-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="container text-center">
       {% for item in g.menu %}
         {% if item.submenu %}
@@ -16,21 +24,38 @@
       {% endif %}
       <nav aria-label="breadcrumb animated slideInDown">
         <ol class="breadcrumb justify-content-center mb-0">
-          <li class="breadcrumb-item"><a class="text-white" href="{{ url_for('core.index') }}">Главная</a></li>
-          {% for item in g.menu %}
-            {% if item.submenu %}
-              {% for sub_item in item.submenu %}
-                {% if sub_item.href == active_item %}
-                  <li class="breadcrumb-item text-primary active" aria-current="page">{{ sub_item.title }}</li>
+          <li class="breadcrumb-item">
+            <a class="text-white" href="{{ url_for('core.index') }}">Главная</a>
+          </li>
+
+          {% if is_admin %}
+            {% for breadcrumb in breadcrumbs %}
+              <li class="breadcrumb-item {{ 'text-primary active' if loop.last else '' }}"
+                  aria-current="{{ 'page' if loop.last else '' }}">
+                {% if breadcrumb.controller and not loop.last %}
+                  <a class="text-white" href="{{ url_for(breadcrumb.controller) }}">{{ breadcrumb.title }}</a>
+                {% else %}
+                  {{ breadcrumb.title }}
                 {% endif %}
-              {% endfor %}
+              </li>
+            {% endfor %}
+          {% else %}
+            {% for item in menu %}
+              {% if item.submenu %}
+                {% for sub_item in item.submenu %}
+                  {% if sub_item.href == active_item %}
+                    <li class="breadcrumb-item text-primary active" aria-current="page">{{ sub_item.title }}</li>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+            {% if title %}
+              <li class="breadcrumb-item text-primary active" aria-current="page">{{ title }}</li>
             {% endif %}
-          {% endfor %}
-          {% if title %}
-            <li class="breadcrumb-item text-primary active" aria-current="page">{{ title }}</li>
           {% endif %}
         </ol>
       </nav>
     </div>
   </div>
 {% endmacro %}
+
