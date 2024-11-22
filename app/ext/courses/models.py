@@ -202,6 +202,8 @@ class Video(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     alias = db.Column(db.String(255))
+    filename = db.Column(db.String(255))
+    alt = db.Column(db.String(255))
     description = db.Column(db.String(2048))
     duration_seconds = db.Column(db.Integer)
 
