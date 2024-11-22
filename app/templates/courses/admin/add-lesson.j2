@@ -12,6 +12,9 @@
       {{ input_form_6(form.module_id) }}
       {{ input_form_6(form.title) }}
       {{ input_form_6(form.alias) }}
+      {{ input_form_12(form.photo) }}
+      {{ input_form_12(form.video) }}
+      {{ input_form_12(form.file) }}
       {{ input_form_12(form.description, style="height: 150px") }}
       {{ btn(form.submit, value="Отправить") }}
       <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
@@ -23,5 +26,7 @@
       <li><a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}">{{ lesson.title }} ({{ lesson.alias }})</a></li>
     {% endfor %}
   </ul>
+
+
 {% endblock admin_content %}
 

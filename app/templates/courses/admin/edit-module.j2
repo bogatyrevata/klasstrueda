@@ -32,6 +32,6 @@
       <a href="{{ url_for('.delete_photo', entity_type=entity_type, entity_id=entity.id, photo_id=photo.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту фотографию?');">Удалить</a>
     </li>
   {% endfor %}
-</ul>
+  </ul>
 {% endblock admin_content %}
 

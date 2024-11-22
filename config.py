@@ -83,6 +83,13 @@ class BaseConfig:
     TELEGRAM_ADMIN_ID = os.getenv("TELEGRAM_ADMIN_ID")
 
     UPLOADED_PHOTOS_DEST = "app/static/upload"
+    UPLOADED_VIDEOS_DEST = "app/static/upload"
+    UPLOADED_FILES_DEST = "app/static/upload"
+
+    # Разрешенные расширения для каждого набора
+    UPLOADED_PHOTOS_ALLOW = ['jpg', 'jpeg', 'png', 'gif']
+    UPLOADED_VIDEOS_ALLOW = ['mp4', 'avi', 'mov', 'mkv']
+    UPLOADED_FILES_ALLOW = ['pdf', 'docx', 'txt', 'zip']
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET_KEY = "xcvsdrfgohlkjn,sdasdfIWE!@#$%^&*"

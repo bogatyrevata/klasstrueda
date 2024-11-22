@@ -28,7 +28,7 @@
 <body>
   {% include "header.j2" %}
   {% if not hide_header %}
-    {{ generate_page_header(active_item) }}
+    {{ generate_page_header(is_admin=is_admin) }}
   {% endif %}
   {# flash уведомления #}
   <div class="container">
