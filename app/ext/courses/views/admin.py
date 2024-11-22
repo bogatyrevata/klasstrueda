@@ -4,8 +4,8 @@ from flask_security import current_user, login_required
 
 from app.ext.core.models import Photo, User
 from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm, TariffForm
-from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff
-from app.extensions import db, photos, csrf
+from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video
+from app.extensions import db, photos, csrf, videos, files
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
@@ -438,7 +438,42 @@ def add_lesson():
             alias=form.data["alias"],
             description=form.data["description"],
         )
-        lesson_db.save()
+
+        # Обработка загруженных фото
+        if form.photo.data:
+            for file in form.photo.data:
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = photos.save(file)
+                    new_photo = Photo(
+                        filename=filename,
+                        alt=f'Изображение для {form.title.data}',
+                    )
+                    lesson_db.photos.append(new_photo)
+                    db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
+
+         # Обработка видео
+        if form.video.data:
+            for file in form.video.data:
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = videos.save(file)
+                    new_video = Video(
+                        filename=filename,
+                        alt=f'Видео для {form.title.data}',
+                    )
+                    lesson_db.videos.append(new_video)
+                    db.session.add(new_video)
+
+        # Обработка других файлов
+        if form.file.data:
+            file = form.file.data
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = files.save(file)
+                lesson_db.file = filename  # Сохраняем путь к файлу
+
+
+        db.session.add(lesson_db)
+        db.session.commit()
+
         flash("Урок успешно сохранен!", "success")
         return redirect(url_for(".index"))
 
@@ -461,6 +496,37 @@ def edit_lesson(lesson_id):
         lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
+
+        if form.photo.data:
+          for file in form.photo.data:
+              if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                  filename = photos.save(file)
+                  new_photo = Photo(
+                      filename=filename,
+                      alt=f'Изображение для {form.title.data}',
+                  )
+                  lesson_db.photos.append(new_photo)
+                  db.session.add(new_photo)  # Добавляем фото в сессию для сохранения
+
+         # Обработка видео
+        if form.video.data:
+            for file in form.video.data:
+                if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                    filename = videos.save(file)
+                    new_video = Video(
+                        filename=filename,
+                        alt=f'Видео для {form.title.data}',
+                    )
+                    lesson_db.videos.append(new_video)
+                    db.session.add(new_video)
+
+        # Обработка других файлов
+        if form.file.data:
+            file = form.file.data
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = files.save(file)
+                lesson_db.file = filename  # Сохраняем путь к файлу
+
         db.session.commit()
         flash("Урок успешно обновлен!", "success")
         return redirect(url_for(".edit_lesson", lesson_id=lesson_id, lesson=lesson_db))
@@ -510,6 +576,35 @@ def delete_photo(entity_type, entity_id, photo_id):
     else:
         flash("Неизвестный тип сущности!", "danger")
         return redirect(url_for(".index"))
+
+
+@admin_courses.route("/delete-video/<string:entity_type>/<int:entity_id>/<int:video_id>", methods=["GET"])
+def delete_video(entity_type, entity_id, video_id):
+    video_db = Video.query.get_or_404(video_id)
+
+    # Удаление из базы данных
+    db.session.delete(video_db)
+    db.session.commit()
+    flash("Видео успешно удалено!", "success")
+
+    if entity_type == "lesson":
+        return redirect(url_for(".edit_lesson", lesson_id=entity_id))
+    else:
+        flash("Неизвестный тип сущности!", "danger")
+        return redirect(url_for(".index"))
+
+
+@admin_courses.route("/delete-file/<int:lesson_id>", methods=["GET"])
+def delete_file(lesson_id):
+    lesson_db = Lesson.query.get_or_404(lesson_id)
+
+    # Обнуляем поле с файлом в базе данных
+    lesson_db.file = None
+    db.session.commit()
+
+    flash("Запись о файле успешно удалена!", "success")
+
+    return redirect(url_for(".edit_lesson", lesson_id=lesson_id))
 
 
 @admin_courses.route("/add-studentwork", methods=["GET", "POST"])
