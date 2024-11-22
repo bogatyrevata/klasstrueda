@@ -67,9 +67,6 @@ def before_app_request():
             "title": "Преимущества",
             "href": "feature",
           }, {
-            "title": "Курсы",
-            "href": "courses",
-          }, {
             "title": "Базовый ювелирный курс",
             "href": "basic-jewelry",
           }, {
