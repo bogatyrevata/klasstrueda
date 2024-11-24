@@ -280,7 +280,7 @@ def edit_course(course_id):
     return render_template(
         "courses/admin/edit-course.j2",
         form=form,
-        course=course_id,
+        course=course_db,
         course_id=course_id,
         preview_photo=preview_photo,
         about_photo=about_photo,
