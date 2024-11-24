@@ -3,8 +3,8 @@ from flask import Blueprint, current_app, flash, g, redirect, render_template, r
 from flask_security import current_user, login_required
 
 from app.ext.core.models import Photo, User
-from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm, TariffForm
-from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video
+from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, PromoForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm, TariffForm
+from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video, Promo
 from app.extensions import db, photos, csrf, videos, files
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
@@ -1018,4 +1018,119 @@ def delete_tariff(tariff_id):
         flash("Ошибка при удалении тарифа!", "danger")
 
     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/add-promo/", methods=["GET", "POST"])
+def add_promo():
+    form = PromoForm()
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+
+    if form.validate_on_submit():
+        promo_db = Promo(
+            title=form.data["title"],
+            alias= form.data["alias"],
+            description=form.data["description"],
+            price=form.data["price"],
+            discount=form.data["discount"],
+            start_time=form.data["start_time"],
+            end_time=form.data["end_time"],
+        )
+
+        filename = ""
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                promo_db.photo = filename  # Сохранение имени файла в поле photo
+
+        db.session.add(promo_db)
+        db.session.commit()
+
+        # Обновление связи courses вручную
+        selected_courses = Course.query.filter(Course.id.in_(form.course_id.data)).all()
+        for course in selected_courses:
+            course.promos.append(promo_db)  # Используем уже существующее отношение
+
+        db.session.commit()
+        flash("Акция успешно добавленa!", "success")
+        return redirect(url_for(".index"))
+
+    promos_db = Promo.query.all()  # Получаем все промо-коды из базы данных
+
+    return render_template(
+        "courses/admin/add-promo.j2",
+        form=form,
+        promos=promos_db,
+    )
+
+
+@admin_courses.route("/add-promo/<int:promo_id>", methods=["GET", "POST"])
+def edit_promo(promo_id):
+    promo_db = Promo.query.get_or_404(promo_id)
+    form = PromoForm(obj=promo_db)
+
+    # Заполнение выборок для курсов
+    form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
+
+    if request.method == "GET":
+        # Предзаполнение выбранных курсов
+        form.course_id.data = [course.id for course in promo_db.courses]
+
+    if form.validate_on_submit():
+        promo_db.title = form.title.data
+        promo_db.alias = form.alias.data
+        promo_db.description = form.description.data
+        promo_db.price = form.price.data
+        promo_db.discount = form.discount.data
+        promo_db.start_time = form.start_time.data
+        promo_db.end_time = form.end_time.data
+
+        # Обработка загруженного файла (одно фото)
+        if "photo" in request.files and request.files["photo"]:
+            file = request.files["photo"]
+            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
+                filename = photos.save(file)
+                promo_db.photo = filename  # Обновление имени файла в поле photo
+
+        # Обновление связанных курсов
+        selected_course_ids = form.course_id.data
+        # Получение объектов курсов по выбранным ID
+        selected_courses = Course.query.filter(Course.id.in_(selected_course_ids)).all()
+        # Присвоение новых курсов (это автоматически обновит связи)
+        promo_db.courses = selected_courses
+
+        db.session.commit()
+        flash("Акция успешно изменена!", "success")
+        return redirect(url_for(".index", promo_id=promo_id))
+
+    promos_db = Promo.query.all()  # Получаем все промо-коды из базы данных
+
+    return render_template(
+        "courses/admin/edit-promo.j2",
+        form=form,
+        promos=promos_db,
+        promo_id=promo_id,
+        promo=promo_db,
+    )
+
+
+@admin_courses.route("/delete-promo/<int:promo_id>", methods=["GET"])
+def delete_promo(promo_id):
+    promo_db = Promo.query.get_or_404(promo_id)
+
+    if promo_db:
+        # Удаление всех связей c курсами перед удалением `Promo`
+        promo_db.courses = []
+        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+
+        db.session.delete(promo_db)
+        db.session.commit()
+        flash("Акция успешно удалена!", "success")
+    else:
+        flash("Ошибка при удалении акции!", "danger")
+
+    return redirect(url_for(".index"))
+
+
 
