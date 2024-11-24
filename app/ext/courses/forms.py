@@ -1,8 +1,8 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, DecimalField, StringField, SubmitField, TelField, FileField, EmailField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Regexp, Email
+from wtforms import DateField, DateTimeField, DecimalField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms.validators import DataRequired, Regexp, Email, NumberRange
 
 
 class CategoryForm(FlaskForm):
@@ -138,3 +138,16 @@ class TariffForm(FlaskForm):
     discount = DecimalField("Скидка", places=2, default=0.0)
     photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
     submit = SubmitField("Добавить тариф")
+
+
+class PromoForm(FlaskForm):
+    course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
+    alias = StringField("Alias", validators=[DataRequired()])
+    title = StringField("Название акции", validators=[DataRequired()])
+    description = TextAreaField("Описание акции")
+    photo = FileField("Добавить фото", validators=[FileAllowed(['jpg', 'jpeg', 'png'], "Only image files are allowed.")])
+    price = DecimalField("Стоимость акции", places=2, validators=[DataRequired()])
+    discount = IntegerField("Скидка (%)", validators=[NumberRange(min=0, max=100)])
+    start_time = DateTimeField("Время начала акции в формате ДД.ММ.ГГГГ ЧЧ:ММ", format="%d.%m.%Y %H:%M", validators=[DataRequired()])
+    end_time = DateTimeField("Время окончания акции в формате ДД.ММ.ГГГГ ЧЧ:ММ", format="%d.%m.%Y %H:%M", validators=[DataRequired()])
+    submit = SubmitField("Добавить акцию")

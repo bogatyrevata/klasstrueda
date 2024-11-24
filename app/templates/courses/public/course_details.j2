@@ -103,6 +103,28 @@
     </div>
   </div>
   <!-- Course Students End-->
+    <!-- Course Promo Start-->
+  <div class="container-xxl promo my-4 py-4">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
+          <div class="h-100">
+          {% if course.promos %}
+            <!-- Отображаем первую акцию -->
+            <h1 class="display-12 mb-4">{{ course.promos[0].title }}</h1>
+            <p>{{ course.promos[0].description }}</p>
+          {% else %}
+            <h1 class="display-12 mb-4">Для этого курса нет акции</h1>
+          {% endif %}
+          <div class="col-sm-6">
+            <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Course Promo End-->
    <!-- Start Registration Form -->
     <div class="container-xxl py-6" id="consultation">
       <div class="container">

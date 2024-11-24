@@ -85,6 +85,17 @@
 
 
     {{ input_form_12(form.price, style="height: 150px") }}
+
+    <h2>Список всех акций</h2>
+      <ul>
+        {% for promo in course.promos %}
+          <li><a href="{{ url_for('admin_courses.edit_promo', promo_id=promo.id) }}">{{ promo.title }} </a>
+          <a href="{{ url_for('admin_courses.delete_promo', promo_id=promo.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту акцию?');">Удалить</a>
+          </li>
+          {% else %}
+        <li>Для этого курса нет доступных акций.</li>
+        {% endfor %}
+      </ul>
     {{ input_form_12(form.start_date) }}
     {{ input_form_12(form.end_date) }}
     {{ input_form_12(form.modules, style="height: 100px")}}
