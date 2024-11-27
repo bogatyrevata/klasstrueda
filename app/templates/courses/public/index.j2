@@ -1,21 +1,75 @@
 {% extends "base.j2" %}
-{% from "macros/generate_page_header.j2" import generate_page_header %}
+{% from "macros/picture.j2" import picture %}
 
 {% block content %}
-  <!-- Page Header Start -->
-  {{ generate_page_header(active_item='courses') }}
-  <!-- Page Header End -->
-
-  <div class="container">
-    <h1>Категории</h1>
-    <div class="row">
+  <div class="container-xxl courses my-6 py-6 pb-0">
+    <div class="container">
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+        <h6 class="text-primary text-uppercase mb-2">Популярные курсы</h6>
+        <h1 class="display-6 mb-4">Наши курсы помогут вам раскрыть свой творческий потенциал</h1>
+      </div>
+      <div class="row g-4 justify-content-center">
       {% for category in categories %}
-        <article class="col-3">
-          <h3>{{ category.name }}</h3>
-          <p>{{ category.description }}</p>
-          <p><a href="#">подробнее</a></p>
-        </article>
-      {% endfor %}
+      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="">
+        <h2>{{ category.title }}</h2>
+        <p>{{ category.description }}</p>
+      </div>
+        {% for course in courses %}
+        {% if course.category_id == category.id %}
+            <div class="col-lg-4 col-md-6 mb-5 wow fadeInUp" data-wow-delay="0.1s">
+              <div class="courses-item courses-card d-flex flex-column bg-white overflow-hidden h-100">
+                <div class="text-center p-4 pt-0">
+                  <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price }}</div>
+                  <h5 class="mb-3">{{ course.title }}</h5>
+                  <p>{{ course.preview_description }}</p>
+                  <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>{{ course.level }}</li>
+                    <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ course.duration }}</li>
+                  </ol>
+                </div>
+                <div class="position-relative mt-auto">
+                  {% if course.preview_photo %}
+                    {{ picture(
+                      class_name='img-fluid',
+                      file_name='upload/' ~ course.preview_photo,
+                      alt='Изображение для курсов %s' % course.title,
+                      width=300,
+                      height=300,
+                      bp_tablet=834,
+                      width_tablet=400,
+                      height_tablet=400,
+                      bp_desktop=1440,
+                      width_desktop=500,
+                      height_desktop=500
+                    ) }}
+                  {% else %}
+                    {{ picture(
+                      class_name='img-fluid',
+                      file_name='img/logo-trueda.png',
+                      alt='Логотип',
+                      width=300,
+                      height=300,
+                      bp_tablet=834,
+                      width_tablet=400,
+                      height_tablet=400,
+                      bp_desktop=1440,
+                      width_desktop=500,
+                      height_desktop=500
+                    ) }}
+                  {% endif %}
+                  <div class="courses-overlay">
+                    <a class="btn btn-outline-primary border-2" href="{{ url_for('course.course_details', course_id=course.id) }}">Подробнее</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif%}
+          {% endfor %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock content %}
+
+
+

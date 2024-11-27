@@ -4,6 +4,7 @@
 .venv/
 __pycache__/
 app/static/upload/
+app/static/images/cache
 build/
 log/
 node_modules/

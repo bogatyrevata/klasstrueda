@@ -1,5 +1,4 @@
 {% extends "base.j2" %}
-{% from "macros/admin_breadcrumbs.j2" import admin_breadcrumbs %}
 {% set is_admin = True %}
 
 {% block head %}
@@ -17,13 +16,42 @@
 {% endblock head %}
 
 {% block content %}
-
-{{ admin_breadcrumbs() }}
-
   <section class="admin pt-5">
     <div class="admin__container container pt-5 pb-5">
       {% block admin_content %}
       {% endblock admin_content %}
     </div>
   </section>
+
+{# скрипт для загрузки фото в форму курса по нажатию кнопки #}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('button[data_target]').forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const targetId = button.getAttribute('data_target');
+        const fileInput = document.getElementById(targetId);
+        if (fileInput) {
+          fileInput.click();
+        }
+      });
+    });
+
+    document.querySelectorAll('input[type="file"][data_input]').forEach(function(fileInput) {
+      fileInput.addEventListener('change', function() {
+        const previewId = fileInput.getAttribute('data_input') + '_preview';
+        const previewImage = document.getElementById(previewId);
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            if (previewImage) {
+              previewImage.src = e.target.result;
+            }
+          }
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      });
+    });
+  });
+</script>
 {% endblock content %}

@@ -1,13 +1,9 @@
-{% from "macros/generate_page_header.j2" import generate_page_header %}
 {% from "macros/form.j2" import input_form_6, input_form_12 %}
 {% extends "base.j2" %}
 
-{% set page = "course-page" %}
+{% set page = "basic-jewelry" %}
 
 {% block content %}
- <!-- Page Header Start -->
- {{ generate_page_header(active_item='basic-jewelry') }}
-  <!-- Page Header End -->
 <!-- About Course Start -->
   <div class="container-xxl py-4">
     <div class="container">
@@ -359,9 +355,14 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">О преподавателе</h6>
-            <h1 class="display-6 mb-4">Талантливый ювелир и&nbsp;— художник</h1>
-            <p>В нашем онлайн марафоне «Ювелирное мастерство&nbsp;—  делаем креативные кольца» есть одна важная и уникальная особенность. Как думаете какая? Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник Юрий Былков. </p>
-            <p class="mb-4">Юрий&nbsp;—  многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и музее ювелирного искусства в г.Пфорцхайм Германияю, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства в разных странах мира.</p>
+            <h1 class="display-6 mb-4">Юрий Былков&nbsp;— художник и ювелир</h1>
+            <p>Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник Юрий Былков.</p>
+            <p>Юрий&nbsp;— многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений
+            ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и музее ювелирного искусства
+            в г.Пфорцхайм Германия, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства
+            в разных странах мира.</p>
+            <p class="mb-4">Более десяти лет Юрий обучает людей навыкам ювелирного мастерства как оффлайн так и
+            онлайн. Его авторская методика дополняет традиционные ювелирные навыки креативными и нестандартными решениями.</p>
           </div>
         </div>
       </div>
@@ -504,7 +505,7 @@
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                   {{ input_form_6(form.first_name) }}
                   {{ input_form_6(form.email) }}
-                  {{ input_form_12(form.course_name) }}
+                  {{ input_form_12(form.course_title) }}
                   {{ input_form_12(form.message, style="height: 100px") }}
                   <div class="col-12">
                     <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>

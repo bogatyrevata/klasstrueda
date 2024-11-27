@@ -1,13 +1,9 @@
-{% from "macros/generate_page_header.j2" import generate_page_header %}
 {% from "macros/form.j2" import input_form_6, input_form_12 %}
 {% extends "base.j2" %}
 
 {% set page = "jewelry-marathon" %}
 
 {% block content %}
- <!-- Page Header Start -->
- {{ generate_page_header(active_item='jewelry-marathon') }}
-  <!-- Page Header End -->
 <!-- About Course Start -->
   <div class="container-xxl py-4">
     <div class="container">
@@ -16,24 +12,26 @@
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">Ювелирный марафон</h6>
             <h1 class="display-6 mb-4">Ювелирный марафон: кольца</h1>
-            <p>Марафон будет проходить в течение недели. Каждый день вы будете получать записанные уроки как сделать интересное и
-            оригинальное кольцо и дополнительные уроки с полезными советами, творческими подсказками и идеями. Все записи и материалы
-            останутся в доступе для участников.</p>
-            <p class="mb-4">Особое внимание уделим созданию эскизов, проработке идеи еще до момента работы с материалом, поиску
-            решений для того чтобы вы могли сделать крутое ювелирное изделия используя те инструменты и объем навыков, который у вас
-            есть. В конце марафона будет онлайн стрим с мастером, на котором будет обратная связь, советы и ответы на вопросы.</p>
+            <p>Марафон состоит из записанных видеоуроков и дополнительных материалов. Каждый урок рассчитан на один день. В
+            записанных уроках вы узнаете как сделать интересные и оригинальные кольца. Также вам будут доступны
+            дополнительные уроки с полезными советами, творческими подсказками и идеями. Все записи и материалы
+            марафона останутся в доступе для участников.</p>
+            <p class="mb-4">Особое внимание уделим созданию эскизов, проработке идеи еще до момента работы с материалом,
+            поиску решений для того чтобы вы могли сделать крутое ювелирное изделия используя те инструменты и объем
+            навыков, который у вас есть. Для всех, кто пройдет марафон доступен чат, где вы сможете получить обратную
+            связь и советы от мастера и более опытных участников по вашим работам.</p>
             <div class="row g-2 mb-4 pb-2">
-              <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Экспертный преподаватель
-              </div>
               <div class="col-sm-6">
                 <i class="fa fa-check text-primary me-2"></i>Легкость и доступность
               </div>
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Много знаний за небольшое время
+                <i class="fa fa-check text-primary me-2"></i>Опытный преподаватель
               </div>
               <div class="col-sm-6">
-                <i class="fa fa-check text-primary me-2"></i>Сообщество единомышленников
+                <i class="fa fa-check text-primary me-2"></i>Много навыков за небольшое время
+              </div>
+              <div class="col-sm-6">
+                <i class="fa fa-check text-primary me-2"></i>Доступ в сообщество
               </div>
             </div>
             <div class="row g-4">
@@ -60,33 +58,34 @@
         <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h1 class="display-6 mb-4">Как проходит обучение</h1>
-              <p>Участники в течение недели каждый день получают записи занятий на тему, как сделать разные кольца:</p>
+              <p>Каждый урок посвящен отдельной теме. Вы научитесь делать:</p>
                 <div class="row g-2 mb-4 pb-2">
                   <div class="col-sm-6">
                     <i class="fa fa-check text-primary me-2"></i>Обручальное кольцо
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Кольцо из двух металлов
-                  </div>
-                  <div class="col-sm-6">
                     <i class="fa fa-check text-primary me-2"></i>Кольцо из развертки
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Кольцо с подвиждным соединением
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо из двух металлов
                   </div>
                   <div class="col-sm-6">
-                    <i class="fa fa-check text-primary me-2"></i>Кольцо с глухой закрепкой
+                    <i class="fa fa-check text-primary me-2"></i>Квадратное кольцо
+                  </div>
+                  <div class="col-sm-6">
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо со штифтовым соединением
+                  </div>
+                  <div class="col-sm-6">
+                    <i class="fa fa-check text-primary me-2"></i>Кольцо со вставкой
                   </div>
                 </div>
-              <p>Все видеоуроки будут в записи и можно будет изучать все темы в комфортном режиме и удобное время в течение трех месяцев.</p>
-              <p>После каждого этапа участники могут выполнять домашние задания, выкладывать фото или видео процесса и
-              результатов заданий в закрытой группе чтобы получить советы и обратную связь от мастера. Также в закрытой
-              группе будет постоянная помощь и поддержка по вопросам работы на курсе, поиска и покупки материалов,
-              инструментов и другим темам.
+              <p>В дополнительных уроках вы узнаете про инструменты и материалы. Все видеоуроки будут в записи и можно
+              будет изучать все темы в комфортном режиме и удобное время. </p>
+              <p>После каждого урока участники могут выполнять домашние задания, выкладывать фото или видео процесса и
+              результатов заданий в закрытой группе чтобы получить советы и обратную связь от мастера.
               </p>
-              <p>В завершение курса проводится онлайн-занятие с ответами на вопросы и обсуждением изделий и работы
-              участников. Всем участникам, которые захотят продолжить заниматься ювелирным делом будет доступна подписка
-              на ювелирный онлайн-клуб.
+              <p>В закрытой группе будет постоянная помощь и поддержка по вопросам ювелирного мастерства,
+              поиска и покупки материалов, инструментов и другим темам.
               </p>
             </div>
          </div>
@@ -100,43 +99,43 @@
     <div class="container">
       <div class="row g-5">
         <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-          <h1 class="display-6 mb-4">Кому подойдет курс</h1>
+          <h1 class="display-6 mb-4">Кому подойдет марафон</h1>
           <div class="row gy-5 gx-4">
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
               <div class="d-flex align-items-center mb-3">
                 <div class="flex-shrink-0 btn-square bg-primary me-3">
                   <i class="fa fa-check text-white"></i>
                 </div>
-                <h5 class="mb-0">Творцам, которые хотят новое хобби</h5>
+                <h5 class="mb-0">Новичкам</h5>
               </div>
-              <span>Скучно сидеть в офисе и хочется делать что-то своими руками</span>
+              <span>За короткий срок вы получите базовые навыки ювелирного дела и сделаете несколько украшений</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
               <div class="d-flex align-items-center mb-3">
                 <div class="flex-shrink-0 btn-square bg-primary me-3">
                   <i class="fa fa-check text-white"></i>
                 </div>
-                <h5 class="mb-0">Дизайнерам</h5>
+                <h5 class="mb-0">Дизайнерам и студентам</h5>
               </div>
-              <span>Если вы уже знаете как делать украшения но не хватает навыков</span>
+              <span>Если вы уже знаете как делать или придумывать украшения, но не хватает навыков и поддержки</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
               <div class="d-flex align-items-center mb-3">
                 <div class="flex-shrink-0 btn-square bg-primary me-3">
                   <i class="fa fa-check text-white"></i>
                 </div>
-                <h5 class="mb-0">Сотрудникам ювелирных магазинов</h5>
+                <h5 class="mb-0">Ремесленникам</h5>
               </div>
-              <span>Вы лучше будете понимать как создавать ювелирные украшения и сможете сменить работу на более творческую</span>
+              <span>Вы уже занимаетесь творческой работой, но хотите попробовать что-то новое и расширить свои навыки в различных ремеслах</span>
             </div>
             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
               <div class="d-flex align-items-center mb-3">
                 <div class="flex-shrink-0 btn-square bg-primary me-3">
                   <i class="fa fa-check text-white"></i>
                 </div>
-                <h5 class="mb-0">Создателям бренда</h5>
+                <h5 class="mb-0">Начинающим ювелирам</h5>
               </div>
-              <span>У вас уже есть свой бренд и вы хотите научиться новым навыкам для расширения линейки украшений</span>
+              <span>За короткий срок вы прокачаете свои навыки ювелирного дела и получите новые</span>
             </div>
           </div>
         </div>
@@ -176,8 +175,8 @@
                         <i class="fa fa-users text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Разрабатывать дизайн украшений</h5>
-                        <span>Перейти от эскиза к готовой работе</span>
+                        <h5>Научитесь базовым техникам ювелирного дела</h5>
+                        <span>Уже во время курса вы начнете делать первые украшения</span>
                       </div>
                     </div>
                   </div>
@@ -189,8 +188,21 @@
                         <i class="fa fa-file-alt text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Делать стильные украшения</h5>
-                        <span>Вы будете видеть как сделано то или иное украшение и сможете создавать свой стиль</span>
+                        <h5>Разрабатывать дизайн украшений</h5>
+                        <span>Научитесь делать эскизы и переходить от эскиза к готовой работе</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Делать стильные украшенияя</h5>
+                        <span>Вы будете понимать как сделано то или иное украшение и сможете использовать техники в своем стиле</span>
                       </div>
                     </div>
                   </div>
@@ -215,21 +227,8 @@
                         <i class="fa fa-clock text-white"></i>
                       </div>
                       <div class="ps-4">
-                        <h5>Научитесь работать с минильными инструментами</h5>
-                        <span>Уже во время курса вы начнете делать первые украшения с минимумом инструментов</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
-                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
-                    <div class="d-flex">
-                      <div class="flex-shrink-0 btn-lg-square bg-primary">
-                        <i class="fa fa-clock text-white"></i>
-                      </div>
-                      <div class="ps-4">
-                        <h5>Работа с клиентами</h5>
-                        <span>Мы научим вам позиционировать свои работы так что от клиентов не будет отбоя</span>
+                        <h5>Сделаете свою первую коллекцию ювелирных украшений</h5>
+                        <span>Узнаете как делать предметные фото изделий для продажи</span>
                       </div>
                     </div>
                   </div>
@@ -261,21 +260,21 @@
                   <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-1.jpg') }}"  alt="">
                 </div>
                 <h5>Анна Иванова</h5>
-                <span>Профессия</span>
+                <span>Санкт-Петербург</span>
               </div>
               <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
                   <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-2.jpg') }}"  alt="">
                 </div>
                 <h5>Юрий Петров</h5>
-                <span>Профессия</span>
+                <span>Москва</span>
               </div>
               <div class="workphoto-item text-center">
                 <div class="position-relative mb-5">
                   <img class="img-fluid mx-auto" src="{{ url_for('static', filename='img/studentwork-3.jpg') }}"  alt="">
                 </div>
                 <h5>Мария Сидорова</h5>
-                <span>Профессия</span>
+                <span>Екатеринбург</span>
               </div>
             </div>
           </div>
@@ -363,9 +362,14 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <h6 class="text-primary text-uppercase mb-2">О преподавателе</h6>
-            <h1 class="display-6 mb-4">Талантливый ювелир и&nbsp;— художник</h1>
-            <p>В нашем онлайн марафоне «Ювелирное мастерство&nbsp;—  делаем креативные кольца» есть одна важная и уникальная особенность. Как думаете какая? Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник Юрий Былков. </p>
-            <p class="mb-4">Юрий&nbsp;—  многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и музее ювелирного искусства в г.Пфорцхайм Германияю, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства в разных странах мира.</p>
+            <h1 class="display-6 mb-4">Юрий Былков&nbsp;— художник и ювелир</h1>
+            <p>Все онлайн занятия проводит автор и ведущий мастер&nbsp;— ювелир, художник Юрий Былков.</p>
+            <p>Юрий&nbsp;— многократный лауреат и победитель Международного конкурса дизайнеров ювелирных украшений
+            ОБРАЗ и ФОРМА. Сейчас его работы хранятся в музеях: например в «Эрмитаже» и музее ювелирного искусства
+            в г.Пфорцхайм Германия, и частных коллекциях, регулярно участвуют в выставках ювелирного искусства
+            в разных странах мира.</p>
+            <p class="mb-4">Более десяти лет Юрий обучает людей навыкам ювелирного мастерства как оффлайн так и
+            онлайн. Его авторская методика дополняет традиционные ювелирные навыки креативными и нестандартными решениями.</p>
           </div>
         </div>
       </div>
@@ -508,7 +512,7 @@
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                   {{ input_form_6(form.first_name) }}
                   {{ input_form_6(form.email) }}
-                  {{ input_form_12(form.course_name) }}
+                  {{ input_form_12(form.course_title) }}
                   {{ input_form_12(form.message, style="height: 100px") }}
                   <div class="col-12">
                     <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>

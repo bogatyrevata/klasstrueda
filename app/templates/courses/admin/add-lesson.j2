@@ -2,15 +2,31 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.add_lesson') }}" method="post">
+  <form action="{{ url_for('admin_courses.add_lesson') }}" method="post" enctype="multipart/form-data">
     <h1>Добавление урока</h1>
+    {% if form.errors %}
+      <b style="color:red">{% for error in form.errors %}{{ error }}<br>{% endfor %}</b>
+    {% endif %}
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.module_id) }}
-      {{ input_form_6(form.name) }}
+      {{ input_form_6(form.title) }}
       {{ input_form_6(form.alias) }}
+      {{ input_form_12(form.photo) }}
+      {{ input_form_12(form.video) }}
+      {{ input_form_12(form.file) }}
       {{ input_form_12(form.description, style="height: 150px") }}
       {{ btn(form.submit, value="Отправить") }}
+      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
     </div>
   </form>
+  <h2>Список уроков</h2>
+  <ul>
+    {% for lesson in lessons %}
+      <li><a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}">{{ lesson.title }} ({{ lesson.alias }})</a></li>
+    {% endfor %}
+  </ul>
+
+
 {% endblock admin_content %}
+

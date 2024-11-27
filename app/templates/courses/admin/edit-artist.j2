@@ -1,0 +1,26 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+
+{% block admin_content %}
+  <form action="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}" method="post" enctype="multipart/form-data">
+  <h1>Изменение мастера</h1>
+    <div class="row g-3">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      {{ input_form_6(form.user_id) }}
+      {{ input_form_6(form.avatar) }}
+      {{ input_form_12(form.bio, style="height: 150px") }}
+      {{ input_form_12(form.contacts, style="height: 100px")}}
+      {{ input_form_12(form.courses, style="height: 100px")}}
+      {{ btn(form.submit, value="Отправить") }}
+      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
+    </div>
+  </form>
+  <h2>Список мастеров</h2>
+  <ul>
+    {% for artist in artists %}
+      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.user.name }}</a>
+      <a href="{{ url_for('admin_courses.delete_artist', artist_id=artist.id) }}" onclick="return confirm('Вы уверены, что хотите удалить мастера?');">Удалить</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock admin_content %}

@@ -1,0 +1,31 @@
+ {% from "macros/picture.j2" import picture %}
+
+{#  генерирует поле для показа и загрузки картинки в раздел админки изменение курсов #}
+{% macro display_image(image, course_name, input_id) %}
+  {% if image %}
+    {% set filename = 'upload/%s' % image %}
+    <div class="card" style="width: 18rem;">
+      {{ picture(
+          class_name='card-img-top',
+          file_name=filename,
+          alt='Изображение для %s %s' % (input_id, course_name),
+          width=200,
+          height=200,
+          bp_tablet=834,
+          width_tablet=300,
+          height_tablet=200,
+          bp_desktop=1440,
+          width_desktop=400,
+          height_desktop=300
+        ) }}
+      <div class="card-body">
+        <button type="button" class="btn btn-primary" data_target="{{ input_id }}">Загрузить фото</button>
+      </div>
+    </div>
+  {% else %}
+    Фото не загружено
+    <div>
+      <button type="button" class="btn btn-primary" data_target="{{ input_id }}">Загрузить фото</button>
+    </div>
+  {% endif %}
+{% endmacro %}
