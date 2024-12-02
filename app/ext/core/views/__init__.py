@@ -180,6 +180,13 @@ def jewelry_ring():
     return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
 
 
+@core.route("/thank-you")
+def thank_you():
+    course_id = request.args.get('course_id')  # Извлекаем course_id из query параметров
+    course = Course.query.get(course_id) if course_id else None
+    return render_template("public/thank_you.j2", course=course)
+
+
 @core.get("payment")
 def payment():
     """Оплата."""
@@ -284,6 +291,6 @@ def form_proc():
         )
 
         flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
-        return redirect(url_for("core.contacts"))
+        return redirect(url_for("core.thank_you"))
 
     return render_template("public/contacts.j2", form=form, active_item="form-processing")
