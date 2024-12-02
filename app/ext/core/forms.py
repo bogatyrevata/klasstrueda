@@ -22,7 +22,7 @@ class ExtendedConfirmRegisterForm(ConfirmRegisterForm):
     first_name = StringField("Имя", [DataRequired()])
     last_name = StringField("Фамилия", [DataRequired()])
 
-class RegistrationForm(FlaskForm):
+class FeedbackForm(FlaskForm):
     """Форма регистрации на курс и вопросов по курсу."""
 
     first_name = StringField("Ваше имя", [DataRequired()])

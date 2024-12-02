@@ -8,7 +8,7 @@ from sqlalchemy.exc import OperationalError
 from app.ext.core.models import user_datastore
 from app.extensions import csrf, db
 from config import TZ
-from app.ext.core.forms import RegistrationForm
+from app.ext.core.forms import FeedbackForm
 
 from app.utils import send_to_telegram, send_to_email
 
@@ -125,7 +125,7 @@ def before_app_request():
 def index():
     """Главная страница."""
     init_request()
-    form = RegistrationForm(meta={'csrf':False})
+    form = FeedbackForm(meta={'csrf':False})
     return render_template("public/index.j2", form=form, hide_header=True, active_item="")
 
 
@@ -142,7 +142,7 @@ def page(page_name):
 def contacts():
     """Контакты."""
     init_request()
-    form = RegistrationForm(meta={'csrf': False})
+    form = FeedbackForm(meta={'csrf': False})
     return render_template("public/contacts.j2", form=form, active_item="contacts")
 
 
@@ -150,7 +150,7 @@ def contacts():
 def basic_jewelry():
     """Базовый ювелирный курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf': False})
+    form = FeedbackForm(request.form, meta={'csrf': False})
     return render_template("public/basic-jewelry.j2", form=form, active_item="basic-jewelry")
 
 
@@ -158,7 +158,7 @@ def basic_jewelry():
 def appointment():
     """Регистрация на курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf':False})
+    form = FeedbackForm(request.form, meta={'csrf':False})
     return render_template("public/appointment.j2", form=form, active_item="appointment")
 
 
@@ -166,7 +166,7 @@ def appointment():
 def jewelry_marathon():
     """Регистрация на курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf':False})
+    form = FeedbackForm(request.form, meta={'csrf':False})
     return render_template("public/jewelry-marathon.j2", form=form, active_item="jewelry-marathon")
 
 
@@ -174,19 +174,19 @@ def jewelry_marathon():
 def jewelry_ring():
     """Регистрация на курс."""
     init_request()
-    form = RegistrationForm(request.form, meta={'csrf': False})
+    form = FeedbackForm(request.form, meta={'csrf': False})
     return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
 
 
 @core.route("/form-processing", methods=["GET", "POST"])
 def form_proc():
     if current_user.is_authenticated:
-        form = RegistrationForm(
+        form = FeedbackForm(
             first_name=current_user.first_name,
             email=current_user.email
         )
     else:
-        form = RegistrationForm(request.form)
+        form = FeedbackForm(request.form)
 
     if form.validate_on_submit():
         first_name = form.first_name.data
