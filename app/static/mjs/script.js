@@ -220,3 +220,7 @@ $(".workphoto-carousel").owlCarousel({
         updateCompareDate(); // Обновляем compareDate
       });
     });
+
+
+    // Заполняем поле временной метки при загрузке формы, для того чтобы сделать проверку на бота
+    document.getElementById('form_time').value = Date.now();
