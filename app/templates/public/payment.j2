@@ -23,6 +23,12 @@
                   {{ input_form_12(form.course_title) }}
                   {{ input_form_12(form.price) }}
 
+                  <!-- Honeypot поле -->
+                  <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
+
+                  <!-- Скрытое поле для временной метки -->
+                  <input type="hidden" id="form_time" name="form_time" value="">
+
                   <div class="col-12 text-center">
                     <label class="form-label">Способ оплаты</label>
                     <div class="d-flex justify-content-center gap-5">

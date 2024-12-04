@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, request, url_for
@@ -26,6 +27,22 @@ def course_details(course_id):
 
     form = CourseRegistrationForm()
     if form.validate_on_submit():
+        # Проверка Honeypot поля
+        if form.hidden_field.data:
+            current_app.logger.warning("Honeypot triggered! Possible bot detected.")
+            flash("Ошибка при отправке формы. Попробуйте снова.", "danger")
+            return redirect(url_for("course.course_details"))
+
+        # Проверка временной метки
+        form_time = int(form.form_time.data)  # Получаем значение времени в миллисекундах
+        current_time = int(time.time() * 1000)  # Текущее время в миллисекундах
+        time_difference = current_time - form_time
+
+        if time_difference < 2000:  # Если разница меньше 2 секунд
+            current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
+            flash("Ошибка при отправке формы. Попробуйте снова.", "error")
+            return redirect(url_for("course.form_payment"))
+
         name = form.name.data
         email = form.email.data
         course_title = course.title  # Получаем название курса из объекта course
@@ -54,7 +71,7 @@ def course_details(course_id):
         )
 
         flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
-        return redirect(url_for('course.course_details', course_id=course_id))
+        return redirect(url_for("course.course_details", course_id=course_id))
 
     return render_template("courses/public/course_details.j2", course=course, form=form)
 
@@ -87,6 +104,23 @@ def form_payment():
         form.email.data = current_user.email
 
     if form.validate_on_submit():
+        # Проверка Honeypot поля
+        if form.hidden_field.data:
+            current_app.logger.warning("Honeypot triggered! Possible bot detected.")
+            flash("Ошибка при отправке формы. Попробуйте снова.", "danger")
+            return redirect(url_for("course.form_payment"))
+
+        # Проверка временной метки
+        form_time = int(form.form_time.data)  # Получаем значение времени в миллисекундах
+        current_time = int(time.time() * 1000)  # Текущее время в миллисекундах
+        time_difference = current_time - form_time
+
+        if time_difference < 2000:  # Если разница меньше 2 секунд
+            current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
+            flash("Ошибка при отправке формы. Попробуйте снова.", "error")
+            return redirect(url_for("course.form_payment"))
+
+
         # Обработка отправки формы
         selected_course_id = form.course_title.data
         selected_price = form.price.data

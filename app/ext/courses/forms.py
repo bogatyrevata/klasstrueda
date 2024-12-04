@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, DateTimeField, DecimalField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, DateTimeField, DecimalField, HiddenField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email, NumberRange
 
 
@@ -128,6 +128,8 @@ class CourseRegistrationForm(FlaskForm):
         Email("Неверный формат Email, адрес должен содержать символ @")
     ])
     message = TextAreaField("Сообщение", [DataRequired()])
+    hidden_field = StringField("")  # Honeypot поле
+    form_time = HiddenField("Время отправки")  # Поле для временной метки
     submit = SubmitField("Отправить сообщение")
 
 
@@ -147,6 +149,8 @@ class CoursePaymentForm(FlaskForm):
             Email("Неверный формат Email, адрес должен содержать символ @")
         ]
     )
+    hidden_field = StringField("")  # Honeypot поле
+    form_time = HiddenField("Время отправки")  # Поле для временной метки
     submit = SubmitField("Отправить заявку")
 
 
