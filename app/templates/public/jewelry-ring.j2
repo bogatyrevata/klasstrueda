@@ -219,11 +219,17 @@
           <h1 class="display-6 mb-4">Записаться на курс или получить бесплатную консультацию по курсу</h1>
           <form action="{{ url_for('core.form_proc') }}" method="post">
             <div class="row g-3">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-             {{ input_form_6(form.first_name) }}
-             {{ input_form_6(form.email) }}
-             {{ input_form_12(form.question) }}
-             {{ input_form_12(form.message, style="height: 150px") }}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              {{ input_form_6(form.first_name) }}
+              {{ input_form_6(form.email) }}
+              {{ input_form_12(form.question) }}
+              {{ input_form_12(form.message, style="height: 150px") }}
+
+              <!-- Honeypot поле -->
+              <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
+              <!-- Скрытое поле для временной метки -->
+              <input type="hidden" id="form_time" name="form_time" value="">
+
               <div class="col-12">
                 <button class="btn btn-danger py-3 px-5" type="submit">Отправить сообщение</button>
               </div>
@@ -408,6 +414,13 @@
                   {{ input_form_6(form.email) }}
                   {{ input_form_12(form.course_title) }}
                   {{ input_form_12(form.message, style="height: 100px") }}
+
+                  <!-- Honeypot поле -->
+                  <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
+
+                  <!-- Скрытое поле для временной метки -->
+                  <input type="hidden" id="form_time" name="form_time" value="">
+
                   <div class="col-12">
                     <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>
                   </div>
