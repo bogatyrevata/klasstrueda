@@ -1,0 +1,18 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import base, btn, render_field_errors %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
+
+{% block admin_content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+        <h1>Обратная связь</h1>
+        <p>Здесь вы можете оставить свой отзыв о наших курсах и мастер-классах.</p>
+      </main>
+    </div>
+  </div>
+{% endblock admin_content%}
