@@ -1,11 +1,7 @@
 {% extends "admin/base.j2" %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
 
 {% block admin_content %}
-
-  <div class="col-lg-4 ml-auto">
-    <h1>Личный кабинет</h1>
-    <ul>
-      <li>
         <strong>Фото пользователя</strong>: {{ current_user.userphoto }}
         {% if userphoto %}
           {% set filename = 'upload/%s' % userphoto %}
@@ -13,47 +9,62 @@
         {% else %}
           Фото не загружено
         {% endif %}
-      </li>
-      <li>
-        <strong>Логин</strong>: {{ current_user.username }}
-      </li>
-      <li>
-        <strong>Email</strong>: {{ current_user.email }}
-      </li>
-      <li>
-        <strong>Дата регистрации</strong>: {{ current_user.create_datetime }}
-      </li>
-      <li>
-        <strong>Дата активации</strong>: {{ current_user.confirmed_at }}
-      </li>
-      <li>
-        <strong>Дата правки</strong>: {{ current_user.update_datetime }}
-      </li>
-      <li>
-        <strong>Роли</strong> ({{ current_user.roles | count }}):
-        {% for role in current_user.roles %}
-          {{ role.name }}
-          {% if not loop.last %},{% endif %}
-        {% endfor %}
-      </li>
-      {# <li>
-        <a href="{{ url_for('user.edit') }}">Изменить</a>
-      </li>
-      <li>
-        <a href="{{ url_for_security('logout') }}">Выйти</a>
-      </li>
-      {% for role in current_user.roles %}
-        {% if role.name == 'admin' %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+        <h1>Профиль</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            {% for link in user_links %}
+              <li class="breadcrumb-item">
+                <a href="{{ url_for(link.controller) }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ol>
+        </nav>
+        <ul>
           <li>
-            <a href="{{ url_for('admin.index') }}">Админка</a>
+          <li>
+            <strong>Логин</strong>: {{ current_user.username }}
           </li>
-        {% endif %}
-      {% endfor %} #}
-    </ul>
-    <nav>
-      {% for link in user_links %}
-        <a class="btn btn-primary" href="{{ url_for(link.controller) }}">{{ link.title }}</a>
-      {% endfor %}
-    </nav>
-  </div>
+          <li>
+            <strong>Email</strong>: {{ current_user.email }}
+          </li>
+          <li>
+            <strong>Дата регистрации</strong>: {{ current_user.create_datetime }}
+          </li>
+          <li>
+            <strong>Дата активации</strong>: {{ current_user.confirmed_at }}
+          </li>
+          <li>
+            <strong>Дата правки</strong>: {{ current_user.update_datetime }}
+          </li>
+          <li>
+            <strong>Роли</strong> ({{ current_user.roles | count }}):
+            {% for role in current_user.roles %}
+                {{ role.name }}
+                {% if not loop.last %},{% endif %}
+            {% endfor %}
+          </li>
+        </ul>
+        {# <nav>
+          {% for link in user_links %}
+            <a class="btn btn-primary" href="{{ url_for(link.controller) }}">{{ link.title }}</a>
+          {% endfor %}
+        </nav> #}
+        {# <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            {% for link in user_links %}
+              <li class="breadcrumb-item">
+                <a href="{{ url_for(link.controller) }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ol>
+        </nav> #}
+      </main>
+    </div>
+</div>
 {% endblock admin_content %}
