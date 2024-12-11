@@ -12,15 +12,29 @@ user = Blueprint("user", __name__, template_folder="templates")
 @login_required
 def index():
     """Главная страница личного кабинета."""
-    g.breadcrumbs = [{"title": "Личный кабинет"}]
     user_links = [
         {"controller": "user.edit", "title": "Изменить"},
         {"controller": "security.logout", "title": "Выйти"},
     ]
-    user_links.extend(
-        {"controller": "admin.index", "title": "Админка"} for role in current_user.roles if role.name == "admin"
-    )
+    # user_links.extend(
+    #     {"controller": "admin.index", "title": "Админка"} for role in current_user.roles if role.name == "admin"
+    # )
+    if any(role.name == "admin" for role in current_user.roles):
+        user_links.append({"controller": "admin.index", "title": "Админка"})
+
     return render_template("user/index.j2", user_links=user_links)
+
+
+@user.context_processor
+def inject_user_menu():
+    user_menu = [
+        {"title": "Профиль", "href": "user.index"},
+        {"title": "Курсы", "href": "user.user_courses"},
+        {"title": "Баллы", "href": "user.points"},
+        {"title": "Рассылка", "href": "user.mailing"},
+        {"title": "Отзывы", "href": "user.feedback"},
+    ]
+    return {"user_menu": user_menu}
 
 
 @user.route("/edit", methods=["GET", "POST"])
@@ -53,3 +67,28 @@ def edit():
     edit_profile_form.phone.data = current_user_db.us_phone_number
     userphoto = current_user_db.userphoto
     return render_template("user/edit_profile.j2", form=edit_profile_form, userphoto=userphoto)
+
+
+@user.get("/points")
+def points():
+    """Баллы пользователя."""
+    return render_template("user/points.j2", active_item="points")
+
+@user.get("/user-courses")
+def user_courses():
+    """Курсы пользователя."""
+    return render_template("user/user-courses.j2", active_item="user-courses")
+
+
+
+@user.get("/mailing")
+def mailing():
+    """Подписка пользователя."""
+    return render_template("user/mailing.j2", active_item="mailing")
+
+
+@user.get("/feedback")
+def feedback():
+    """Обратная связь пользователя."""
+    return render_template("user/feedback.j2", active_item="feedback")
+

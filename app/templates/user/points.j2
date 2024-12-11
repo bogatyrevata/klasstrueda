@@ -1,0 +1,18 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import base, btn, render_field_errors %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
+
+{% block admin_content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+        <h1>Ваши баллы за активность</h1>
+        <p>Раздел в разработке, в будущем тут будет учитываться активность на курсе, и будут начисляться баллы которые вы можете потратить на скидку на курсы или дополнительные личные консультации.</p>
+      </main>
+    </div>
+  </div>
+{% endblock admin_content%}
