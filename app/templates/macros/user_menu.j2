@@ -1,0 +1,52 @@
+{# {%- macro render_user_menu(menu_items) -%}
+<nav class="col-lg-3 d-lg-block bg-light sidebar">
+  <div class="position-sticky">
+    <h5 class="p-3">Меню</h5>
+    <ul class="nav flex-column">
+      {% if menu_items %}
+        {%- for item in menu_items -%}
+          <li class="nav-item">
+            <a class="nav-link
+              {% if url_for(item.href) == request.path %}active text-info{% endif %}"
+              href="{{ url_for(item.href) }}">
+              {{ item.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      {% else %}
+        <li class="nav-item">Меню пусто</li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{%- endmacro -%} #}
+
+{%- macro render_user_menu(menu_items) -%}
+<nav class="col-lg-3 d-lg-block sidebar">
+  <div class="position-sticky">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+        <span class="fs-4">Меню</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+      {% if menu_items %}
+        {%- for item in menu_items -%}
+        <li class="nav-item">
+          <a class="nav-link {% if url_for(item.href) == request.path %}active {% endif %}"  aria-current="page" href="{{ url_for(item.href) }}">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+            {{ item.title }}
+          </a>
+        </li>
+        {%- endfor -%}
+      {% else %}
+        <li class="nav-item">Меню пусто</li>
+      {% endif %}
+      </ul>
+      <hr>
+    </div>
+  </div>
+</nav>
+{%- endmacro -%}
+
