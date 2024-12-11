@@ -2,13 +2,6 @@
 {%- from "macros/user_menu.j2" import render_user_menu -%}
 
 {% block admin_content %}
-        <strong>Фото пользователя</strong>: {{ current_user.userphoto }}
-        {% if userphoto %}
-          {% set filename = 'upload/%s' % userphoto %}
-          <img src="{{ url_for('static', filename=filename) }}" alt="" width="100">
-        {% else %}
-          Фото не загружено
-        {% endif %}
   <div class="container-fluid">
     <div class="row">
       <!-- Левое меню -->
@@ -27,6 +20,18 @@
         </nav>
         <ul>
           <li>
+            <strong>Фото пользователя</strong>:
+            {% if current_user.userphoto %}
+              {% set filename = 'upload/%s' % current_user.userphoto %}
+              <label class="file-label" for="file-input">
+                <input class="file-input" id="file-input" type="file"/>
+                <img class="img-preview" id="img-preview" onload="showToast()" src="{{ url_for('static', filename=filename) }}"/>
+                <p>Загрузить фото</p>
+              </label>
+            {% else %}
+                Фото не загружено
+            {% endif %}
+          </li>
           <li>
             <strong>Логин</strong>: {{ current_user.username }}
           </li>
