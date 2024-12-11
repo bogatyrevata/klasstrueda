@@ -67,3 +67,28 @@ def edit():
     edit_profile_form.phone.data = current_user_db.us_phone_number
     userphoto = current_user_db.userphoto
     return render_template("user/edit_profile.j2", form=edit_profile_form, userphoto=userphoto)
+
+
+@user.get("/points")
+def points():
+    """Баллы пользователя."""
+    return render_template("user/points.j2", active_item="points")
+
+@user.get("/user-courses")
+def user_courses():
+    """Курсы пользователя."""
+    return render_template("user/user-courses.j2", active_item="user-courses")
+
+
+
+@user.get("/mailing")
+def mailing():
+    """Подписка пользователя."""
+    return render_template("user/mailing.j2", active_item="mailing")
+
+
+@user.get("/feedback")
+def feedback():
+    """Обратная связь пользователя."""
+    return render_template("user/feedback.j2", active_item="feedback")
+
