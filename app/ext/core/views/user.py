@@ -12,15 +12,29 @@ user = Blueprint("user", __name__, template_folder="templates")
 @login_required
 def index():
     """Главная страница личного кабинета."""
-    g.breadcrumbs = [{"title": "Личный кабинет"}]
     user_links = [
         {"controller": "user.edit", "title": "Изменить"},
         {"controller": "security.logout", "title": "Выйти"},
     ]
-    user_links.extend(
-        {"controller": "admin.index", "title": "Админка"} for role in current_user.roles if role.name == "admin"
-    )
+    # user_links.extend(
+    #     {"controller": "admin.index", "title": "Админка"} for role in current_user.roles if role.name == "admin"
+    # )
+    if any(role.name == "admin" for role in current_user.roles):
+        user_links.append({"controller": "admin.index", "title": "Админка"})
+
     return render_template("user/index.j2", user_links=user_links)
+
+
+@user.context_processor
+def inject_user_menu():
+    user_menu = [
+        {"title": "Профиль", "href": "user.index"},
+        {"title": "Курсы", "href": "user.user_courses"},
+        {"title": "Баллы", "href": "user.points"},
+        {"title": "Рассылка", "href": "user.mailing"},
+        {"title": "Отзывы", "href": "user.feedback"},
+    ]
+    return {"user_menu": user_menu}
 
 
 @user.route("/edit", methods=["GET", "POST"])
