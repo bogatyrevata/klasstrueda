@@ -11,7 +11,13 @@
       <!-- Основной контент -->
       <main class="col-lg-9 ml-auto px-4">
         <h1>Ваши курсы</h1>
-        <p>Здесь будут курсы, которые вам доступны</p>
+        {% if payments %}
+          {% for payment in payments %}
+            <p> <a href="{{ url_for('user_courses.one', course_id=payment.course_id) }}">Активный курс (id):{{ payment.course_id }}</a></p>
+          {% endfor %}
+        {% else %}
+          <p>Здесь будут курсы, которые вам доступны</p>
+        {% endif %}
         <h2> Список рекомендованных курсов</h2>
         <p>Карусель с рекомендованными курсами</p>
       </main>
