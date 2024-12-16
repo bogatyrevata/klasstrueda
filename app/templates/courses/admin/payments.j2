@@ -1,0 +1,39 @@
+{% extends "admin/base.j2" %}
+
+{% block admin_content %}
+  {% if payments %}
+    {% for payment in payments %}
+      <p>
+        payment_id:{{ payment.id }},
+        user_id:{{ payment.user_id }} -
+        Статус: {{ payment.status_payment }} -
+        {{ payment.datetime_create }}
+        {% if payment.status_payment == 0 %}
+          <a class="btn btn-primary" href="{{ url_for('admin_courses.change_payment_status', payment_id=payment.id) }}" data-id="{{ payment.id }}">Оплачено</a>
+        {% else %}
+          оплачено
+        {% endif %}
+      </p>
+    {% endfor %}
+  {% else %}
+    <p>Пока никто ничего не оформлял.</p>
+  {% endif %}
+{% endblock admin_content %}
+
+{% block js %}
+  <script>
+    const btns = document.querySelectorAll('.admin__container .btn');
+    btns.forEach((btn) => {
+      btn.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        const id_payment = evt.currentTarget.dataset.id;
+        const url = evt.currentTarget.href;
+        fetch(url).then((response) => response.json).then((data) => {
+          if (data.status === 'success') {
+            evt.currentTarget.remove();
+          }
+        });
+      });
+    });
+  </script>
+{% endblock js %}
