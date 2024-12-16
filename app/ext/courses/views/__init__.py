@@ -1,23 +1,23 @@
 import time
-from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, request, url_for
-from flask_security import hash_password, current_user
-from jinja2.exceptions import TemplateNotFound
-from sqlalchemy.exc import OperationalError
+from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, url_for
+from flask_security import current_user
 
-from app.ext.courses.models import Category, Course, Tariff
+from app.extensions import db
+from app.ext.courses.models import Category, Course, Tariff, Payment
 from app.ext.courses.forms import CourseRegistrationForm, CoursePaymentForm
 
 from app.utils import send_to_telegram, send_to_email
 
 courses = Blueprint("course", __name__, template_folder="templates")
 
+
 @courses.get("")
 def index():
     categories_db = Category.query.all()
     courses_db = Course.query.all()
     return render_template("courses/public/index.j2", categories=categories_db, courses=courses_db)
+
 
 @courses.route("/course/<int:course_id>", methods=["GET", "POST"])
 def course_details(course_id):
@@ -76,7 +76,6 @@ def course_details(course_id):
     return render_template("courses/public/course_details.j2", course=course, form=form)
 
 
-
 @courses.route("/form-payment", methods=["GET", "POST"])
 def form_payment():
      # Получаем все курсы и формируем их выбор
@@ -125,10 +124,22 @@ def form_payment():
         selected_course_id = form.course_title.data
         selected_price = form.price.data
 
-        selected_course = Course.query.get(selected_course_id)
+        selected_course = Course.query.get_or_404(selected_course_id)
         selected_tariff = None
         if selected_course:
             selected_tariff = next((tariff for tariff in selected_course.tariffes if tariff.id == selected_price), None)
+
+        if current_user.is_authenticated:
+            payment_db = Payment(
+                user_id=current_user.id,
+                course_id=selected_course.id,
+                tariff_id=selected_tariff.id,
+                status_payment=0
+            )
+            db.session.add(payment_db)
+            db.session.commit()
+        else:
+            flash("Для регистрации на курс — зайдите в личный кабинет.", "error")
 
         # Формируем сообщение для отправки
         send_message = (
