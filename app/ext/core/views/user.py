@@ -29,7 +29,7 @@ def index():
 def inject_user_menu():
     user_menu = [
         {"title": "Профиль", "href": "user.index"},
-        {"title": "Курсы", "href": "user.user_courses"},
+        {"title": "Курсы", "href": "user_courses.index"},
         {"title": "Баллы", "href": "user.points"},
         {"title": "Рассылка", "href": "user.mailing"},
         {"title": "Отзывы", "href": "user.feedback"},
@@ -73,12 +73,6 @@ def edit():
 def points():
     """Баллы пользователя."""
     return render_template("user/points.j2", active_item="points")
-
-@user.get("/user-courses")
-def user_courses():
-    """Курсы пользователя."""
-    return render_template("user/user-courses.j2", active_item="user-courses")
-
 
 
 @user.get("/mailing")
