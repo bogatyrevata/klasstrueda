@@ -40,6 +40,11 @@ def index():
             "title": "Курсы",
             "icon": "users",
         },
+        {
+            "controller": "admin_courses.payments",
+            "title": "Оплаты",
+            "icon": "users",
+        },
     ]
 
     return render_template("admin/index.j2", admin_links=admin_links)

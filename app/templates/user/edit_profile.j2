@@ -1,35 +1,53 @@
 {% extends "admin/base.j2" %}
 {% from "macros/form.j2" import base, btn, render_field_errors %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
 
 {% block admin_content %}
-  <div class="container-xxl py-6">
-    <div class="container">
-      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-        <h1 class="display-6 mb-4">Изменить</h1>
-        {% if userphoto %}
-          {% set filename = 'upload/%s' % userphoto %}
-          <img src="{{ url_for('static', filename=filename) }}" alt="" width="100">
-        {% endif %}
-        <form action="{{ url_for('user.edit') }}" method="post" enctype="multipart/form-data">
-          <div class="row g-3">
-            {{ form.hidden_tag() }}
-            {{ render_field_errors(form.csrf_token) }}
-            {{ base(form.userphoto) }}
-            {{ base(form.username) }}
-            {{ base(form.first_name) }}
-            {{ base(form.last_name) }}
-            {{ base(form.phone) }}
-            <div class="col-12">
-              <div class="form-floating">
-                {{ btn(form.submit) }}
-              </div>
+<div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+        <div class="container-xxl py-6">
+          <div class="container">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+              <h1 class="display-6 mb-4">Изменить</h1>
+              {% if userphoto %}
+                {% set filename = 'upload/%s' % userphoto %}
+              <label class="file-label" for="file-input">
+                <input class="file-input" id="file-input" type="file"/>
+                <img class="img-preview" id="img-preview" onload="showToast()" src="{{ url_for('static', filename=filename) }}"/>
+                <p>Загрузить фото</p>
+              </label>
+
+              <div id="toast">Image Uploaded</div>
+              {% endif %}
+
+              <div id="toast">Image Uploaded</div>
+              <form action="{{ url_for('user.edit') }}" method="post" enctype="multipart/form-data">
+                <div class="row g-3">
+                  {{ form.hidden_tag() }}
+                  {{ render_field_errors(form.csrf_token) }}
+                  {{ base(form.userphoto) }}
+                  {{ base(form.username) }}
+                  {{ base(form.first_name) }}
+                  {{ base(form.last_name) }}
+                  {{ base(form.phone) }}
+                  <div class="col-12">
+                    <div class="form-floating">
+                      {{ btn(form.submit) }}
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+        <div class="col-12">
+          <a class="btn btn-primary", href="{{ url_for_security('change_password') }}">Изменить пароль</a>
+        </div>
+      </main>
     </div>
-  </div>
-  <div class="col-12">
-    <a class="btn btn-primary", href="{{ url_for_security('change_password') }}">Изменить пароль</a>
-  </div>
+</div>
 {% endblock admin_content %}

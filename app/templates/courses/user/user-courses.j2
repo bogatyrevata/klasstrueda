@@ -1,0 +1,26 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import base, btn, render_field_errors %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
+
+{% block admin_content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+        <h1>Ваши курсы</h1>
+        {% if payments %}
+          {% for payment in payments %}
+            <p> <a href="{{ url_for('user_courses.one', course_id=payment.course_id) }}">Активный курс (id):{{ payment.course_id }}</a></p>
+          {% endfor %}
+        {% else %}
+          <p>Здесь будут курсы, которые вам доступны</p>
+        {% endif %}
+        <h2> Список рекомендованных курсов</h2>
+        <p>Карусель с рекомендованными курсами</p>
+      </main>
+    </div>
+  </div>
+{% endblock admin_content%}

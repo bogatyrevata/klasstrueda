@@ -145,7 +145,13 @@ def page(page_name):
 def contacts():
     """Контакты."""
     init_request()
-    form = FeedbackForm(meta={'csrf': False})
+    if current_user.is_authenticated:
+        form = FeedbackForm(
+            first_name=current_user.first_name,
+            email=current_user.email,
+            meta={"csrf": False})
+    else:
+        form = FeedbackForm(meta={"csrf": False})
     return render_template("public/contacts.j2", form=form, active_item="contacts")
 
 
@@ -177,13 +183,13 @@ def jewelry_marathon():
 def jewelry_ring():
     """Регистрация на курс."""
     init_request()
-    form = FeedbackForm(request.form, meta={'csrf': False})
+    form = FeedbackForm(request.form, meta={"csrf": False})
     return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
 
 
 @core.route("/thank-you")
 def thank_you():
-    course_id = request.args.get('course_id')  # Извлекаем course_id из query параметров
+    course_id = request.args.get("course_id")  # Извлекаем course_id из query параметров
     course = Course.query.get(course_id) if course_id else None
     return render_template("public/thank_you.j2", course=course)
 

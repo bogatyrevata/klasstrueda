@@ -4,7 +4,7 @@ from flask_security import current_user, login_required
 
 from app.ext.core.models import Photo, User
 from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, PromoForm, LessonForm, StudentWorkForm, ArtistWorkForm, ArtistForm, TariffForm
-from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video, Promo
+from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video, Promo, Payment
 from app.extensions import db, photos, csrf, videos, files
 
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
@@ -1133,4 +1133,16 @@ def delete_promo(promo_id):
     return redirect(url_for(".index"))
 
 
+@admin_courses.get("/payments")
+def payments():
+    payments_db = Payment.query.all()
+    courses_db = Course.query.all()
+    return render_template("courses/admin/payments.j2", payments=payments_db, courses=courses_db)
 
+
+@admin_courses.get("/payments/change-status/<int:payment_id>")
+def change_payment_status(payment_id):
+    payment_db = Payment.query.get_or_404(payment_id)
+    payment_db.status_payment = 1
+    db.session.commit()
+    return {"status": "success"}
