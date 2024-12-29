@@ -1,23 +1,38 @@
 {% extends "admin/base.j2" %}
 
 {% block admin_content %}
+
+  <h2>Статус оплат курсов: пользователи, курсы и даты</h2>
+  <table class="table">
+    <tr>
+      <th>Payment ID</th>
+      <th>User ID</th>
+      <th>Имя пользователя</th>
+      <th>Курс</th>
+      <th>Статус оплаты</th>
+      <th>Время оплаты</th>
+      <th>Подтверждение оплаты</th>
+    </tr>
   {% if payments %}
     {% for payment in payments %}
-      <p>
-        payment_id:{{ payment.id }},
-        user_id:{{ payment.user_id }} -
-        Статус: {{ payment.status_payment }} -
-        {{ payment.datetime_create }}
-        {% if payment.status_payment == 0 %}
-          <a class="btn btn-primary" href="{{ url_for('admin_courses.change_payment_status', payment_id=payment.id) }}" data-id="{{ payment.id }}">Оплачено</a>
+      <tr>
+        <td> {{ payment.id }} </td>
+        <td> {{ payment.user_id }} </td>
+        <td> {{ payment.user.name }} </td>
+        <td> {{ payment.course.title }} </td>
+        <td> {{ payment.status_payment }}</td>
+        <td> {{ payment.datetime_create }} </td>
+        <td>{% if payment.status_payment == 0 %}
+          <a class="btn btn-primary" href="{{ url_for('admin_courses.change_payment_status', payment_id=payment.id) }}" data-id="{{ payment.id }}">Оплата получена</a>
         {% else %}
           оплачено
-        {% endif %}
-      </p>
+        {% endif %}</td>
+      </tr>
     {% endfor %}
   {% else %}
     <p>Пока никто ничего не оформлял.</p>
   {% endif %}
+  </table>
 {% endblock admin_content %}
 
 {% block js %}
