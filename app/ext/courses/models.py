@@ -361,6 +361,9 @@ class Payment(db.Model, ModelMixin):
     final_price = db.Column(db.Numeric(precision=10, scale=2))
     status_payment = db.Column(db.Integer)
 
+    course = db.relationship("Course", backref="payments")  # Добавлено отношение c курсом
+    user = db.relationship("User", backref="payments")  # Добавлено отношение c пользователем
+
 
 class Tariff(db.Model, ModelMixin):
     """Модель для хранения тарифов курсов."""
