@@ -11,11 +11,10 @@
             <h6 class="text-primary text-uppercase mb-2">Ювелирный мастер-класс</h6><!-- подумать как переделать это элемент на категорию -->
             <h1 class="display-6 mb-4">{{ course.title }}</h1>
             <p>{{ course.about }}</p>
-            </div>
-            <div class="row g-4">
-              <div class="col-sm-6">
-                <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
-              </div>
+          </div>
+          <div class="row g-4">
+            <div class="col-sm-6">
+              <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
             </div>
           </div>
         </div>
@@ -23,7 +22,7 @@
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
             <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='upload/' ~ course.preview_photo) }}"  alt="{{ course.title }}" style="object-fit: cover;">
           </div>
-      </div>
+        </div>
       </div>
     </div>
   </div>
@@ -36,27 +35,30 @@
           <div class="h-100">
             <h1 class="display-6 mb-4">{{ course.learning_process_title }}</h1>
             <p>{{ course.learning_process_description }}</p>
-            </div>
+          </div>
          </div>
-       </div>
+      </div>
     </div>
   </div>
   <!-- Course Informtion End-->
   <!-- Feature Course Start-->
+  {% if course.features_description %}
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
         <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
           <h1 class="display-6 mb-4"> {{ course.features_title }} </h1>
           <div class="row gy-5 gx-4">
-            {{ course.features_description }}
+            <p>{{ course.features_description }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {% endif %}
   <!-- Feature Course End-->
    <!-- Course Skills Start-->
+  {% if course.skills_description %}
   <div class="container-xxl py-4">
     <div class="container">
       <div class="row g-5">
@@ -64,66 +66,67 @@
           <div class="h-100">
              <h1 class="display-6 mb-4">{{ course.skills_title }}</h1>
              <div class="container-fluid facts py-5">
-              <div class="container py-5">
-                <div class="row gx-0">
-                  <p>{{ course.skills_description }}</p>
-                </div>
-              </div>
+               <div class="container py-5">
+                 <div class="row gx-0">
+                   <p>{{ course.skills_description }}</p>
+                 </div>
+               </div>
              </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {% endif %}
   <!-- Course Skills End-->
   <!-- Course Students Start-->
-  <div class="container-xxl py-4">
-    <div class="container">
-      <div class="row g-5">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-          <h1 class="display-6 mb-4">Работы учеников</h1>
-          <p>Во время курса вы сделаете несколько работ и сможете добавить их в портфолио</p>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="owl-carousel workphoto-carousel">
-              {% for student_work in course.student_works %}
-                <div class="workphoto-item text-center">
-                  <div class="position-relative mb-5">
-                    <img class="img-fluid mx-auto" src="{{ url_for('static', filename='upload/' + student_work.photo) }}" alt="{{ student_work.title }}">
+  {% if course.student_works %}
+    <div class="container-xxl py-4">
+      <div class="container">
+        <div class="row g-5">
+          <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <h1 class="display-6 mb-4">Работы учеников</h1>
+            <p>Во время курса вы сделаете несколько работ и сможете добавить их в портфолио</p>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+              <div class="owl-carousel workphoto-carousel">
+                {% for student_work in course.student_works %}
+                  <div class="workphoto-item text-center">
+                    <div class="position-relative mb-5">
+                      <img class="img-fluid mx-auto" src="{{ url_for('static', filename='upload/' + student_work.photo) }}" alt="{{ student_work.title }}">
+                    </div>
+                    <h5>{{ student_work.title }}</h5>
+                    <span>{{ student_work.description }}</span>
                   </div>
-                  <h5>{{ student_work.title }}</h5>
-                  <span>{{ student_work.description }}</span>
-                </div>
-              {% endfor %}
+                {% endfor %}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
   <!-- Course Students End-->
     <!-- Course Promo Start-->
-  <div class="container-xxl promo my-4 py-4">
-    <div class="container">
-      <div class="row g-5">
-        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
-          <div class="h-100">
-          {% if course.promos %}
-            <!-- Отображаем первую акцию -->
-            <h1 class="display-12 mb-4">{{ course.promos[0].title }}</h1>
-            <p>{{ course.promos[0].description }}</p>
-          {% else %}
-            <h1 class="display-12 mb-4">Для этого курса нет акции</h1>
-          {% endif %}
-          <div class="col-sm-6">
-            <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
-          </div>
+  {% if course.promos %}
+    <div class="container-xxl promo my-4 py-4">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
+            <div class="h-100">
+              <!-- Отображаем первую акцию -->
+              <h1 class="display-12 mb-4">{{ course.promos[0].title }}</h1>
+              <p>{{ course.promos[0].description }}</p>
+              <div class="col-sm-6">
+                <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endif %}
   <!-- Course Promo End-->
    <!-- Start Registration Form -->
     <div class="container-xxl py-6" id="consultation">
@@ -131,7 +134,7 @@
         <div class="row g-5">
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
-            <h1 class="display-6 mb-4">Записаться на курс или получить бесплатную консультацию по курсу</h1>
+            <h1 class="display-6 mb-4">Получить бесплатную консультацию по курсу</h1>
             <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
