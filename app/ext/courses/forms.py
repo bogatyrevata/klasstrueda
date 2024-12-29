@@ -25,11 +25,23 @@ class CourseForm(FlaskForm):
     ])
     category_id = SelectField("Название категории", coerce=int, validators=[DataRequired()])
     preview_description = TextAreaField("Краткое описание курса")
-    preview_photo = MultipleFileField("Фотография к краткому описанию курса", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
+    preview_photo = FileField(
+        "Фотография к краткому описанию курса",
+        validators=[
+            FileAllowed(["jpg", "png"], "Только jpg или png!"),
+            FileRequired("Загрузка фотографии обязательна."),
+        ],
+    )
     level = TextAreaField("Уровень сложности курса")
     duration = TextAreaField("Продолжительность курса")
     about = TextAreaField("Описание курса")
-    about_photo = MultipleFileField("Фотография к описанию курса", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
+    about_photo = FileField(
+        "Фотография к описанию курса",
+        validators=[
+            FileAllowed(["jpg", "png"], "Только jpg или png!"),
+            FileRequired("Загрузка фотографии обязательна."),
+        ],
+    )
     learning_process_title = TextAreaField("Заголовок раздела о процессе обучения")
     learning_process_description = TextAreaField("Процесс обучения на курсе")
     features_title = TextAreaField("Заголовок раздела о преимуществах курса")
@@ -37,16 +49,29 @@ class CourseForm(FlaskForm):
     skills_title = TextAreaField("Заголовок раздела о том чему вы научитесь")
     skills_description = TextAreaField("Чему вы научитесь")
     registration_form = TextAreaField("Форма регистрации")
-    registration_photo = MultipleFileField("Фотография для формы регистрации", [FileAllowed(["jpg", "png"], "Только jpg или png!")])
+    registration_photo = FileField(
+        "Фотография для формы регистрации",
+        validators=[
+            FileAllowed(["jpg", "png"], "Только jpg или png!"),
+            FileRequired("Загрузка фотографии обязательна."),
+        ],
+    )
     artist_title = TextAreaField("Заголовок раздела о мастере")
     artist_description = TextAreaField("Описание раздела о мастере")
-    artist_photo = MultipleFileField("Фото мастера", [FileAllowed(["jpg","png"],"Только jpg и png!")])
-    artist_photo_preview = MultipleFileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    artist_photo = FileField(
+        "Фото мастера",
+        validators=[
+            FileAllowed(["jpg", "png"], "Только jpg или png!"),
+            FileRequired("Загрузка фотографии обязательна."),
+        ],
+    )
+    artist_photo_preview = FileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
     price = TextAreaField("Стоимость курса")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
     modules = SelectMultipleField("Модули", coerce=int)  # добавляем поле для выбора модулей
     submit = SubmitField("Добавить курс")
+
 
 
 class ModuleForm(FlaskForm):
@@ -161,7 +186,13 @@ class TariffForm(FlaskForm):
     description = TextAreaField("Описание тарифа")
     price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
     discount = DecimalField("Скидка", places=2, default=0.0)
-    photo = MultipleFileField("Фотография работы мастера", [FileAllowed(["jpg", "png"])])
+    photo = FileField(
+        "Фотография для preview тарифа",
+        validators=[
+            FileAllowed(["jpg", "png"], "Только jpg или png!"),
+            FileRequired("Загрузка фотографии обязательна."),
+        ],
+    )
     submit = SubmitField("Добавить тариф")
 
 
