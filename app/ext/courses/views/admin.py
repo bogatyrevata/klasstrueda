@@ -1136,7 +1136,8 @@ def delete_promo(promo_id):
 @admin_courses.get("/payments")
 def payments():
     payments_db = Payment.query.all()
-    return render_template("courses/admin/payments.j2", payments=payments_db)
+    courses_db = Course.query.all()
+    return render_template("courses/admin/payments.j2", payments=payments_db, courses=courses_db)
 
 
 @admin_courses.get("/payments/change-status/<int:payment_id>")
