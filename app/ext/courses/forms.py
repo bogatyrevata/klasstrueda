@@ -140,6 +140,7 @@ class CoursePaymentForm(FlaskForm):
     payment_method = RadioField(
         "Выберите способ оплаты",
         choices=[('RUB', 'RUB'), ('USD', 'USD'), ('USDT', 'USDT')],
+        default='RUB',  # Значение по умолчанию
         validators=[DataRequired()]
     )
     email = EmailField(
