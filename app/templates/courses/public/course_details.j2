@@ -173,7 +173,9 @@
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
             <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
               <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='upload/' ~ course.artist_photo) }}"  alt="" style="object-fit: cover;">
-              <img class="position-absolute top-0 start-0 bg-white pe-3 pb-3" src="{{ url_for('static', filename='upload/' ~ course.artist_photo_preview) }}"  alt="" style="width: 200px; height: 200px;">
+              {% if course.artist_photo_preview %}
+                <img class="position-absolute top-0 start-0 bg-white pe-3 pb-3" src="{{ url_for('static', filename='upload/' ~ course.artist_photo_preview) }}"  alt="" style="width: 200px; height: 200px;">
+              {% endif %}
             </div>
           </div>
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -223,12 +225,16 @@
           <h6 class="text-primary text-uppercase mb-2">Ювелирный мастер-класс</h6>
           <h1 class="display-12 mb-4">Стоимость мастер-класса</h1>
         </div>
+
+        <!-- Тарифы Start -->
         <div class="row g-4 justify-content-center">
           {% for tariff in course.tariffes %}
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
               <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
                 <div class="text-center p-4 pt-0">
-                  <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">${{ tariff.price|round }}</div>
+                  <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">
+                    ${{ tariff.price|round }}
+                  </div>
                   <h5 class="mb-3">{{ tariff.title }}</h5>
                   <p>{{ tariff.description }}</p>
                   <ol class="breadcrumb justify-content-center mb-0">
@@ -237,7 +243,7 @@
                   </ol>
                 </div>
                 <div class="position-relative mt-auto">
-                  <img class="img-fluid" src="{{ url_for('static', filename='upload/' + tariff.photo) }}"  alt="">
+                  <img class="img-fluid" src="{{ url_for('static', filename='upload/' + tariff.photo) }}" alt="">
                   <div class="courses-overlay">
                     <a class="btn btn-outline-primary border-2" href="#chek_in">Начать</a>
                   </div>
@@ -245,38 +251,121 @@
               </div>
             </div>
           {% endfor %}
-          <!-- Course Registration Start-->
+        </div>
+        <!-- Тарифы End -->
+
+        <!-- Форма регистрации Start -->
+        <div class="row justify-content-center mt-5">
           <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s" id="chek_in">
             <div class="bg-primary text-center p-5">
               <h1 class="mb-4">Записаться на мастер-класс</h1>
               <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
-              <div class="row g-3">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                {{ input_form_6(form.name) }}
-                {{ input_form_6(form.email) }}
-                {{ input_form_12(form.message, style="height: 150px") }}
+                <div class="row g-3">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  {{ input_form_6(form.name) }}
+                  {{ input_form_6(form.email) }}
+                  {{ input_form_12(form.message, style="height: 150px") }}
 
-                <!-- Honeypot поле -->
-                <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
+                  <!-- Honeypot поле -->
+                  <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
 
-                <!-- Скрытое поле для временной метки -->
-                <input type="hidden" id="form_time" name="form_time" value="">
+                  <!-- Скрытое поле для временной метки -->
+                  <input type="hidden" id="form_time" name="form_time" value="">
 
-                <div class="col-12">
-                  <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>
+                  <div class="col-12">
+                    <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
             </div>
             <div class="col-12 mt-3">
-            <a href="{{ url_for('core.page', page_name='privacy')}}">*Политика конфиденциальности</a>
+              <a href="{{ url_for('core.page', page_name='privacy')}}">*Политика конфиденциальности</a>
+            </div>
           </div>
-          </div>
-          <!-- Course Registration End-->
         </div>
+        <!-- Форма регистрации End -->
+
       </div>
     </div>
   </div>
   <!-- Prise End-->
 
 {% endblock content %}
+
+{% block js %}
+<script>
+ //Timer
+    var timer;
+    const timerKey = 'promoEndDate';
+    let promoDayEnd = 5; // Изменение этой переменной автоматически меняет время акции
+
+    function setNewEndDate() {
+      let newEndDate = new Date();
+      newEndDate.setDate(newEndDate.getDate() + promoDayEnd);
+      localStorage.setItem(timerKey, newEndDate.toISOString());
+      return newEndDate;
+    }
+
+    function getOrSetEndDate() {
+      let endDate = localStorage.getItem(timerKey);
+      if (endDate) {
+        endDate = new Date(endDate);
+        if (new Date() >= endDate) {
+          // If the stored date has passed, set a new date
+          endDate = setNewEndDate();
+        }
+      } else {
+        // If there is no stored date, set a new date
+        endDate = setNewEndDate();
+      }
+      return endDate;
+    }
+
+    function updateCompareDate() {
+      compareDate = getOrSetEndDate();
+    }
+
+    function timeBetweenDates(toDate) {
+      var dateEntered = toDate;
+      var now = new Date();
+      var difference = dateEntered.getTime() - now.getTime();
+
+      if (difference <= 0) {
+        // Timer done, set new end date and reset the timer
+        toDate = setNewEndDate();
+        difference = toDate.getTime() - now.getTime();
+      }
+
+      var seconds = Math.floor(difference / 1000);
+      var minutes = Math.floor(seconds / 60);
+      var hours = Math.floor(minutes / 60);
+      var days = Math.floor(hours / 24);
+
+      hours %= 24;
+      minutes %= 60;
+      seconds %= 60;
+
+      $("#days").text(days);
+      $("#hours").text(hours);
+      $("#minutes").text(minutes);
+      $("#seconds").text(seconds);
+
+      return toDate; // Возвращаем обновленную дату
+    }
+
+    $(document).ready(function() {
+      let compareDate = getOrSetEndDate();
+
+      timer = setInterval(function() {
+        compareDate = timeBetweenDates(compareDate);
+      }, 1000);
+
+      // Обработчик изменения promoDayEnd
+      $('#promoDayEndInput').change(function() {
+        promoDayEnd = parseInt($(this).val(), 10); // Парсим новое значение
+        localStorage.setItem('promoDayEnd', promoDayEnd); // Сохраняем новое значение в localStorage
+        updateCompareDate(); // Обновляем compareDate
+      });
+    });
+</script>
+{% endblock js %}
