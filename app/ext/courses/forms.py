@@ -155,6 +155,7 @@ class CourseRegistrationForm(FlaskForm):
     message = TextAreaField("Сообщение", [DataRequired()])
     hidden_field = StringField("")  # Honeypot поле
     form_time = HiddenField("Время отправки")  # Поле для временной метки
+    form_name = HiddenField('form_name', default='registration')
     submit = SubmitField("Отправить сообщение")
 
 
@@ -177,6 +178,7 @@ class CoursePaymentForm(FlaskForm):
     )
     hidden_field = StringField("")  # Honeypot поле
     form_time = HiddenField("Время отправки")  # Поле для временной метки
+    form_name = HiddenField('form_name', default='payment')
     submit = SubmitField("Отправить заявку")
 
 
