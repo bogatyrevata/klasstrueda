@@ -80,10 +80,26 @@ $(".workphoto-carousel").owlCarousel({
     responsiveClass:true,
 });
 
+// Получаем формы с помощью querySelector
+const registrationForm = document.querySelector("#registration");
+const paymentForm = document.querySelector("#payment");
 
-// Заполняем поле временной метки при загрузке формы, для того чтобы сделать проверку на бота
-document.getElementById('form_time').value = Date.now();
+// Функция для установки текущего времени в input
+function setFormTime(form) {
+    const formTimeInput = form.querySelector("input[name='form_time']");
+    if (formTimeInput) {
+        formTimeInput.value = Date.now();
+    }
+}
 
+// Проверяем наличие каждой формы и устанавливаем время
+if (registrationForm) {
+    setFormTime(registrationForm);
+}
+
+if (paymentForm) {
+    setFormTime(paymentForm);
+}
 
 //Загрузка аватара в личном кабинете пользователя
 
