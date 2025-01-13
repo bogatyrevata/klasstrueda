@@ -80,10 +80,26 @@ $(".workphoto-carousel").owlCarousel({
     responsiveClass:true,
 });
 
+// Получаем формы с помощью querySelector
+const registrationForm = document.querySelector("#registration");
+const paymentForm = document.querySelector("#payment");
 
-// Заполняем поле временной метки при загрузке формы, для того чтобы сделать проверку на бота
-document.getElementById('form_time').value = Date.now();
+// Функция для установки текущего времени в input
+function setFormTime(form) {
+    const formTimeInput = form.querySelector("input[name='form_time']");
+    if (formTimeInput) {
+        formTimeInput.value = Date.now();
+    }
+}
 
+// Проверяем наличие каждой формы и устанавливаем время
+if (registrationForm) {
+    setFormTime(registrationForm);
+}
+
+if (paymentForm) {
+    setFormTime(paymentForm);
+}
 
 //Загрузка аватара в личном кабинете пользователя
 
@@ -91,13 +107,15 @@ const fileInput = document.getElementById("file-input");
 const imagePreview = document.getElementById("img-preview");
 const toast = document.getElementById("toast");
 
-fileInput.addEventListener("change", (e) => {
-  if (e.target.files.length) {
-    const src = URL.createObjectURL(e.target.files[0]);
-    imagePreview.src = src;
-    showToast();
-  }
-});
+if (fileInput) {
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files.length) {
+      const src = URL.createObjectURL(e.target.files[0]);
+      imagePreview.src = src;
+      showToast();
+    }
+  });
+}
 
 function showToast() {
   toast.classList.add("show");

@@ -299,6 +299,7 @@ class Lesson(db.Model, ModelMixin):
     alias = db.Column(db.String(255))
     description = db.Column(db.Text)
     file = db.Column(db.String(255))
+    video_url = db.Column(db.String(255))  # Поле для ссылки на видеоурок на YouTube или другой платформе
 
     photos = db.relationship("Photo", secondary="photo_lesson", backref="lesson")
     videos = db.relationship("Video", secondary="video_lesson", backref="lesson")
@@ -359,6 +360,7 @@ class Payment(db.Model, ModelMixin):
     datetime_create = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     datetime_payment = db.Column(db.DateTime)
     final_price = db.Column(db.Numeric(precision=10, scale=2))
+    payment_method = db.Column(db.String(10))  # Поле для хранения выбранной валюты
     status_payment = db.Column(db.Integer)
 
     course = db.relationship("Course", backref="payments")  # Добавлено отношение c курсом

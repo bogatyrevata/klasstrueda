@@ -128,7 +128,13 @@ def before_app_request():
 def index():
     """Главная страница."""
     init_request()
-    form = FeedbackForm(meta={'csrf':False})
+    if current_user.is_authenticated:
+        form = FeedbackForm(
+            first_name=current_user.first_name,
+            email=current_user.email,
+            meta={"csrf": False})
+    else:
+        form = FeedbackForm(meta={"csrf": False})
     return render_template("public/index.j2", form=form, hide_header=True, active_item="")
 
 
@@ -159,7 +165,13 @@ def contacts():
 def basic_jewelry():
     """Базовый ювелирный курс."""
     init_request()
-    form = FeedbackForm(request.form, meta={'csrf': False})
+    if current_user.is_authenticated:
+        form = FeedbackForm(
+            first_name=current_user.first_name,
+            email=current_user.email,
+            meta={"csrf": False})
+    else:
+        form = FeedbackForm(meta={"csrf": False})
     return render_template("public/basic-jewelry.j2", form=form, active_item="basic-jewelry")
 
 
@@ -167,7 +179,13 @@ def basic_jewelry():
 def appointment():
     """Регистрация на курс."""
     init_request()
-    form = FeedbackForm(request.form, meta={'csrf':False})
+    if current_user.is_authenticated:
+        form = FeedbackForm(
+            first_name=current_user.first_name,
+            email=current_user.email,
+            meta={"csrf": False})
+    else:
+        form = FeedbackForm(meta={"csrf": False})
     return render_template("public/appointment.j2", form=form, active_item="appointment")
 
 
@@ -175,7 +193,13 @@ def appointment():
 def jewelry_marathon():
     """Регистрация на курс."""
     init_request()
-    form = FeedbackForm(request.form, meta={'csrf':False})
+    if current_user.is_authenticated:
+        form = FeedbackForm(
+            first_name=current_user.first_name,
+            email=current_user.email,
+            meta={"csrf": False})
+    else:
+        form = FeedbackForm(meta={"csrf": False})
     return render_template("public/jewelry-marathon.j2", form=form, active_item="jewelry-marathon")
 
 

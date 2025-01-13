@@ -11,10 +11,10 @@
             <h6 class="text-primary text-uppercase mb-2">Ювелирный мастер-класс</h6><!-- подумать как переделать это элемент на категорию -->
             <h1 class="display-6 mb-4">{{ course.title }}</h1>
             <p>{{ course.about }}</p>
-          </div>
-          <div class="row g-4">
-            <div class="col-sm-6">
-              <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
+            <div class="row g-4">
+              <div class="col-sm-6">
+                <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
+              </div>
             </div>
           </div>
         </div>
@@ -135,12 +135,13 @@
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
             <h1 class="display-6 mb-4">Получить бесплатную консультацию по курсу</h1>
-            <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
+            <form action="{{ url_for('course.course_details', course_id=course.id) }}" id="registration" method="post" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                {{ input_form_6(form.name) }}
-                {{ input_form_6(form.email) }}
-                {{ input_form_12(form.message, style="height: 150px") }}
+                <input type="hidden" name="form_name" value="registration"> <!-- Скрытое поле для идентификации формы -->
+                {{ input_form_6(registration_form.name) }}
+                {{ input_form_6(registration_form.email) }}
+                {{ input_form_12(registration_form.message, style="height: 150px") }}
 
                 <!-- Honeypot поле -->
                 <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
@@ -255,22 +256,60 @@
         <!-- Тарифы End -->
 
         <!-- Форма регистрации Start -->
+        {% if not current_user.is_authenticated %}
+        <div class="row g-5 mb-5">
+          <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h6 class="text-primary text-uppercase mb-2">Регистрация и оплата</h6>
+            <h1 class="display-12 mb-4">Оформление заявки</h1>
+            <p>Чтобы записаться на курс или мастер-класс, войдите в личный кабинет или зарегистрируйтесь. После этого станет доступна форма для подачи заявки.</p>
+          </div>
+          <div class="error-actions d-flex flex-wrap gap-2 justify-content-center">
+            <a href="{{ url_for('security.login') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Войти
+            <i class="fa fa-arrow-right ms-3"></i></a>
+            <a href="{{ url_for('security.register') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Регистрация
+            </a>
+          </div>
+        </div>
+        {% else %}
         <div class="row justify-content-center mt-5">
           <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s" id="chek_in">
             <div class="bg-primary text-center p-5">
-              <h1 class="mb-4">Записаться на мастер-класс</h1>
-              <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
+              <h1 class="mb-4">Записаться и оплатить</h1>
+              <form action="{{ url_for('course.course_details', course_id=course.id) }}" id="payment" method="post" novalidate>
                 <div class="row g-3">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  {{ input_form_6(form.name) }}
-                  {{ input_form_6(form.email) }}
-                  {{ input_form_12(form.message, style="height: 150px") }}
+                   <input type="hidden" name="form_name" value="payment"> <!-- Скрытое поле для идентификации формы -->
+                  {{ input_form_12(payment_form.course_title) }}
+                  {{ input_form_12(payment_form.price) }}
 
                   <!-- Honeypot поле -->
                   <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
 
                   <!-- Скрытое поле для временной метки -->
                   <input type="hidden" id="form_time" name="form_time" value="">
+
+                  <div class="col-md-12 text-center">
+                    <div class="form-control border-0 bg-light">
+                      <label class="form-label">Способ оплаты</label>
+                      <div class="d-flex justify-content-center gap-5">
+                        {% for subfield in payment_form.payment_method %}
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              id="payment-{{ subfield.data }}"
+                              name="{{ subfield.name }}"
+                              value="{{ subfield.data }}"
+                              {% if subfield.checked %}checked{% endif %}
+                            >
+                            <label class="form-check-label" for="payment-{{ subfield.data }}">
+                              {{ subfield.label.text }}
+                            </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="col-12">
                     <button class="btn btn-dark w-100 py-3" type="submit">Отправить</button>
@@ -283,6 +322,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
         <!-- Форма регистрации End -->
 
       </div>
@@ -367,5 +407,6 @@
         updateCompareDate(); // Обновляем compareDate
       });
     });
+
 </script>
 {% endblock js %}

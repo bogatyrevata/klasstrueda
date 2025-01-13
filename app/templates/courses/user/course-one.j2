@@ -1,0 +1,36 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import base, btn, render_field_errors %}
+{%- from "macros/user_menu.j2" import render_user_menu -%}
+
+{% block admin_content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левое меню -->
+      {{ render_user_menu(user_menu) }}
+
+      <!-- Основной контент -->
+      <main class="col-lg-9 ml-auto px-4">
+      <h1>{{ course.title }}</h1>
+      <p>{{ course.about }}</p>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.css">
+      <!-- Скрипт Lite YouTube Embed -->
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.js"></script>
+
+      {% for module in course.modules %}
+      <ul>
+        <li>
+          <p>Модуль: {{ module.title }} - {{ module.alias }}
+          </p>
+        {% for lesson in module.lessons %}
+          <p>Урок: {{lesson.title}} - {{ lesson.alias }}</p>
+          {% if lesson.video_url %}
+           <lite-youtube videoid="{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
+          {% endif %}
+        {% endfor %}
+        </li>
+      </ul>
+      {% endfor %}
+      </main>
+    </div>
+  </div>
+{% endblock admin_content%}

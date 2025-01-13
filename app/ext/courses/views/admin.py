@@ -1135,6 +1135,7 @@ def delete_promo(promo_id):
 
 @admin_courses.get("/payments")
 def payments():
+    """Вывод всех платежей в админке."""
     payments_db = Payment.query.all()
     courses_db = Course.query.all()
     return render_template("courses/admin/payments.j2", payments=payments_db, courses=courses_db)
@@ -1142,6 +1143,7 @@ def payments():
 
 @admin_courses.get("/payments/change-status/<int:payment_id>")
 def change_payment_status(payment_id):
+    """Изменение статуса оплаты по клику на кнопку в админке."""
     payment_db = Payment.query.get_or_404(payment_id)
     payment_db.status_payment = 1
     db.session.commit()
