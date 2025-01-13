@@ -237,24 +237,25 @@ def form_payment():
 
     selected_tariff = next(
         (tariff for tariff in selected_course.tariffes if tariff.id == form.price.data),
-        None
+        None # Если тариф не найден, возвращаем None
     )
     if not selected_tariff:
         flash("Выбранный тариф не относится к выбранному курсу. Пожалуйста, выберите корректный тариф.", "danger")
         return redirect(url_for("course.form_payment"))
 
-    # Запись данных в базу
+    # Сохранение заявки на оплату в базу
     if current_user.is_authenticated:
         payment_db = Payment(
             user_id=current_user.id,
             course_id=selected_course.id,
             tariff_id=selected_tariff.id,
-            status_payment=0
+            payment_method=form.payment_method.data,
+            status_payment=0, # 0 - не оплачено
         )
         db.session.add(payment_db)
         db.session.commit()
     else:
-        flash("Для регистрации на курс — зайдите в личный кабинет.", "error")
+        flash("Для регистрации на курс — зайдите в личный кабинет.", "danger")
         return redirect(url_for("course.form_payment"))
 
     # Формирование сообщения
