@@ -31,8 +31,8 @@
               <form action="{{ url_for('course.form_payment') }}" id="payment" method="post" novalidate>
                 <div class="row g-3">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  {{ input_form_12(form.course_title) }}
-                  {{ input_form_12(form.price) }}
+                  {{ input_form_12(form.course_title, id="course_title") }}
+                  {{ input_form_12(form.price, id="price") }}
 
                   <!-- Honeypot поле -->
                   <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
