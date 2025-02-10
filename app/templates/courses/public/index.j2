@@ -9,62 +9,63 @@
         <h1 class="display-6 mb-4">Наши курсы помогут вам раскрыть свой творческий потенциал</h1>
       </div>
       <div class="row g-4 justify-content-center">
-      {% for category in categories %}
-      <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="">
-        <h2>{{ category.title }}</h2>
-        <p>{{ category.description }}</p>
-      </div>
-        {% for course in courses %}
-        {% if course.category_id == category.id %}
-            <div class="col-lg-4 col-md-6 mb-5 wow fadeInUp" data-wow-delay="0.1s">
-              <div class="courses-item courses-card d-flex flex-column bg-white overflow-hidden h-100">
-                <div class="text-center p-4 pt-0">
-                  <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price }}</div>
-                  <h5 class="mb-3">{{ course.title }}</h5>
-                  <p>{{ course.preview_description }}</p>
-                  <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>{{ course.level }}</li>
-                    <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ course.duration }}</li>
-                  </ol>
-                </div>
-                <div class="position-relative mt-auto">
-                  {% if course.preview_photo %}
-                    {{ picture(
-                      class_name='img-fluid',
-                      file_name='upload/' ~ course.preview_photo,
-                      alt='Изображение для курсов %s' % course.title,
-                      width=300,
-                      height=300,
-                      bp_tablet=834,
-                      width_tablet=400,
-                      height_tablet=400,
-                      bp_desktop=1440,
-                      width_desktop=500,
-                      height_desktop=500
-                    ) }}
-                  {% else %}
-                    {{ picture(
-                      class_name='img-fluid',
-                      file_name='img/logo-trueda.png',
-                      alt='Логотип',
-                      width=300,
-                      height=300,
-                      bp_tablet=834,
-                      width_tablet=400,
-                      height_tablet=400,
-                      bp_desktop=1440,
-                      width_desktop=500,
-                      height_desktop=500
-                    ) }}
-                  {% endif %}
-                  <div class="courses-overlay">
-                    <a class="btn btn-outline-primary border-2" href="{{ url_for('course.course_details', course_id=course.id) }}">Подробнее</a>
-                  </div>
-                </div>
+        {% for category in categories %}
+            {% set category_courses = courses | selectattr('category_id', 'equalto', category.id) | list %}
+            {% if category_courses %}
+              <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                  <h2>{{ category.title }}</h2>
+                  <p>{{ category.description }}</p>
               </div>
-            </div>
-            {% endif%}
-          {% endfor %}
+                {% for course in category_courses %}
+                  <div class="col-lg-4 col-md-6 mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="courses-item courses-card d-flex flex-column bg-white overflow-hidden h-100">
+                      <div class="text-center p-4 pt-0">
+                        <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price }}</div>
+                        <h5 class="mb-3">{{ course.title }}</h5>
+                        <p>{{ course.preview_description }}</p>
+                        <ol class="breadcrumb justify-content-center mb-0">
+                          <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>{{ course.level }}</li>
+                          <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ course.duration }}</li>
+                        </ol>
+                      </div>
+                      <div class="position-relative mt-auto">
+                        {% if course.preview_photo %}
+                          {{ picture(
+                            class_name='img-fluid',
+                            file_name='upload/' ~ course.preview_photo,
+                            alt='Изображение для курсов %s' % course.title,
+                            width=300,
+                            height=300,
+                            bp_tablet=834,
+                            width_tablet=400,
+                            height_tablet=400,
+                            bp_desktop=1440,
+                            width_desktop=500,
+                            height_desktop=500
+                          ) }}
+                        {% else %}
+                          {{ picture(
+                            class_name='img-fluid',
+                            file_name='img/logo-trueda.png',
+                            alt='Логотип',
+                            width=300,
+                            height=300,
+                            bp_tablet=834,
+                            width_tablet=400,
+                            height_tablet=400,
+                            bp_desktop=1440,
+                            width_desktop=500,
+                            height_desktop=500
+                          ) }}
+                        {% endif %}
+                        <div class="courses-overlay">
+                          <a class="btn btn-outline-primary border-2" href="{{ url_for('course.course_details', course_id=course.id) }}">Подробнее</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              {% endfor %}
+            {% endif %}
         {% endfor %}
       </div>
     </div>
