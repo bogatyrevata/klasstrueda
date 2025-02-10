@@ -29,7 +29,6 @@ class CourseForm(FlaskForm):
         "Фотография к краткому описанию курса",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     show_on_homepage = BooleanField("Показывать на главной странице")
@@ -44,7 +43,6 @@ class CourseForm(FlaskForm):
         "Фотография к описанию курса",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     learning_process_title = TextAreaField("Заголовок раздела о процессе обучения")
@@ -58,7 +56,6 @@ class CourseForm(FlaskForm):
         "Фотография для формы регистрации",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     artist_title = TextAreaField("Заголовок раздела о мастере")
@@ -67,15 +64,17 @@ class CourseForm(FlaskForm):
         "Фото мастера",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
-    artist_photo_preview = FileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    artist_photo_preview = FileField(
+        "Фото работы как дополнение к основному фото",
+        [FileAllowed(["jpg","png"],"Только jpg и png!")])
     price = TextAreaField("Стоимость курса")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
     modules = SelectMultipleField("Модули", coerce=int)  # добавляем поле для выбора модулей
     submit = SubmitField("Добавить курс")
+
 
 
 
@@ -100,6 +99,7 @@ class LessonForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание урока")
+    video_url = StringField("Ссылка на видео Youtube")
     video = MultipleFileField("Загрузить видео", validators=[
         FileAllowed(['mp4', 'avi', 'mov'], 'Только видео с расширениями: mp4, avi, mov!')
     ])
@@ -204,7 +204,6 @@ class TariffForm(FlaskForm):
         "Фотография для preview тарифа",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     submit = SubmitField("Добавить тариф")
