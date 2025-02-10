@@ -70,20 +70,8 @@ def before_app_request():
             "title": "Преимущества",
             "href": "feature",
           }, {
-            "title": "Базовый ювелирный курс",
-            "href": "basic-jewelry",
-          }, {
-            "title": "Мастер-класс: кольцо всмятку",
-            "href": "jewelry-ring",
-          }, {
-            "title": "Ювелирный марафон: кольца",
-            "href": "jewelry-marathon",
-          }, {
               "title": "FAQ",
               "href": "faq",
-          }, {
-            "title": "Записаться",
-            "href": "appointment",
           }, {
             "title": "Оплата",
             "href": "payment",
