@@ -26,6 +26,12 @@
           {% if lesson.video_url %}
            <lite-youtube videoid="{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
           {% endif %}
+                {% if lesson.video_url %}
+                  <div class="container mb-5">
+                    <lite-youtube videoid="/proxy/{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
+                  </div>
+                {% endif %}
+                <!-- Video end -->
         {% endfor %}
         </li>
       </ul>

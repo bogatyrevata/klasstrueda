@@ -7,6 +7,8 @@ from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, PromoFor
 from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video, Promo, Payment
 from app.extensions import db, photos, csrf, videos, files
 
+from urllib.parse import urlparse, parse_qs
+
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
 
@@ -449,12 +451,24 @@ def add_lesson():
     form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
+        # Обработка ссылки на YouTube
+        video_url = form.data["video_url"]
+        video_code = None
+        if video_url:
+            parsed_url = urlparse(video_url)
+            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
+                video_code = parse_qs(parsed_url.query)["v"][0]
+            elif parsed_url.netloc == "youtu.be":
+                video_code = parsed_url.path.lstrip("/")
+
         lesson_db = Lesson(
-            module_id = form.data["module_id"],
+            module_id=form.data["module_id"],
             title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
+            video_url=video_code,  # Сохраняем только код видео
         )
+
 
         # Обработка загруженных фото
         if form.photo.data:
@@ -513,6 +527,18 @@ def edit_lesson(lesson_id):
         lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
+
+         # Обработка ссылки на YouTube
+        video_url = form.video_url.data
+        video_code = None
+        if video_url:
+            parsed_url = urlparse(video_url)
+            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
+                video_code = parse_qs(parsed_url.query)["v"][0]
+            elif parsed_url.netloc == "youtu.be":
+                video_code = parsed_url.path.lstrip("/")
+
+        lesson_db.video_url = video_code  # Сохраняем только код видео
 
         if form.photo.data:
           for file in form.photo.data:
