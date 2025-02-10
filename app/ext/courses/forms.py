@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, DateTimeField, DecimalField, HiddenField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, DateTimeField, DecimalField, HiddenField, BooleanField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email, NumberRange
 
 
@@ -32,6 +32,11 @@ class CourseForm(FlaskForm):
             FileRequired("Загрузка фотографии обязательна."),
         ],
     )
+    show_on_homepage = BooleanField("Показывать на главной странице")
+    homepage_photo = FileField(
+        "Фотография для главной страницы",
+        [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    popular = BooleanField("Популярный курс")
     level = TextAreaField("Уровень сложности курса")
     duration = TextAreaField("Продолжительность курса")
     about = TextAreaField("Описание курса")
@@ -131,9 +136,16 @@ class StudentWorkForm(FlaskForm):
 class ArtistForm(FlaskForm):
     user_id = SelectField("Имя мастера", coerce=int, validators=[DataRequired()])
     avatar = MultipleFileField("Фотография мастера", [FileAllowed(["jpg", "png"])])
+    first_name = StringField("Имя мастера")
+    last_name = StringField("Фамилия мастера")
+    profession = StringField("Профессия мастера")
     bio = TextAreaField("Информация о мастере")
-    contacts = TextAreaField("Контакты")
     courses = SelectMultipleField("Courses", coerce=int)
+    show_on_homepage = BooleanField("Показывать на главной")
+    facebook = StringField("Facebook")
+    instagram = StringField("Instagram")
+    youtube = StringField("Youtube")
+    vkontakte = StringField("Vkontakte")
     submit = SubmitField("Добавить мастера")
 
 
