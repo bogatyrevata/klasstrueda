@@ -45,3 +45,9 @@ def one(course_id):
     # Если оплата есть, загружаем курс
     course_db = Course.query.get_or_404(course_id)
     return render_template("courses/user/course-one.j2", course=course_db, active_item="course-one")
+
+
+@user_courses.route("/proxy/<video_id>")
+def proxy_video(video_id):
+    # Перенаправляем на встраиваемый плеер YouTube
+    return redirect(f'https://www.youtube.com/embed/{video_id}', code=302)

@@ -24,6 +24,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.css"> <!-- библиотека Lite YouTube Embed для показа видео по ссылке -->
+
 </head>
 <body>
   {% include "header.j2" %}
@@ -52,6 +54,8 @@
   <script src="{{ url_for('static', filename='js/waypoints.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
+  <!-- Скрипт Lite YouTube Embed для показа видео по ссылке -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.js"></script>
   {% block js %}{% endblock js %}
 </body>
 </html>

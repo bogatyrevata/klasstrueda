@@ -1,7 +1,7 @@
 from flask_security import ConfirmRegisterForm
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
-from wtforms import DateField, DateTimeField, DecimalField, HiddenField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
+from wtforms import DateField, DateTimeField, DecimalField, HiddenField, BooleanField, RadioField, StringField, SubmitField, TelField, FileField, EmailField, IntegerField, MultipleFileField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Regexp, Email, NumberRange
 
 
@@ -29,9 +29,13 @@ class CourseForm(FlaskForm):
         "Фотография к краткому описанию курса",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
+    show_on_homepage = BooleanField("Показывать на главной странице")
+    homepage_photo = FileField(
+        "Фотография для главной страницы",
+        [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    popular = BooleanField("Популярный курс")
     level = TextAreaField("Уровень сложности курса")
     duration = TextAreaField("Продолжительность курса")
     about = TextAreaField("Описание курса")
@@ -39,7 +43,6 @@ class CourseForm(FlaskForm):
         "Фотография к описанию курса",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     learning_process_title = TextAreaField("Заголовок раздела о процессе обучения")
@@ -53,7 +56,6 @@ class CourseForm(FlaskForm):
         "Фотография для формы регистрации",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     artist_title = TextAreaField("Заголовок раздела о мастере")
@@ -62,15 +64,17 @@ class CourseForm(FlaskForm):
         "Фото мастера",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
-    artist_photo_preview = FileField("Фото работы как дополнение к основному фото", [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    artist_photo_preview = FileField(
+        "Фото работы как дополнение к основному фото",
+        [FileAllowed(["jpg","png"],"Только jpg и png!")])
     price = TextAreaField("Стоимость курса")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
     modules = SelectMultipleField("Модули", coerce=int)  # добавляем поле для выбора модулей
     submit = SubmitField("Добавить курс")
+
 
 
 
@@ -95,6 +99,7 @@ class LessonForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание урока")
+    video_url = StringField("Ссылка на видео Youtube")
     video = MultipleFileField("Загрузить видео", validators=[
         FileAllowed(['mp4', 'avi', 'mov'], 'Только видео с расширениями: mp4, avi, mov!')
     ])
@@ -131,9 +136,16 @@ class StudentWorkForm(FlaskForm):
 class ArtistForm(FlaskForm):
     user_id = SelectField("Имя мастера", coerce=int, validators=[DataRequired()])
     avatar = MultipleFileField("Фотография мастера", [FileAllowed(["jpg", "png"])])
+    first_name = StringField("Имя мастера")
+    last_name = StringField("Фамилия мастера")
+    profession = StringField("Профессия мастера")
     bio = TextAreaField("Информация о мастере")
-    contacts = TextAreaField("Контакты")
     courses = SelectMultipleField("Courses", coerce=int)
+    show_on_homepage = BooleanField("Показывать на главной")
+    facebook = StringField("Facebook")
+    instagram = StringField("Instagram")
+    youtube = StringField("Youtube")
+    vkontakte = StringField("Vkontakte")
     submit = SubmitField("Добавить мастера")
 
 
@@ -192,7 +204,6 @@ class TariffForm(FlaskForm):
         "Фотография для preview тарифа",
         validators=[
             FileAllowed(["jpg", "png"], "Только jpg или png!"),
-            FileRequired("Загрузка фотографии обязательна."),
         ],
     )
     submit = SubmitField("Добавить тариф")

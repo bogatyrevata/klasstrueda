@@ -10,27 +10,97 @@
 
       <!-- Основной контент -->
       <main class="col-lg-9 ml-auto px-4">
-      <h1>{{ course.title }}</h1>
-      <p>{{ course.about }}</p>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.css">
-      <!-- Скрипт Lite YouTube Embed -->
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/lite-youtube-embed/0.3.3/lite-yt-embed.js"></script>
-
-      {% for module in course.modules %}
-      <ul>
-        <li>
-          <p>Модуль: {{ module.title }} - {{ module.alias }}
-          </p>
-        {% for lesson in module.lessons %}
-          <p>Урок: {{lesson.title}} - {{ lesson.alias }}</p>
-          {% if lesson.video_url %}
-           <lite-youtube videoid="{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
-          {% endif %}
+        <h1>{{ course.title }}</h1>
+        <p>{{ course.about }}</p>
+        <!-- Module start -->
+        {% for module in course.modules %}
+          <div class="container mb-5">
+            <h2>{{ module.title }}
+            </h2>
+            <p> {{ module.description }}</p>
+            <!-- Lesson start -->
+            {% for lesson in module.lessons %}
+              <div class="container mb-5">
+                <h4>{{ lesson.title }}</h4>
+                <p>{{ lesson.description }}</p>
+                <!-- Carousel Start -->
+                  <div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s">
+                    {% if lesson.photos %}
+                    <div class="container mb-5">
+                      <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                          {% for photo in lesson.photos %}
+                          <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            {{ picture(
+                              class_name='img-fluid',
+                              file_name='upload/' ~ photo.filename,
+                              alt='Изображение для курсов %s' % photo.filename,
+                              width=560,
+                              height=400,
+                              bp_tablet=834,
+                              width_tablet=560,
+                              height_tablet=400,
+                              bp_desktop=1440,
+                              width_desktop=560,
+                              height_desktop=400
+                            ) }}
+                          </div>
+                          {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
+                    </div>
+                    {% else %}
+                    <p>В этом уроке нет фотографий</p>
+                    {% endif %}
+                  </div>
+                <!-- Carousel End -->
+                <!-- Video start -->
+                {% if lesson.video_url %}
+                  <div class="container mb-5">
+                    <lite-youtube videoid="/proxy/{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
+                  </div>
+                {% endif %}
+                <!-- Video end -->
+                <!-- File start -->
+                <div class="lesson-file">
+                  {% if lesson.file %}
+                    <h6>Файл урока:
+                      <a href="{{ url_for('static', filename='upload/' ~ lesson.file) }}" download="{{ lesson.file }}">
+                        {{ lesson.file }}
+                      </a>
+                    </h6>
+                    {% if lesson.file.endswith('.pdf') %}
+                      <iframe src="{{ url_for('static', filename='upload/' ~ lesson.file) }}" width="100%" height="500px">
+                        Ваш браузер не поддерживает предварительный просмотр PDF. Вы можете
+                        <a href="{{ url_for('static', filename='upload/' ~ lesson.file) }}" download="{{ lesson.file }}">
+                          скачать файл здесь
+                        </a>.
+                      </iframe>
+                    {% elif lesson.file.endswith('.jpg') or lesson.file.endswith('.png') or lesson.file.endswith('.jpeg') %}
+                      <img src="{{ url_for('static', filename='upload/' ~ lesson.file) }}" alt="Предварительный просмотр файла" class="img-fluid">
+                    {% else %}
+                      <p>Файл доступен для скачивания.</p>
+                    {% endif %}
+                  {% endif %}
+                </div>
+                <!-- File end -->
+              </div>
+            {% endfor %}
+            <!-- Lesson end -->
+          </div>
         {% endfor %}
-        </li>
-      </ul>
-      {% endfor %}
+        <!-- Module end -->
       </main>
     </div>
   </div>
+
+
 {% endblock admin_content%}

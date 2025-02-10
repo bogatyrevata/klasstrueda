@@ -16,15 +16,13 @@
               {% if userphoto %}
                 {% set filename = 'upload/%s' % userphoto %}
               <label class="file-label" for="file-input">
-                <input class="file-input" id="file-input" type="file"/>
+                <input class="file-input" id="file-input" type="file" name="userphoto"/>
                 <img class="img-preview" id="img-preview" onload="showToast()" src="{{ url_for('static', filename=filename) }}"/>
                 <p>Загрузить фото</p>
               </label>
 
-              <div id="toast">Image Uploaded</div>
               {% endif %}
 
-              <div id="toast">Image Uploaded</div>
               <form action="{{ url_for('user.edit') }}" method="post" enctype="multipart/form-data">
                 <div class="row g-3">
                   {{ form.hidden_tag() }}
