@@ -236,6 +236,11 @@ class Course(db.Model, ModelMixin):
     preview_description = db.Column(db.String(255))# Краткое описание курса для карточки
     preview_photo = db.Column(db.String(255)) # Фото курса для карточки
 
+    # Показ на главной
+    show_on_homepage = db.Column(db.Boolean, default=False)   # Показывать на главной
+    homepage_photo = db.Column(db.String(255), nullable=True) # Фото для главной
+    popular = db.Column(db.Boolean, default=False) # Популярный
+
     # Текстовые поля курса
     about = db.Column(db.Text)
     learning_process_title = db.Column(db.Text)
@@ -341,9 +346,16 @@ class Artist(db.Model, ModelMixin):
     __tablename__ = "artist"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    profession = db.Column(db.String(255))
     avatar = db.Column(db.String(255))
     bio = db.Column(db.String(255))
-    contacts = db.Column(db.String(255))
+    show_on_homepage = db.Column(db.Boolean, default=False)   # Показывать на главной
+    facebook = db.Column(db.String(255))
+    instagram = db.Column(db.String(255))
+    youtube = db.Column(db.String(255))
+    vkontakte = db.Column(db.String(255))
 
     works = db.relationship("ArtistWork", back_populates="artist", lazy="dynamic") #определение отношения один ко многим
     modules = db.relationship("Module", secondary="module_artist", backref=db.backref("artists", lazy="dynamic"))
