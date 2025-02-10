@@ -292,6 +292,6 @@ def get_tariffs(course_id):
     tariffs = [{"tariff": t.title, "price": t.price, "id": t.id} for t in course.tariffes]
 
     if not tariffs:
-        return jsonify({"message": "Для этого курса пока нет тарифов"})  # Сообщение, если тарифов нет
+        return jsonify([{"price": "0", "tariff": "Для этого курса пока нет тарифов"}])  # Сообщение, если тарифов нет
 
     return jsonify(tariffs)
