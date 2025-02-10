@@ -272,6 +272,56 @@ def delete_course(course_id):
     return redirect(url_for(".index"))
 
 
+@admin_courses.route("/save-selected-courses", methods=["GET", "POST"])
+def save_selected_courses():
+    selected_courses = []
+
+    # Получаем список всех курсов из базы данных
+    courses = Course.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные для показа на главной странице
+        for course in courses:
+            checkbox_name = f"show_on_homepage_{course.id}"
+            if checkbox_name in request.form:
+                course.show_on_homepage = True
+                selected_courses.append(course)
+            else:
+                course.show_on_homepage = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash(f"Выбранные курсы обновлены: {', '.join(course.title for course in selected_courses)}", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-courses.j2", courses=courses)
+
+
+@admin_courses.route("/save-selected-popular-courses", methods=["GET", "POST"])
+def save_selected_popular_courses():
+    # Получаем список всех курсов из базы данных
+    courses = Course.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные как популярные
+        for course in courses:
+            checkbox_name = f"popular_{course.id}"
+            if checkbox_name in request.form:
+                course.popular = True
+            else:
+                course.popular = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash("Выбранные популярные курсы обновлены", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-popular-courses.j2", courses=courses)
+
+
+
 @admin_courses.route("/add-module", methods=["GET", "POST"])
 def add_module():
     form = ModuleForm()
@@ -810,6 +860,29 @@ def delete_artist(artist_id):
     return redirect(url_for(".index"))
 
 
+@admin_courses.route("/save-selected-artists", methods=["GET", "POST"])
+def save_selected_artists():
+    # Получаем список всех курсов из базы данных
+    artists = Artist.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные для показа на главной странице
+        for artist in artists:
+            checkbox_name = f"show_on_homepage_{artist.id}"
+            if checkbox_name in request.form:
+                artist.show_on_homepage = True
+            else:
+                artist.show_on_homepage = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash(f"Выбранные мастера обновлены", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-artists.j2", artists=artists)
+
+
 @admin_courses.route("/add-artistwork", methods=["GET", "POST"])
 def add_artistwork():
     form = ArtistWorkForm()
@@ -981,6 +1054,7 @@ def edit_tariff(tariff_id):
         return redirect(url_for(".edit_tariff", tariff_id=tariff_id))
 
     tariffs_db = Tariff.query.all()  # Получаем все тарифы из базы данных
+    courses_db = Course.query.all()  # Загружаем курсы для передачи в шаблон
 
     return render_template(
         "courses/admin/edit-tariff.j2",
@@ -988,6 +1062,7 @@ def edit_tariff(tariff_id):
         tariffs=tariffs_db,
         tariff_id=tariff_id,
         tariff=tariff_db,
+        courses=courses_db,
         )
 
 
