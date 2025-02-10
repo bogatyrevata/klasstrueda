@@ -1,6 +1,6 @@
 import time
 
-from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, url_for
+from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, url_for, jsonify
 from flask_security import current_user
 
 from app.extensions import db
@@ -281,3 +281,17 @@ def form_payment():
 
     flash("Заявка на оплату курса зарегистрирована", "success")
     return redirect(url_for("core.thank_you"))
+
+
+@courses.route("/get-tariffs/<int:course_id>")
+def get_tariffs(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({"error": "Курс не найден"}), 404  # Ошибка 404
+
+    tariffs = [{"tariff": t.title, "price": t.price, "id": t.id} for t in course.tariffes]
+
+    if not tariffs:
+        return jsonify({"message": "Для этого курса пока нет тарифов"})  # Сообщение, если тарифов нет
+
+    return jsonify(tariffs)
