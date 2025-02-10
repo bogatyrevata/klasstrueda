@@ -316,7 +316,7 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
           <h1 class="display-6 mb-4">Записаться на курс или получить бесплатную консультацию по курсу</h1>
-          <form action="{{ url_for('core.form_proc') }}" method="post">
+          <form action="{{ url_for('core.form_proc') }}" id="registration" method="post">
             <div class="row g-3">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               {{ input_form_6(form.first_name) }}
@@ -507,7 +507,7 @@
           <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
             <div class="bg-primary text-center p-5">
               <h1 class="mb-4">Записаться на курс</h1>
-              <form action="{{ url_for('core.form_proc') }}" method="post">
+              <form action="{{ url_for('core.form_proc') }}" id="payment" method="post">
                 <div class="row g-3">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                   {{ input_form_6(form.first_name) }}

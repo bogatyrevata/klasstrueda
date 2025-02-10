@@ -1,0 +1,41 @@
+{% extends "admin/base.j2" %}
+{% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
+
+{% block admin_content %}
+
+<h1 class="mb-4">Список всех мастеров</h1>
+
+<form id="artist-selection-form" action="{{ url_for('admin_courses.save_selected_artists') }}" method="post" enctype="multipart/form-data">
+  <div class="artist-list">
+   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% for artist in artists %}
+      <div class="artist-item">
+        <label>
+          <input type="checkbox" class="artist-checkbox" id="show_on_homepage_{{ artist.id }}" name="show_on_homepage_{{ artist.id }}"
+                 {% if artist.show_on_homepage %}checked{% endif %}>
+          {{ artist.first_name }} {{ artist.last_name }}
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="save-button">Сохранить выбор</button>
+</form>
+
+<div id="alert-message" style="display:none;" class="alert alert-warning" role="alert">
+  Вы можете выбрать только три мастера для отображения на странице.
+</div>
+
+<script>
+  document.getElementById('artist-selection-form').addEventListener('submit', function(e) {
+    const checkboxes = document.querySelectorAll('.artist-checkbox:checked');
+    if (checkboxes.length > 4) {
+      e.preventDefault(); // Отменяем отправку формы
+      document.getElementById('alert-message').style.display = 'block'; // Показываем предупреждение
+    } else {
+      document.getElementById('alert-message').style.display = 'none'; // Скрываем предупреждение, если всё в порядке
+    }
+  });
+</script>
+
+{% endblock admin_content %}

@@ -7,9 +7,21 @@
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.user_id) }}
-      {{ input_form_6(form.avatar) }}
+      {{ input_form_6(form.first_name) }}
+      {{ input_form_6(form.last_name) }}
+      {{ input_form_6(form.profession) }}
+      {{ input_form_12(form.avatar) }}
+      {{ form.show_on_homepage.label }}
+        <label for="show_on_homepage">
+          <input type="checkbox" id="show_on_homepage" name="show_on_homepage"
+            {% if form.show_on_homepage %}checked{% endif %}>
+          Показать на главной
+        </label>
+      {{ input_form_6(form.facebook) }}
+      {{ input_form_6(form.instagram) }}
+      {{ input_form_6(form.youtube) }}
+      {{ input_form_6(form.vkontakte) }}
       {{ input_form_12(form.bio, style="height: 150px") }}
-      {{ input_form_12(form.contacts, style="height: 100px")}}
       {{ input_form_12(form.courses, style="height: 100px")}}
       {{ btn(form.submit, value="Отправить") }}
       <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
@@ -18,7 +30,7 @@
   <h2>Список мастеров</h2>
   <ul>
     {% for artist in artists %}
-      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.user.name }}</a>
+      <li><a href="{{ url_for('admin_courses.edit_artist', artist_id=artist.id) }}">{{ artist.first_name }} {{ artist.last_name }}</a>
       <a href="{{ url_for('admin_courses.delete_artist', artist_id=artist.id) }}" onclick="return confirm('Вы уверены, что хотите удалить мастера?');">Удалить</a>
       </li>
     {% endfor %}

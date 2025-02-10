@@ -11,6 +11,19 @@
       {{ input_form_6(form.alias) }}
       {{ input_form_12(form.preview_description) }}
       {{ input_form_12(form.preview_photo) }}
+      {{ form.show_on_homepage.label }}
+        <label for="show_on_homepage">
+            <input type="checkbox" id="show_on_homepage" name="show_on_homepage"
+                   {% if form.show_on_homepage %}checked{% endif %}>
+            Показать на главной
+        </label>
+      {{ input_form_12(form.homepage_photo) }}
+      {{ form.popular.label }}
+        <label for="popular">
+            <input type="checkbox" id="popular" name="popular"
+                   {% if form.popular %}checked{% endif %}>
+            Популярный курс
+        </label>
       {{ input_form_12(form.level) }}
       {{ input_form_12(form.duration) }}
       {{ input_form_12(form.about, style="height: 150px") }}

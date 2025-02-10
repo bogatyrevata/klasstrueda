@@ -6,22 +6,33 @@
 <div class="container-xxl courses my-6 py-6 pb-0">
     <div class="container">
       <div class="row g-5">
-         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-                <h6 class="text-primary text-uppercase mb-2">Регистрация и оплата курса</h6>
-                <h1 class="display-12 mb-4">Оформление заявки на курс</h1>
-                <p>Пожалуйста, заполните форму, чтобы выбрать курс, тариф и способ оплаты. После отправки заявки мы свяжемся с вами для уточнения деталей и отправим реквизиты для оплаты.</p>
-            </div>
+        {% if not current_user.is_authenticated %}
+        <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+          <h6 class="text-primary text-uppercase mb-2">Регистрация и оплата</h6>
+          <h1 class="display-12 mb-4">Оформление заявки</h1>
+          <p>Чтобы записаться на курс или мастер-класс, войдите в личный кабинет или зарегистрируйтесь. После этого станет доступна форма для подачи заявки.</p>
+        </div>
+        <div class="error-actions d-flex flex-wrap gap-2 justify-content-center">
+            <a href="{{ url_for('security.login') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Войти
+            <i class="fa fa-arrow-right ms-3"></i></a>
+            <a href="{{ url_for('security.register') }}" class="btn btn-primary py-4 px-lg-5 d-lg-block">Регистрация
+            </a>
+          </div>
+        {% else %}
+        <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+          <h6 class="text-primary text-uppercase mb-2">Регистрация и оплата</h6>
+          <h1 class="display-12 mb-4">Оформление заявки</h1>
+          <p>Заполните форму, чтобы выбрать курс, тариф и способ оплаты. После отправки мы свяжемся с вами для подтверждения и предоставим реквизиты для оплаты.</p>
+        </div>
         <div class="row g-4 justify-content-center">
           <div class="col-lg-8 mb-0 wow fadeInUp" data-wow-delay="0.1s">
             <div class="bg-primary text-center p-5">
-              <h1 class="mb-4">Выберите курс и способ оплаты</h1>
-              <form action="{{ url_for('course.form_payment') }}", method="post" novalidate>
+              <h1 class="mb-4">Записаться на курс</h1>
+              <form action="{{ url_for('course.form_payment') }}" id="payment" method="post" novalidate>
                 <div class="row g-3">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  {{ input_form_6(form.name) }}
-                  {{ input_form_6(form.email) }}
-                  {{ input_form_12(form.course_title) }}
-                  {{ input_form_12(form.price) }}
+                  {{ input_form_12(form.course_title, id="course_title") }}
+                  {{ input_form_12(form.price, id="price") }}
 
                   <!-- Honeypot поле -->
                   <input type="text" name="hidden_field" style="display:none;" autocomplete="off">
@@ -63,6 +74,7 @@
           </div>
           </div>
         </div>
+      {% endif %}
       </div>
     </div>
 </div>

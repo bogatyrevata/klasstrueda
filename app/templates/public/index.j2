@@ -1,5 +1,6 @@
 {% extends "base.j2" %}
 {% from "macros/form.j2" import input_form_6, input_form_12 %}
+{% from "macros/picture.j2" import picture %}
 {% set page = "index" %}
 
 {% block content %}
@@ -7,34 +8,50 @@
   <div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s">
     <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="w-100" src="{{ url_for('static', filename='img/jewelry-course.jpg') }}"  alt="Image">
-          <div class="carousel-caption">
-            <div class="container">
-              <div class="row justify-content-center">
-                <div class="col-lg-7">
-                  <h1 class="display-2 text-light mb-5 animated slideInDown">Базовый ювелирный курс</h1>
-                  <a href="{{ url_for('core.page', page_name='basic-jewelry') }}" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
-                  <a href="{{ url_for('core.page', page_name='courses') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
+        {% for course in featured_courses %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+          {% if course.homepage_photo %}
+            {{ picture(
+              class_name='img-fluid w-100',
+              file_name='upload/' ~ course.homepage_photo,
+              alt='Изображение для курсов %s' % course.title,
+              width=800,
+              height=300,
+              bp_tablet=834,
+              width_tablet=800,
+              height_tablet=400,
+              bp_desktop=1440,
+              width_desktop=800,
+              height_desktop=500
+            ) }}
+          {% else %}
+            {{ picture(
+              class_name='img-fluid w-100',
+              file_name='img/jewelry-1.jpg',
+              alt='Логотип',
+              width=800,
+              height=300,
+              bp_tablet=834,
+              width_tablet=800,
+              height_tablet=400,
+              bp_desktop=1440,
+              width_desktop=800,
+              height_desktop=500
+            ) }}
+          {% endif %}
+            <div class="carousel-caption">
+              <div class="container">
+                <div class="row justify-content-center">
+                  <div class="col-lg-9">
+                    <h1 class="display-2 text-light mb-3 animated slideInDown">{{ course.title }}</h1>
+                    <a href="{{ url_for('course.course_details', course_id=course.id) }}" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
+                    <a href="{{ url_for('core.page', page_name='courses') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="carousel-item">
-          <img class="w-100" src="{{ url_for('static', filename='img/jewelry-1.jpg') }}"  alt="Image">
-          <div class="carousel-caption">
-            <div class="container">
-              <div class="row justify-content-center">
-                <div class="col-lg-7">
-                  <h1 class="display-2 text-light mb-5 animated slideInDown">Марафон: кольца со вставками</h1>
-                  <a href="{{ url_for('core.page', page_name='jewelry-marathon') }}" class="btn btn-primary py-sm-3 px-sm-5">Узнать больше</a>
-                  <a href="{{ url_for('core.page', page_name='courses') }}" class="btn btn-light py-sm-3 px-sm-5 ms-3">Все курсы</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
         data-bs-slide="prev">
@@ -157,72 +174,35 @@
         <h1 class="display-6 mb-4">Наши занятия подходят для «новичков».<br>Эти курсы выбирают чаще всего:</h1>
       </div>
       <div class="row g-4 justify-content-center">
+      {% for course in popular_courses %}
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
             <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$0</div>
-              <h5 class="mb-3">Мастер-класс: кольцо «всмятку»</h5>
-              <p>На заняти вы освоите базовые техники и сделаете мятое кольцо из серебра</p>
+              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">{{ course.price if course.price else '$' }}</div>
+              <h5 class="mb-3">{{ course.title }}</h5>
+              <p>{{ course.preview_description }}</p>
               <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 день</li>
+                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>{{ course.level }}</li>
+                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ course.duration }}</li>
               </ol>
             </div>
             <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-1.jpg') }}"  alt="">
+              <img class="img-fluid" src="{{ url_for('static', filename='upload/' ~ course.preview_photo) }}"  alt="">
               <div class="courses-overlay">
                 <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='jewelry-ring') }}">Подробнее</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
-            <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$100</div>
-              <h5 class="mb-3">Ювелирный марафон</h5>
-              <p>Позволит за короткое время пройти интересующую тему по ювелирному делу</p>
-              <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>1 неделя</li>
-              </ol>
-            </div>
-            <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-2.jpg') }}"  alt="">
-              <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='jewelry-marathon') }}">Подробнее</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-          <div class="courses-item d-flex flex-column bg-white overflow-hidden h-100">
-            <div class="text-center p-4 pt-0">
-              <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">$200</div>
-              <h5 class="mb-3">Базовый ювелирный курс</h5>
-              <p>Углубленное изучение ювелирного дела, много практики под руководством мастеров</p>
-              <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
-                <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>4 недели</li>
-              </ol>
-            </div>
-            <div class="position-relative mt-auto">
-              <img class="img-fluid" src="{{ url_for('static', filename='img/courses-3.jpg') }}"  alt="">
-              <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Подробнее</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
         <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
           <div class="bg-primary text-center p-5">
-            <h1 class="mb-4">Записаться на курс</h1>
-            <form action="{{ url_for('core.form_proc') }}", method="post" novalidate>
+            <h1 class="mb-4">Получить бесплатную консультацию по курсам</h1>
+            <form action="{{ url_for('core.form_proc') }}" id="payment" method="post" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 {{ input_form_6(form.first_name) }}
                 {{ input_form_6(form.email) }}
-                {{ input_form_12(form.course_title) }}
                 {{ input_form_12(form.message, style="height: 100px") }}
 
                 <!-- Honeypot поле -->
@@ -318,6 +298,52 @@
         <h1 class="display-6 mb-4">Мастера своего дела</h1>
       </div>
       <div class="row g-0 team-items">
+        {% for artist in featured_artists %}
+        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item position-relative">
+            <div class="position-relative">
+            {% if artist.avatar %}
+              {{ picture(
+                class_name='img-fluid',
+                file_name='upload/%s' % artist.avatar,
+                alt='Изображение для курсов %s' % artist.first_name,
+                width=600,
+                height=600,
+                bp_tablet=834,
+                width_tablet=800,
+                height_tablet=800,
+                bp_desktop=1440,
+                width_desktop=800,
+                height_desktop=800
+              ) }}
+            {% else %}
+              {{ picture(
+                class_name='img-fluid',
+                file_name='img/jewelry-1.jpg',
+                alt='Логотип',
+                width=600,
+                height=600,
+                bp_tablet=834,
+                width_tablet=800,
+                height_tablet=800,
+                bp_desktop=1440,
+                width_desktop=800,
+                height_desktop=800
+              ) }}
+            {% endif %}
+              <div class="team-social text-center">
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.vkontakte }}"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.instagram }}"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+            <div class="bg-light text-center p-4">
+              <h5 class="mt-2">{{ artist.first_name }} {{ artist.last_name }}</h5>
+              <span>{{ artist.profession }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="team-item position-relative">
             <div class="position-relative">

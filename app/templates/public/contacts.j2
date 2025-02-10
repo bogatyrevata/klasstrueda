@@ -19,7 +19,7 @@
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
           <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
           <h1 class="display-6 mb-4">Если у вас есть какие-либо вопросы, свяжитесь с нами</h1>
-          <form action="{{ url_for('core.form_proc') }}", method="post" novalidate>
+          <form action="{{ url_for('core.form_proc') }}" id="registration" method="post" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 {{ input_form_6(form.first_name) }}

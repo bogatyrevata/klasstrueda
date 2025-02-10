@@ -28,6 +28,7 @@
                 <img class="img-preview" id="img-preview" onload="showToast()" src="{{ url_for('static', filename=filename) }}"/>
                 <p>Загрузить фото</p>
               </label>
+              <div id="toast">Image Uploaded</div>
             {% else %}
                 Фото не загружено
             {% endif %}

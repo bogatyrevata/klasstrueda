@@ -80,27 +80,76 @@ $(".workphoto-carousel").owlCarousel({
     responsiveClass:true,
 });
 
+// Получаем формы с помощью querySelector
+const registrationForm = document.querySelector("#registration");
+const paymentForm = document.querySelector("#payment");
 
-// Заполняем поле временной метки при загрузке формы, для того чтобы сделать проверку на бота
-document.getElementById('form_time').value = Date.now();
+// Функция для установки текущего времени в input
+function setFormTime(form) {
+    const formTimeInput = form.querySelector("input[name='form_time']");
+    if (formTimeInput) {
+        formTimeInput.value = Date.now();
+    }
+}
 
+// Проверяем наличие каждой формы и устанавливаем время
+if (registrationForm) {
+    setFormTime(registrationForm);
+}
+
+if (paymentForm) {
+    setFormTime(paymentForm);
+}
 
 //Загрузка аватара в личном кабинете пользователя
 
-const fileInput = document.getElementById("file-input");
+const fileInput = document.getElementById("userphoto");
 const imagePreview = document.getElementById("img-preview");
 const toast = document.getElementById("toast");
 
-fileInput.addEventListener("change", (e) => {
-  if (e.target.files.length) {
-    const src = URL.createObjectURL(e.target.files[0]);
-    imagePreview.src = src;
-    showToast();
-  }
-});
+if (fileInput) {
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files.length) {
+      const src = URL.createObjectURL(e.target.files[0]);
+      imagePreview.src = src;
+      showToast();
+    }
+  });
+}
 
 function showToast() {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
+
+// Обновление списка тарифов при выборе курса
+
+const courseSelect = document.getElementById("course_title"); // Селект курса
+const priceSelect = document.getElementById("price"); // Селект стоимости
+
+function updatePriceOptions() {
+    const selectedCourse = courseSelect.value;
+
+    // Делаем запрос к серверу, чтобы получить тарифы для выбранного курса
+    fetch(`/courses/get-tariffs/${selectedCourse}`)
+        .then(response => response.json())
+        .then(tariffs => {
+            // Очищаем предыдущие options
+            priceSelect.innerHTML = "";
+
+            tariffs.forEach(({ tariff, price, id }) => {
+                const option = document.createElement("option");
+                option.value = id;
+                option.textContent = `${tariff} - ${price} руб.`;
+                priceSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Ошибка загрузки тарифов:", error));
+}
+
+// Вешаем обработчик события на изменение курса
+courseSelect.addEventListener("change", updatePriceOptions);
+
+// Вызываем обновление при загрузке страницы
+updatePriceOptions();

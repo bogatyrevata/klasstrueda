@@ -7,6 +7,8 @@ from app.ext.courses.forms import CategoryForm, CourseForm, ModuleForm, PromoFor
 from app.ext.courses.models import Category, Course, Module, Lesson, StudentWork, Artist, ArtistWork, Tariff, Video, Promo, Payment
 from app.extensions import db, photos, csrf, videos, files
 
+from urllib.parse import urlparse, parse_qs
+
 admin_courses = Blueprint("admin_courses", __name__, template_folder="templates")
 
 
@@ -111,11 +113,27 @@ def add_course():
     form.modules.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
+        file_fields = [
+        "preview_photo", "homepage_photo", "about_photo",
+        "registration_photo", "artist_photo", "artist_photo_preview"
+        ]
+
+        # Проверяем, что все обязательные файлы загружены (кроме artist_photo_preview)
+        if any(field not in request.files or not request.files[field].filename for field in file_fields if field != "artist_photo_preview"):
+            flash("Все фото для курса обязательны к загрузке, кроме фото работы мастера.", "danger")
+            return render_template(
+                "courses/admin/add-course.j2",
+                form=form,
+                courses=Course.query.all(),
+        )
+
         course_db = Course(
             category_id=form.data["category_id"],
             title=form.data["title"],
             alias=form.data["alias"],
             preview_description=form.data["preview_description"],
+            show_on_homepage=form.data["show_on_homepage"],
+            popular=form.data["popular"],
             level=form.data["level"],
             duration=form.data["duration"],
             about=form.data["about"],
@@ -133,54 +151,22 @@ def add_course():
             end_date=form.data["end_date"],
         )
 
-        # Проверяем наличие и непустоту файла preview_photo
-        if "preview_photo" in request.files and request.files["preview_photo"]:
-            try:
-                filename = photos.save(request.files["preview_photo"])
-                course_db.preview_photo = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
-        # Проверяем наличие и непустоту файла about_photo
-        if "about_photo" in request.files and request.files["about_photo"]:
-            try:
-                filename = photos.save(request.files["about_photo"])
-                course_db.about_photo = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
-        # Проверяем наличие и непустоту файла registration_photo
-        if "registration_photo" in request.files and request.files["registration_photo"]:
-            try:
-                filename = photos.save(request.files["registration_photo"])
-                course_db.registration_photo = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
-        # Проверяем наличие и непустоту файла artist_photo
-        if "artist_photo" in request.files and request.files["artist_photo"]:
-            try:
-                filename = photos.save(request.files["artist_photo"])
-                course_db.artist_photo = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
-        # Проверяем наличие и непустоту файла artist_photo_preview
-        if "artist_photo_preview" in request.files and request.files["artist_photo_preview"]:
-            try:
-                filename = photos.save(request.files["artist_photo_preview"])
-                course_db.artist_photo_preview = filename
-            except Exception as e:
-                flash(f"Ошибка при сохранении изображения: {e}", "danger")
-                return redirect(url_for(".add_course"))
-
+       # Загружаем файлы
+        for field in file_fields:
+            file = request.files.get(field)
+            if file and file.filename:
+                try:
+                    filename = photos.save(file)
+                    setattr(course_db, field, filename)
+                except Exception as e:
+                    flash(f"Ошибка при сохранении {field}: {e}", "danger")
+                    return render_template(
+                        "courses/admin/add-course.j2",
+                        form=form,
+                        courses=Course.query.all(),
+                    )
 
         # добавление модулей
-
         selected_modules = Module.query.filter(Module.id.in_(form.modules.data)).all()
         course_db.modules.extend(selected_modules)
 
@@ -203,61 +189,41 @@ def edit_course(course_id):
     if request.method == "GET":
         form.modules.data = [module.id for module in course_db.modules]
 
+
     if form.validate_on_submit():
+
         course_db.category_id = form.category_id.data
         course_db.title = form.title.data
         course_db.alias = form.alias.data
         course_db.preview_description = form.preview_description.data
-
-        # Проверяем наличие и непустоту файла preview_photo
-        if "preview_photo" in request.files and request.files["preview_photo"]:
-            filename = photos.save(request.files["preview_photo"])
-            course_db.preview_photo = filename
-
+        course_db.show_on_homepage = form.show_on_homepage.data
+        course_db.popular = form.popular.data
         course_db.level = form.level.data
         course_db.duration = form.duration.data
         course_db.about = form.about.data
-
-        # Проверяем наличие и непустоту файла about_photo
-        if "about_photo" in request.files and request.files["about_photo"]:
-            filename = photos.save(request.files["about_photo"])
-            course_db.about_photo = filename
-
         course_db.learning_process_title  = form.learning_process_title.data
         course_db.learning_process_description = form.learning_process_description.data
         course_db.features_title = form.features_title.data
         course_db.features_description = form.features_description.data
         course_db.skills_title = form.skills_title.data
         course_db.skills_description = form.skills_description.data
-
         course_db.registration_form = form.registration_form.data
-
-        # Проверяем наличие и непустоту файла registration_photo
-        if "registration_photo" in request.files and request.files["registration_photo"]:
-            filename = photos.save(request.files["registration_photo"])
-            course_db.registration_photo = filename
-
-        course_db.artist_title = form.artist_title.data
-        course_db.artist_description = form.artist_description.data
-
-        # Проверяем наличие и непустоту файла artist_photo
-        if "artist_photo" in request.files and request.files["artist_photo"]:
-            filename = photos.save(request.files["artist_photo"])
-            course_db.artist_photo = filename
-
-
-        # Проверяем наличие и непустоту файла artist_photo_preview
-        if "artist_photo_preview" in request.files and request.files["artist_photo_preview"]:
-            filename = photos.save(request.files["artist_photo_preview"])
-            course_db.artist_photo_preview = filename
-
-
         course_db.price = form.price.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
 
-        # Обработка загруженных файлов модулей
+        file_fields = [
+            "preview_photo", "homepage_photo", "about_photo",
+            "registration_photo", "artist_photo", "artist_photo_preview"
+        ]
 
+        for field in file_fields:
+            file = request.files.get(field)
+            if file:
+                filename = photos.save(file)
+                setattr(course_db, field, filename)
+
+        # Обработка загруженных файлов модулей
         course_db.modules = [Module.query.get(module_id) for module_id in form.modules.data]
 
         db.session.commit()
@@ -266,12 +232,14 @@ def edit_course(course_id):
 
      # Предзаполняем поля формы и фото
     form.preview_photo.data = course_db.preview_photo
+    form.homepage_photo.data = course_db.homepage_photo
     form.about_photo.data = course_db.about_photo
     form.registration_photo.data = course_db.registration_photo
     form.artist_photo.data = course_db.artist_photo
     form.artist_photo_preview.data = course_db.artist_photo_preview
 
     preview_photo = course_db.preview_photo
+    homepage_photo = course_db.homepage_photo
     about_photo = course_db.about_photo
     registration_photo = course_db.registration_photo
     student_works = course_db.student_works
@@ -283,6 +251,7 @@ def edit_course(course_id):
         course=course_db,
         course_id=course_id,
         preview_photo=preview_photo,
+        homepage_photo=homepage_photo,
         about_photo=about_photo,
         registration_photo=registration_photo,
         student_works=student_works,
@@ -303,6 +272,56 @@ def delete_course(course_id):
         flash("Ошибка при удалении курса!", "danger")
 
     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/save-selected-courses", methods=["GET", "POST"])
+def save_selected_courses():
+    selected_courses = []
+
+    # Получаем список всех курсов из базы данных
+    courses = Course.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные для показа на главной странице
+        for course in courses:
+            checkbox_name = f"show_on_homepage_{course.id}"
+            if checkbox_name in request.form:
+                course.show_on_homepage = True
+                selected_courses.append(course)
+            else:
+                course.show_on_homepage = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash(f"Выбранные курсы обновлены: {', '.join(course.title for course in selected_courses)}", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-courses.j2", courses=courses)
+
+
+@admin_courses.route("/save-selected-popular-courses", methods=["GET", "POST"])
+def save_selected_popular_courses():
+    # Получаем список всех курсов из базы данных
+    courses = Course.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные как популярные
+        for course in courses:
+            checkbox_name = f"popular_{course.id}"
+            if checkbox_name in request.form:
+                course.popular = True
+            else:
+                course.popular = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash("Выбранные популярные курсы обновлены", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-popular-courses.j2", courses=courses)
+
 
 
 @admin_courses.route("/add-module", methods=["GET", "POST"])
@@ -432,12 +451,24 @@ def add_lesson():
     form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
+        # Обработка ссылки на YouTube
+        video_url = form.data["video_url"]
+        video_code = None
+        if video_url:
+            parsed_url = urlparse(video_url)
+            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
+                video_code = parse_qs(parsed_url.query)["v"][0]
+            elif parsed_url.netloc == "youtu.be":
+                video_code = parsed_url.path.lstrip("/")
+
         lesson_db = Lesson(
-            module_id = form.data["module_id"],
+            module_id=form.data["module_id"],
             title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
+            video_url=video_code,  # Сохраняем только код видео
         )
+
 
         # Обработка загруженных фото
         if form.photo.data:
@@ -496,6 +527,18 @@ def edit_lesson(lesson_id):
         lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
+
+         # Обработка ссылки на YouTube
+        video_url = form.video_url.data
+        video_code = None
+        if video_url:
+            parsed_url = urlparse(video_url)
+            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
+                video_code = parse_qs(parsed_url.query)["v"][0]
+            elif parsed_url.netloc == "youtu.be":
+                video_code = parsed_url.path.lstrip("/")
+
+        lesson_db.video_url = video_code  # Сохраняем только код видео
 
         if form.photo.data:
           for file in form.photo.data:
@@ -722,7 +765,15 @@ def add_artist():
         artist_db = Artist(
             user_id=form.user_id.data,
             bio=form.bio.data,
-            contacts=form.contacts.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            profession=form.profession.data,
+            show_on_homepage=form.show_on_homepage.data,
+            instagram=form.instagram.data,
+            facebook=form.facebook.data,
+            youtube=form.youtube.data,
+            vkontakte=form.vkontakte.data,
+
         )
 
         # Обработка загруженного файла (одно фото)
@@ -767,8 +818,16 @@ def edit_artist(artist_id):
 
     if form.validate_on_submit():
         artist_db.user_id = form.user_id.data
+        artist_db.first_name = form.first_name.data
+        artist_db.last_name = form.last_name.data
+        artist_db.profession = form.profession.data
         artist_db.bio = form.bio.data
-        artist_db.contacts = form.contacts.data
+        artist_db.show_on_homepage = form.show_on_homepage.data
+        artist_db.instagram = form.instagram.data
+        artist_db.facebook = form.facebook.data
+        artist_db.youtube = form.youtube.data
+        artist_db.vkontakte = form.vkontakte.data
+
 
         # Обработка загруженного файла (одно фото)
         if form.avatar.data:
@@ -825,6 +884,29 @@ def delete_artist(artist_id):
         flash("Ошибка при удалении мастера!", "danger")
 
     return redirect(url_for(".index"))
+
+
+@admin_courses.route("/save-selected-artists", methods=["GET", "POST"])
+def save_selected_artists():
+    # Получаем список всех курсов из базы данных
+    artists = Artist.query.all()
+
+    if request.method == "POST":
+        # Проходим по всем курсам и собираем выбранные для показа на главной странице
+        for artist in artists:
+            checkbox_name = f"show_on_homepage_{artist.id}"
+            if checkbox_name in request.form:
+                artist.show_on_homepage = True
+            else:
+                artist.show_on_homepage = False
+
+        # Сохраняем изменения в базе данных
+        db.session.commit()
+
+        flash(f"Выбранные мастера обновлены", "success")
+        return redirect(url_for('.index'))
+
+    return render_template("courses/admin/save-selected-artists.j2", artists=artists)
 
 
 @admin_courses.route("/add-artistwork", methods=["GET", "POST"])
@@ -918,6 +1000,15 @@ def add_tariff():
     form.course_id.choices = [(course.id, course.title) for course in Course.query.all()]
 
     if form.validate_on_submit():
+        if "photo" not in request.files or not request.files["photo"]:
+            flash("Загрузка фотографии обязательна при создании тарифа.", "danger")
+            return render_template(
+                "courses/admin/add-tariff.j2",
+                form=form,
+                tariffs=Tariff.query.all(),
+                courses=Course.query.all(),
+            )
+
         tariff_db = Tariff(
           title=form.data["title"],
           description = form.data["description"],
@@ -925,13 +1016,10 @@ def add_tariff():
           discount = form.data["discount"],
         )
 
-        filename = ""
-        # Обработка загруженного файла (одно фото)
-        if "photo" in request.files and request.files["photo"]:
-            file = request.files["photo"]
-            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
-                filename = photos.save(file)
-                tariff_db.photo = filename  # Сохранение имени файла в поле photo
+        file = request.files["photo"]
+        if file and file.filename:
+            filename = photos.save(file)
+            tariff_db.photo = filename
 
         db.session.add(tariff_db)
         db.session.commit()
@@ -946,12 +1034,14 @@ def add_tariff():
         flash("Тариф успешно добавлен!", "success")
         return redirect(url_for(".index"))
 
-    tariffs_db = Tariff.query.all() #Получаем все тарифы из базы данных
+    tariffs_db = Tariff.query.all()  # Получаем все тарифы из базы данных
+    courses_db = Course.query.all()  # Загружаем курсы для передачи в шаблон
 
     return render_template(
         "courses/admin/add-tariff.j2",
         form=form,
-        tariffs=tariffs_db)
+        tariffs=tariffs_db,
+        courses=courses_db)
 
 
 @admin_courses.route("/edit-tariff/<int:tariff_id>", methods=["GET", "POST"])
@@ -973,11 +1063,10 @@ def edit_tariff(tariff_id):
         tariff_db.discount = form.discount.data
 
         # Обработка загруженного файла (одно фото)
-        if "photo" in request.files and request.files["photo"]:
-            file = request.files["photo"]
-            if isinstance(file, werkzeug.datastructures.FileStorage) and file.filename:
-                filename = photos.save(file)
-                tariff_db.photo = filename  # Обновление имени файла в поле photo
+        file = request.files["photo"]
+        if file and file.filename:
+            filename = photos.save(file)
+            tariff_db.photo = filename  # Обновляем только если загружен новый файл
 
         # Обновление связанных курсов
         selected_course_ids = form.course_id.data
@@ -991,6 +1080,7 @@ def edit_tariff(tariff_id):
         return redirect(url_for(".edit_tariff", tariff_id=tariff_id))
 
     tariffs_db = Tariff.query.all()  # Получаем все тарифы из базы данных
+    courses_db = Course.query.all()  # Загружаем курсы для передачи в шаблон
 
     return render_template(
         "courses/admin/edit-tariff.j2",
@@ -998,24 +1088,25 @@ def edit_tariff(tariff_id):
         tariffs=tariffs_db,
         tariff_id=tariff_id,
         tariff=tariff_db,
+        courses=courses_db,
         )
 
 
-
-@admin_courses.route("/delete-tariff/<int:tariff_id>", methods=["GET"])
-def delete_tariff(tariff_id):
+@admin_courses.route("/delete-tariff/<int:course_id>/<int:tariff_id>", methods=["GET"])
+def delete_tariff(course_id, tariff_id):
     tariff_db = Tariff.query.get_or_404(tariff_id)
+    course_db = Course.query.get_or_404(course_id)
 
-    if tariff_db:
-        # Удаление всех связей перед удалением `Tariff`
-        tariff_db.courses = []
-        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+    if tariff_db and course_db:
+        # Удаление связи между курсом и тарифом
+        if tariff_db in course_db.tariffes:
+            course_db.tariffes.remove(tariff_db)
 
-        db.session.delete(tariff_db)
-        db.session.commit()
-        flash("Тариф успешно удален!", "success")
+        db.session.commit()  # Сохраняем изменения
+
+        flash("Связь тарифа с курсом успешно удалена!", "success")
     else:
-        flash("Ошибка при удалении тарифа!", "danger")
+        flash("Ошибка при удалении связи тарифа!", "danger")
 
     return redirect(url_for(".index"))
 
@@ -1135,6 +1226,7 @@ def delete_promo(promo_id):
 
 @admin_courses.get("/payments")
 def payments():
+    """Вывод всех платежей в админке."""
     payments_db = Payment.query.all()
     courses_db = Course.query.all()
     return render_template("courses/admin/payments.j2", payments=payments_db, courses=courses_db)
@@ -1142,6 +1234,7 @@ def payments():
 
 @admin_courses.get("/payments/change-status/<int:payment_id>")
 def change_payment_status(payment_id):
+    """Изменение статуса оплаты по клику на кнопку в админке."""
     payment_db = Payment.query.get_or_404(payment_id)
     payment_db.status_payment = 1
     db.session.commit()

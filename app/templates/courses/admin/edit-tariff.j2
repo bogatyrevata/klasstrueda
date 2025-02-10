@@ -3,7 +3,7 @@
 
 {% block admin_content %}
   <form action="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}" method="post" enctype="multipart/form-data">
-    <h1>Добавление тарифа</h1>
+    <h1>Изменение тарифа</h1>
     <div class="row g-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {{ input_form_6(form.course_id) }}
@@ -22,7 +22,11 @@
     <li>
       <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.title}}</a>
       <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.price}}</a>
-      <a href="{{ url_for('admin_courses.delete_tariff', tariff_id=tariff.id) }}" onclick="return confirm('Вы уверены, что хотите удалить этот тариф?');">Удалить</a>
+      {% for course in courses %}
+          {% if tariff in course.tariffes %}
+            <a href="{{ url_for('admin_courses.delete_tariff', course_id=course.id, tariff_id=tariff.id) }}" class="btn btn-primary" onclick="return confirm('Вы уверены, что хотите удалить этот тариф?');">Удалить из {{ course.alias }}</a>
+          {% endif %}
+        {% endfor %}
     </li>
     {% endfor %}
   </ul>
