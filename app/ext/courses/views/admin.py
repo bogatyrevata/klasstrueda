@@ -1092,21 +1092,21 @@ def edit_tariff(tariff_id):
         )
 
 
-
-@admin_courses.route("/delete-tariff/<int:tariff_id>", methods=["GET"])
-def delete_tariff(tariff_id):
+@admin_courses.route("/delete-tariff/<int:course_id>/<int:tariff_id>", methods=["GET"])
+def delete_tariff(course_id, tariff_id):
     tariff_db = Tariff.query.get_or_404(tariff_id)
+    course_db = Course.query.get_or_404(course_id)
 
-    if tariff_db:
-        # Удаление всех связей перед удалением `Tariff`
-        tariff_db.courses = []
-        db.session.commit()  # Обновление сессии, чтобы сохранить изменения в отношениях
+    if tariff_db and course_db:
+        # Удаление связи между курсом и тарифом
+        if tariff_db in course_db.tariffes:
+            course_db.tariffes.remove(tariff_db)
 
-        db.session.delete(tariff_db)
-        db.session.commit()
-        flash("Тариф успешно удален!", "success")
+        db.session.commit()  # Сохраняем изменения
+
+        flash("Связь тарифа с курсом успешно удалена!", "success")
     else:
-        flash("Ошибка при удалении тарифа!", "danger")
+        flash("Ошибка при удалении связи тарифа!", "danger")
 
     return redirect(url_for(".index"))
 
