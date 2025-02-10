@@ -10,7 +10,7 @@ from app.ext.core.models import user_datastore
 from app.extensions import csrf, db
 from config import TZ
 from app.ext.core.forms import FeedbackForm
-from app.ext.courses.models import Course
+from app.ext.courses.models import Course, Artist
 from app.ext.courses.forms import CoursePaymentForm
 
 from app.utils import send_to_telegram, send_to_email
@@ -135,7 +135,17 @@ def index():
             meta={"csrf": False})
     else:
         form = FeedbackForm(meta={"csrf": False})
-    return render_template("public/index.j2", form=form, hide_header=True, active_item="")
+    featured_artists = Artist.query.filter_by(show_on_homepage=True).all()
+    featured_courses = Course.query.filter_by(show_on_homepage=True).all()
+    popular_courses = Course.query.filter_by(popular=True).all()
+    return render_template(
+        "public/index.j2",
+        form=form,
+        hide_header=True,
+        featured_artists=featured_artists,
+        featured_courses=featured_courses,
+        popular_courses=popular_courses,
+        active_item="")
 
 
 @core.get("/<string:page_name>")
@@ -209,6 +219,14 @@ def jewelry_ring():
     init_request()
     form = FeedbackForm(request.form, meta={"csrf": False})
     return render_template("public/jewelry-ring.j2", form=form, active_item="jewelry-ring")
+
+
+@core.get("/about")
+def about():
+    """О нас."""
+    init_request()
+    featured_artists = Artist.query.filter_by(show_on_homepage=True).all()
+    return render_template("public/about.j2", featured_artists=featured_artists, active_item="about")
 
 
 @core.route("/thank-you")
