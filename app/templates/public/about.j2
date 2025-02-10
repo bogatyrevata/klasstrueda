@@ -51,6 +51,52 @@
         <h1 class="display-6 mb-4">Мастера своего дела</h1>
       </div>
       <div class="row g-0 team-items">
+       {% for artist in featured_artists %}
+        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+          <div class="team-item position-relative">
+            <div class="position-relative">
+            {% if artist.avatar %}
+              {{ picture(
+                class_name='img-fluid',
+                file_name='upload/%s' % artist.avatar,
+                alt='Изображение для курсов %s' % artist.first_name,
+                width=600,
+                height=600,
+                bp_tablet=834,
+                width_tablet=800,
+                height_tablet=800,
+                bp_desktop=1440,
+                width_desktop=800,
+                height_desktop=800
+              ) }}
+            {% else %}
+              {{ picture(
+                class_name='img-fluid',
+                file_name='img/jewelry-1.jpg',
+                alt='Логотип',
+                width=600,
+                height=600,
+                bp_tablet=834,
+                width_tablet=800,
+                height_tablet=800,
+                bp_desktop=1440,
+                width_desktop=800,
+                height_desktop=800
+              ) }}
+            {% endif %}
+              <div class="team-social text-center">
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.vkontakte }}"><i class="fab fa-vk"></i></a>
+                <a class="btn btn-square btn-outline-primary border-2 m-1" href="{{ artist.instagram }}"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+            <div class="bg-light text-center p-4">
+              <h5 class="mt-2">{{ artist.first_name }} {{ artist.last_name }}</h5>
+              <span>{{ artist.profession }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="team-item position-relative">
             <div class="position-relative">
