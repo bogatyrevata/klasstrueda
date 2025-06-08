@@ -99,7 +99,7 @@ class LessonForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание урока")
-    video_url = StringField("Ссылка на видео Youtube")
+    video_url = StringField("Ссылка на видео YouTube или Kinescope")
     video = MultipleFileField("Загрузить видео", validators=[
         FileAllowed(['mp4', 'avi', 'mov'], 'Только видео с расширениями: mp4, avi, mov!')
     ])
