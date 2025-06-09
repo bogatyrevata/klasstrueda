@@ -10,10 +10,13 @@
 
       <!-- Основной контент -->
       <main class="col-lg-9 ml-auto px-4">
-        <h1>{{ course.title }}</h1>
-        <p>{{ course.about }}</p>
+        {% if payment.tariff.title %}
+         <h6 class="text-primary text-uppercase mb-2">Тариф: {{ payment.tariff.title }}</h6>
+        {% endif %}
+        <h1>{{ payment.course.title }}</h1>
+        <p>{{ payment.course.about }}</p>
         <!-- Module start -->
-        {% for module in course.modules %}
+        {% for module in payment.course.modules %}
           <div class="container mb-5">
             <h2>{{ module.title }}
             </h2>
@@ -65,7 +68,24 @@
                 <!-- Video start -->
                 {% if lesson.video_url %}
                   <div class="container mb-5">
-                    <lite-youtube videoid="/proxy/{{ lesson.video_url }}" style="width: 560px; height: 315px;"></lite-youtube>
+                    {% if 'youtube.com' in lesson.video_url %}
+                      {% set video_id = lesson.video_url.split('v=')[-1].split('&')[0] %}
+                      <lite-youtube videoid="{{ video_id }}" style="width: 100%; height: 500px;"></lite-youtube>
+
+                    {% elif 'youtu.be' in lesson.video_url %}
+                      {% set video_id = lesson.video_url.split('/')[-1] %}
+                      <lite-youtube videoid="{{ video_id }}" style="width: 100%; height: 500px;"></lite-youtube>
+
+                    {% elif 'kinescope.io' in lesson.video_url %}
+                      {% set video_id = lesson.video_url.split('/')[-1] %}
+                      <iframe
+                        src="https://kinescope.io/embed/{{ video_id }}"
+                        width="100%"
+                        height="500"
+                        frameborder="0"
+                        allowfullscreen>
+                      </iframe>
+                    {% endif %}
                   </div>
                 {% endif %}
                 <!-- Video end -->

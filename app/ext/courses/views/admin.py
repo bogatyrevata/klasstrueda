@@ -451,24 +451,13 @@ def add_lesson():
     form.module_id.choices = [(module.id, module.title) for module in Module.query.all()]
 
     if form.validate_on_submit():
-        # Обработка ссылки на YouTube
-        video_url = form.data["video_url"]
-        video_code = None
-        if video_url:
-            parsed_url = urlparse(video_url)
-            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
-                video_code = parse_qs(parsed_url.query)["v"][0]
-            elif parsed_url.netloc == "youtu.be":
-                video_code = parsed_url.path.lstrip("/")
-
         lesson_db = Lesson(
             module_id=form.data["module_id"],
             title=form.data["title"],
             alias=form.data["alias"],
             description=form.data["description"],
-            video_url=video_code,  # Сохраняем только код видео
+            video_url=form.data["video_url"],
         )
-
 
         # Обработка загруженных фото
         if form.photo.data:
@@ -527,18 +516,7 @@ def edit_lesson(lesson_id):
         lesson_db.title = form.title.data
         lesson_db.alias = form.alias.data
         lesson_db.description = form.description.data
-
-         # Обработка ссылки на YouTube
-        video_url = form.video_url.data
-        video_code = None
-        if video_url:
-            parsed_url = urlparse(video_url)
-            if parsed_url.netloc == "www.youtube.com" and "v" in parse_qs(parsed_url.query):
-                video_code = parse_qs(parsed_url.query)["v"][0]
-            elif parsed_url.netloc == "youtu.be":
-                video_code = parsed_url.path.lstrip("/")
-
-        lesson_db.video_url = video_code  # Сохраняем только код видео
+        lesson_db.video_url = form.video_url.data.strip()  # сохраняем полную ссылку на видео
 
         if form.photo.data:
           for file in form.photo.data:

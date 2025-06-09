@@ -377,6 +377,7 @@ class Payment(db.Model, ModelMixin):
 
     course = db.relationship("Course", backref="payments")  # Добавлено отношение c курсом
     user = db.relationship("User", backref="payments")  # Добавлено отношение c пользователем
+    tariff = db.relationship("Tariff", backref="payments")  # Добавлено отношение c тарифом
 
 
 class Tariff(db.Model, ModelMixin):
