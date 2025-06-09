@@ -22,8 +22,7 @@ def inject_user_menu():
 @user_courses.get("")
 def index():
     payments_db = Payment.query.filter_by(user_id=current_user.id).all() #получаем все оплаты пользователя
-    course_db = Course.query.all()
-    return render_template("courses/user/user-courses.j2", payments=payments_db, courses=course_db, active_item="user-courses")  # TODO: fix template name
+    return render_template("courses/user/user-courses.j2", payments=payments_db, active_item="user-courses")  # TODO: fix template name
 
 
 @user_courses.get("/course/<int:course_id>")
