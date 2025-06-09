@@ -99,7 +99,7 @@ class LessonForm(FlaskForm):
         Regexp(r'^[a-zA-Z0-9_-]+$', message="Алиас должен содержать только латинские буквы, цифры, дефисы и подчеркивания.")
     ])
     description = TextAreaField("Описание урока")
-    video_url = StringField("Ссылка на видео Youtube")
+    video_url = StringField("Ссылка на видео YouTube или Kinescope")
     video = MultipleFileField("Загрузить видео", validators=[
         FileAllowed(['mp4', 'avi', 'mov'], 'Только видео с расширениями: mp4, avi, mov!')
     ])
@@ -198,7 +198,7 @@ class TariffForm(FlaskForm):
     course_id = SelectMultipleField("Название курса", coerce=int, validators=[DataRequired()])
     title = StringField("Название тарифа", validators=[DataRequired()])
     description = TextAreaField("Описание тарифа")
-    price = DecimalField("Стоимость выбранного тарифа", places=2, validators=[DataRequired()])
+    price = DecimalField("Стоимость выбранного тарифа", places=2)
     discount = DecimalField("Скидка", places=2, default=0.0)
     photo = FileField(
         "Фотография для preview тарифа",

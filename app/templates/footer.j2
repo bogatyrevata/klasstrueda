@@ -21,10 +21,10 @@
         <a class="btn btn-link" href="{{ url_for('core.page', page_name='privacy') }}">Политика конфиденциальности</a>
       </div>
       <div class="col-lg-3 col-md-6">
-        <h4 class="text-light mb-4">Популярные ссылки</h4>
-        <a class="btn btn-link" href="{{ url_for('core.page', page_name='basic-jewelry') }}">Базовый ювелирный курс</a>
-        <a class="btn btn-link" href="{{ url_for('core.page', page_name='jewelry-ring') }}">Мастер-класс: кольцо всмятку</a>
-        <a class="btn btn-link" href="{{ url_for('core.page', page_name='jewelry-marathon') }}">Ювелирный марафон</a>
+        <h4 class="text-light mb-4">Популярные</h4>
+         {% for course in g.popular_courses %}
+          <a class="btn btn-link" href="{{ url_for('course.course_details', course_id=course.id) }}">{{ course.title }}</a>
+         {% endfor %}
         <a class="btn btn-link" href="{{ url_for('core.page', page_name='testimonial') }}">Отзывы</a>
         <a class="btn btn-link" href="{{ url_for('core.page', page_name='payment') }}">Оплата</a>
       </div>

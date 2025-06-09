@@ -2,92 +2,96 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-
-  <h1 class="mb-4">Список всех категорий</h1>
+  <h3 class="mb-4">Управление курсами и контентом</h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_category') }}">Категории</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_course') }}">Добавить Курс</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_module') }}">Модули</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_lesson') }}">Уроки</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_studentwork') }}">Работы студентов</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_artist') }}">Мастера</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_artistwork') }}">Работы мастеров</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_tariff') }}">Тарифы</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_promo') }}">Акции</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_courses') }}">Показ курсов на главной</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_artists') }}">Показ мастеров на главной</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_popular_courses') }}">Показ популярных курсов на главной</a></li>
+    </ol>
+  </nav>
+  {# <h3 class="mb-4">Список всех категорий курсов</h3> #}
   {% for category in categories %}
-  <div class="container mb-3">
-    <div class="row justify-content-start">
-      <div class="category-item mb-4">
-        <div class="mb-3">
-          категория:
-          <h4>
-            <a href="{{ url_for('admin_courses.edit_category', category_id=category.id) }}">
-              {{ category.title }} - {{ category.alias }}
-            </a>
-          </h4>
-          <form action="{{ url_for('admin_courses.delete_category', category_id=category.id) }}" method="post" style="display:inline;">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="btn btn-secondary" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?');">Удалить</button>
-          </form>
-        </div>
-      </div>
-
-      {% for course in category.courses %}
-        <div class="card" style="width: 18rem;">
-          <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
-            {% if course.preview_photo %}
-              {{ picture(
-                class_name='card-img-top',
-                file_name='upload/' ~ course.preview_photo,
-                alt='Изображение для курса %s' % course.title,
-                width=200,
-                height=200,
-                bp_tablet=834,
-                width_tablet=300,
-                height_tablet=200,
-                bp_desktop=1440,
-                width_desktop=400,
-                height_desktop=300
-              ) }}
-            {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ course.title }}</h5>
-              <p class="card-text">{{ course.alias }}</p>
-              <p class="card-text">{{ course.preview_description }}</p>
-              <form action="{{ url_for('admin_courses.delete_course', course_id=course.id) }}" method="post" style="display:inline;">
+    {% if category.courses|length > 0 %}
+      <div class="container mb-3">
+        <div class="row justify-content-start">
+          <div class="category-item mb-4">
+            <div class="mb-3">
+              Категория курса:
+              <h4>
+                <a href="{{ url_for('admin_courses.edit_category', category_id=category.id) }}">
+                  {{ category.title }} - {{ category.alias }}
+                </a>
+              </h4>
+              <form action="{{ url_for('admin_courses.delete_category', category_id=category.id) }}" method="post" style="display:inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="card-link" onclick="return confirm('Вы уверены, что хотите удалить этот курс?');">Удалить</button>
+                <button type="submit" class="btn btn-secondary" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?');">Удалить</button>
               </form>
             </div>
-          </a>
+          </div>
 
-          {% for module in course.modules %}
-            <div class="module-item">
-              <div class="mb-2">
-                модуль:
-                <a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}"><small>({{ module.id }})</small> {{ module.title }} - {{ module.alias }}</a>
-                <a href="{{ url_for('.delete_module', course_id=course.id, module_id=module.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот модуль?');">Удалить</a>
-              </div>
-              {% for lesson in module.lessons %}
+          {% for course in category.courses %}
+            <div class="card" style="width: 18rem;">
+              <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
+                {% if course.preview_photo %}
+                  {{ picture(
+                    class_name='card-img-top',
+                    file_name='upload/' ~ course.preview_photo,
+                    alt='Изображение для курса %s' % course.title,
+                    width=200,
+                    height=200,
+                    bp_tablet=834,
+                    width_tablet=300,
+                    height_tablet=200,
+                    bp_desktop=1440,
+                    width_desktop=400,
+                    height_desktop=300
+                  ) }}
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ course.title }}</h5>
+                  <p class="card-text">{{ course.alias }}</p>
+                  <p class="card-text">{{ course.preview_description }}</p>
+                  <form action="{{ url_for('admin_courses.delete_course', course_id=course.id) }}" method="post" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="card-link" onclick="return confirm('Вы уверены, что хотите удалить этот курс?');">Удалить</button>
+                  </form>
+                </div>
+              </a>
+
+              {% for module in course.modules %}
                 <div class="module-item">
-                  <div class="mb-2" style="padding-left: 90px">
-                    урок:
-                    <a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}"><small>({{ lesson.id }})</small> {{ lesson.title }} - {{ lesson.alias }}</a>
-                    <a href="{{ url_for('.delete_lesson', lesson_id=lesson.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот урок?');">Удалить</a>
+                  <div class="mb-2">
+                    модуль:
+                    <a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}"><small>({{ module.id }})</small> {{ module.title }} - {{ module.alias }}</a>
+                    <a href="{{ url_for('.delete_module', course_id=course.id, module_id=module.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот модуль?');">Удалить</a>
                   </div>
+                  {% for lesson in module.lessons %}
+                    <div class="module-item">
+                      <div class="mb-2" style="padding-left: 90px">
+                        урок:
+                        <a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}"><small>({{ lesson.id }})</small> {{ lesson.title }} - {{ lesson.alias }}</a>
+                        <a href="{{ url_for('.delete_lesson', lesson_id=lesson.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот урок?');">Удалить</a>
+                      </div>
+                    </div>
+                  {% endfor %}
                 </div>
               {% endfor %}
-            </div>
+          </div>
           {% endfor %}
+        </div>
       </div>
-      {% endfor %}
-    </div>
-  </div>
+    {% endif %}
   {% endfor %}
-
-
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_category') }}">Категории</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_course') }}">Добавить Курс</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_module') }}">Модули</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_lesson') }}">Уроки</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_studentwork') }}">Работы студентов</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_artist') }}">Мастера</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_artistwork') }}">Работы мастеров</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_tariff') }}">Тарифы</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.add_promo') }}">Акции</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.save_selected_courses') }}">Показ курсов на главной</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.save_selected_artists') }}">Показ мастеров на главной</a>
-  <a class="btn btn-primary" href="{{ url_for('admin_courses.save_selected_popular_courses') }}">Показ популярных курсов на главной</a>
 
 {% endblock admin_content %}
 

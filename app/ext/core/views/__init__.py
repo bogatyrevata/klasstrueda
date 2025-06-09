@@ -125,14 +125,12 @@ def index():
         form = FeedbackForm(meta={"csrf": False})
     featured_artists = Artist.query.filter_by(show_on_homepage=True).all()
     featured_courses = Course.query.filter_by(show_on_homepage=True).all()
-    popular_courses = Course.query.filter_by(popular=True).all()
     return render_template(
         "public/index.j2",
         form=form,
         hide_header=True,
         featured_artists=featured_artists,
         featured_courses=featured_courses,
-        popular_courses=popular_courses,
         active_item="")
 
 

@@ -13,7 +13,7 @@
             <p>{{ course.about }}</p>
             <div class="row g-4">
               <div class="col-sm-6">
-                <a class="btn btn-primary py-3 px-5" href="#consultation">Записаться</a>
+                <a class="btn btn-primary py-3 px-5" href="{% if not current_user.is_authenticated %}#reg-guest{% else %}#reg-user{% endif %}">Записаться</a>
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
             <h1 class="display-6 mb-4">Получить бесплатную консультацию по курсу</h1>
-            <form action="{{ url_for('course.course_details', course_id=course.id) }}" id="registration" method="post" novalidate>
+            <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="form_name" value="registration"> <!-- Скрытое поле для идентификации формы -->
@@ -246,7 +246,7 @@
                 <div class="position-relative mt-auto">
                   <img class="img-fluid" src="{{ url_for('static', filename='upload/' + tariff.photo) }}" alt="">
                   <div class="courses-overlay">
-                    <a class="btn btn-outline-primary border-2" href="#chek_in">Начать</a>
+                    <a class="btn btn-outline-primary border-2" href="{% if not current_user.is_authenticated %}#reg-guest{% else %}#reg-user{% endif %}">Начать</a>
                   </div>
                 </div>
               </div>
@@ -257,7 +257,7 @@
 
         <!-- Форма регистрации Start -->
         {% if not current_user.is_authenticated %}
-        <div class="row g-5 mb-5">
+        <div class="row g-5 mb-5" id="reg-guest">
           <div class="text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
             <h6 class="text-primary text-uppercase mb-2">Регистрация и оплата</h6>
             <h1 class="display-12 mb-4">Оформление заявки</h1>
@@ -271,8 +271,8 @@
           </div>
         </div>
         {% else %}
-        <div class="row justify-content-center mt-5">
-          <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s" id="chek_in">
+        <div class="row justify-content-center mt-5" id="reg-user">
+          <div class="col-lg-8 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
             <div class="bg-primary text-center p-5">
               <h1 class="mb-4">Записаться и оплатить</h1>
               <form action="{{ url_for('course.course_details', course_id=course.id) }}" id="payment" method="post" novalidate>

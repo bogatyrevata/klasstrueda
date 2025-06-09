@@ -11,6 +11,9 @@ from app.utils import send_to_telegram, send_to_email
 
 courses = Blueprint("course", __name__, template_folder="templates")
 
+@courses.before_app_request
+def before_request():
+    g.popular_courses = Course.query.filter(Course.popular == True).all()
 
 @courses.get("")
 def index():
