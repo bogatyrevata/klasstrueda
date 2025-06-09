@@ -10,6 +10,9 @@
 
       <!-- Основной контент -->
       <main class="col-lg-9 ml-auto px-4">
+        {% if payment.tariff.title %}
+         <h6 class="text-primary text-uppercase mb-2">Тариф: {{ payment.tariff.title }}</h6>
+        {% endif %}
         <h1>{{ payment.course.title }}</h1>
         <p>{{ payment.course.about }}</p>
         <!-- Module start -->
