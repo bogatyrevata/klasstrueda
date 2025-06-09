@@ -10,10 +10,10 @@
 
       <!-- Основной контент -->
       <main class="col-lg-9 ml-auto px-4">
-        <h1>{{ course.title }}</h1>
-        <p>{{ course.about }}</p>
+        <h1>{{ payment.course.title }}</h1>
+        <p>{{ payment.course.about }}</p>
         <!-- Module start -->
-        {% for module in course.modules %}
+        {% for module in payment.course.modules %}
           <div class="container mb-5">
             <h2>{{ module.title }}
             </h2>
