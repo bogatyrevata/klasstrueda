@@ -1,6 +1,6 @@
 {
   "name": "klasstrueda",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "klasstrueda - проект по онлайн-обучению на творческих курсах",
   "devDependencies": {
     "autoprefixer": "latest",
