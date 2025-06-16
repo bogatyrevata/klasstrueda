@@ -1,16 +1,18 @@
 {% macro make_menu(menu_items, active_item='index') %}
   {% for link in menu_items %}
+    {% set href = url_for(link.view_function) if link.view_function else url_for('core.page', page_name=link.href) %}
     {% if link.submenu %}
       <div class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle{% if link.href == active_item %} active{% endif %}" href="{{ url_for('core.page', page_name=link.href) }}" data-bs-toggle="dropdown">{{ link.title }}</a>
+        <a class="nav-link dropdown-toggle{% if link.href == active_item %} active{% endif %}" href="{{ href }}" data-bs-toggle="dropdown">{{ link.title }}</a>
         <div class="dropdown-menu bg-light m-0">
           {% for sub_link in link.submenu %}
-            <a href="{{ url_for('core.page', page_name=sub_link.href) }}" class="dropdown-item">{{ sub_link.title }}</a>
+            {% set href = url_for(sub_link.view_function) if sub_link.view_function else url_for('core.page', page_name=sub_link.href) %}
+            <a href="{{ href }}" class="dropdown-item">{{ sub_link.title }}</a>
           {% endfor %}
         </div>
       </div>
     {% else %}
-      <a class="nav-item nav-link{% if link.href == active_item %} active{% endif %}" href="{{ url_for('core.page', page_name=link.href) }}">{{ link.title }}</a>
+      <a class="nav-item nav-link{% if link.href == active_item %} active{% endif %}" href="{{ href }}">{{ link.title }}</a>
     {% endif %}
   {% endfor %}
 {% endmacro %}

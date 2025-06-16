@@ -58,7 +58,7 @@ def before_app_request():
         "href": "about",
       }, {
         "title": "Курсы",
-        "href": "courses",
+        "view_function": "course.index"
       }, {
         "title": "Разделы",
         "href": "#",
@@ -74,7 +74,7 @@ def before_app_request():
               "href": "faq",
           }, {
             "title": "Оплата",
-            "href": "payment",
+            "view_function": "course.payment"
           }, {
             "title": "Отзывы",
             "href": "testimonial",
@@ -222,86 +222,6 @@ def thank_you():
     return render_template("public/thank_you.j2", course=course)
 
 
-@core.get("payment")
-def payment():
-    """Оплата."""
-    # Получаем все курсы и формируем их выбор
-    courses = Course.query.all()
-    course_choices = [(course.id, course.title) for course in courses]
-
-    # Генерируем словарь тарифов для курсов
-    tariffs_by_course = []
-    for course in courses:
-        for tariff in course.tariffes:
-            tariffs_by_course.append((tariff.id, f"{tariff.title} – {tariff.price}"))
-
-    # Создаём форму
-    form = CoursePaymentForm()
-    form.course_title.choices = course_choices  # Устанавливаем варианты выбора курсов
-    form.price.choices = tariffs_by_course
-
-    # Если пользователь авторизован, предварительно заполняем поля
-    if current_user.is_authenticated:
-        form.name.data = current_user.first_name
-        form.email.data = current_user.email
-
-    if form.validate_on_submit():
-        # Проверка Honeypot поля
-        if form.hidden_field.data:
-            current_app.logger.warning("Honeypot triggered! Possible bot detected.")
-            flash("Ошибка при отправке формы. Попробуйте снова.", "danger")
-            return redirect(url_for("course.form_payment"))
-
-        # Проверка временной метки
-        form_time = int(form.form_time.data)  # Получаем значение времени в миллисекундах
-        current_time = int(time.time() * 1000)  # Текущее время в миллисекундах
-        time_difference = current_time - form_time
-
-        if time_difference < 2000:  # Если разница меньше 2 секунд
-            current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
-            flash("Ошибка при отправке формы. Попробуйте снова.", "error")
-            return redirect(url_for("course.form_payment"))
-
-        # Обработка отправки формы
-        selected_course_id = form.course_title.data
-        selected_price = form.price.data
-
-        selected_course = Course.query.get(selected_course_id)
-        selected_tariff = None
-        if selected_course:
-            selected_tariff = next((tariff for tariff in selected_course.tariffes if tariff.id == selected_price), None)
-
-        # Формируем сообщение для отправки
-        send_message = (
-            f"Новая заявка на курс:\n"
-            f"Имя: {form.name.data}\n"
-            f"Email: {form.email.data}\n"
-            f"Курс: {selected_course.title if selected_course else 'Неизвестный курс'}\n"
-            f"Тариф: {selected_tariff.title if selected_tariff else 'Неизвестный тариф'}\n"
-            f"Цена: {selected_tariff.price if selected_tariff else 'Не указано'}\n"
-            f"Способ оплаты: {form.payment_method.data}"
-        )
-
-        # Отправка сообщения (в Telegram и Email)
-        send_to_telegram(send_message, send_to_admin=True)
-        send_to_email(
-            subject="Новая заявка на курс",
-            body=send_message,
-            recipients=['bogatyrevata@gmail.com'],
-            sender='klasstruedaru@gmail.com',
-            reply_to=['klasstruedaru@gmail.com']
-        )
-
-        flash("Заявка на оплату курса зарегистрирована", "success")
-        return redirect(url_for("core.thank_you"))
-
-    return render_template(
-        "public/payment.j2",
-        form=form,
-        tariffs_by_course=tariffs_by_course,
-        active_item="payment",
-    )
-
 
 @core.route("/form-processing", methods=["GET", "POST"])
 def form_proc():
@@ -337,18 +257,17 @@ def form_proc():
 
         # Формируем сообщение для отправки уведомления
         send_message = (
-            f"Новая заявка на курс:\n"
+            f"Новый вопрос с сайта:\n"
             f"Имя: {first_name}\n"
             f"Email: {email}\n"
-            f"Курс: {course_title}\n"
             f"Сообщение: {message}"
         )
 
-        # Отправляем сообщение в Телеграм
+        # Отправляем сообщение админу в Телеграм
         send_to_telegram(send_message, send_to_admin=True)
 
-        # Отправка сообщения на email
-        email_subject = "Новая заявка на курс"
+         # Отправка уведомления админу по email
+        email_subject = "Новый вопрос с сайта"
         send_to_email(
             subject=email_subject,
             body=send_message,
@@ -357,7 +276,24 @@ def form_proc():
             reply_to=['klasstruedaru@gmail.com']
         )
 
-        flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
+        # Отправка подтверждения пользователю
+        user_subject = "Спасибо за ваш вопрос!"
+        user_body = (
+            f"Здравствуйте, {first_name}!\n\n"
+            "Спасибо, что написали нам.\n"
+            "Мы получили ваш вопрос и свяжемся с вами в ближайшее время.\n\n"
+            "С уважением,\n"
+            "Команда Klasstrueda"
+        )
+        send_to_email(
+            subject=user_subject,
+            body=user_body,
+            recipients=[email],
+            sender='klasstruedaru@gmail.com',
+            reply_to=['klasstruedaru@gmail.com']
+        )
+
+        flash("Спасибо за ваш вопрос! Мы свяжемся с вами в ближайшее время. Ответ придёт на указанную вами почту.", "success")
         return redirect(url_for("core.thank_you"))
 
     return render_template("public/contacts.j2", form=form, active_item="form-processing")
