@@ -190,8 +190,8 @@ def course_details(course_id):
         )
 
 
-@courses.route("/form-payment", methods=["GET", "POST"])
-def form_payment():
+@courses.route("/payment", methods=["GET", "POST"])
+def payment():
     # Получаем все курсы и формируем их выбор
     courses = Course.query.all()
     course_choices = [(course.id, course.title) for course in courses]
@@ -214,13 +214,13 @@ def form_payment():
         form.email.data = current_user.email
 
     if not form.validate_on_submit():
-        return render_template("public/payment.j2", form=form, tariffs_by_course=tariffs_by_course)
+        return render_template("courses/public/payment.j2", form=form, tariffs_by_course=tariffs_by_course)
 
     # Проверка Honeypot поля
     if form.hidden_field.data:
         current_app.logger.warning("Honeypot triggered! Possible bot detected.")
         flash("Ошибка при отправке формы. Попробуйте снова.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Проверка временной метки
     form_time = int(form.form_time.data)  # Получаем значение времени в миллисекундах
@@ -230,13 +230,13 @@ def form_payment():
     if time_difference < 2000:  # Если разница меньше 2 секунд
         current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
         flash("Ошибка при отправке формы. Попробуйте снова.", "error")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Проверка существования выбранного курса и тарифа
     selected_course = Course.query.get(form.course_title.data)
     if not selected_course:
         flash("Выбранный курс не найден. Пожалуйста, выберите корректный курс.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     selected_tariff = next(
         (tariff for tariff in selected_course.tariffes if tariff.id == form.price.data),
@@ -244,7 +244,7 @@ def form_payment():
     )
     if not selected_tariff:
         flash("Выбранный тариф не относится к выбранному курсу. Пожалуйста, выберите корректный тариф.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Сохранение заявки на оплату в базу
     if current_user.is_authenticated:
@@ -259,7 +259,7 @@ def form_payment():
         db.session.commit()
     else:
         flash("Для регистрации на курс — зайдите в личный кабинет.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Формирование сообщения
     send_message = (
