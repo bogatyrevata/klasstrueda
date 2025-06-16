@@ -71,7 +71,7 @@ def course_details(course_id):
         if time_difference < 2000:  # Если разница меньше 2 секунд
             current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
             flash("Ошибка при отправке формы. Попробуйте снова.", "error")
-            return redirect(url_for("course.course_details"))
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         name = registration_form.name.data
         email = registration_form.email.data
@@ -83,14 +83,13 @@ def course_details(course_id):
             f"Новая заявка на курс:\n"
             f"Имя: {name}\n"
             f"Email: {email}\n"
-            f"Курс: {course_title}\n"
             f"Сообщение: {message}"
         )
 
         # Отправляем сообщение в Telegram
         send_to_telegram(send_message, send_to_admin=True)
 
-        # Отправка сообщения на email
+        # Отправка сообщения админу на email
         email_subject = "Новая заявка на курс"
         send_to_email(
             subject=email_subject,
@@ -100,7 +99,24 @@ def course_details(course_id):
             reply_to=['klasstruedaru@gmail.com']
         )
 
-        flash("Заявка зарегистрирована, мы с вами свяжемся", "success")
+         # Отправка подтверждения пользователю
+        user_subject = "Спасибо за ваш вопрос!"
+        user_body = (
+            f"Здравствуйте, {name}!\n\n"
+            "Спасибо, что написали нам.\n"
+            "Мы получили ваш вопрос и свяжемся с вами в ближайшее время.\n\n"
+            "С уважением,\n"
+            "Команда Klasstrueda"
+        )
+        send_to_email(
+            subject=user_subject,
+            body=user_body,
+            recipients=[email],
+            sender='klasstruedaru@gmail.com',
+            reply_to=['klasstruedaru@gmail.com']
+        )
+
+        flash("Спасибо за ваш вопрос! Мы свяжемся с вами в ближайшее время. Ответ придёт на указанную вами почту.", "success")
         return redirect(url_for("course.course_details", course_id=course_id))
 
     elif payment_form.validate_on_submit() and payment_form.form_name.data == 'payment':
@@ -125,13 +141,13 @@ def course_details(course_id):
             current_app.logger.warning(f"{current_time}, {form_time}")
             current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
             flash("Ошибка при отправке формы. Попробуйте снова.", "error")
-            return redirect(url_for("course.course_details"))
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         # Проверка существования выбранного курса и тарифа
         selected_course = Course.query.get(payment_form.course_title.data)
         if not selected_course:
             flash("Выбранный курс не найден. Пожалуйста, выберите корректный курс.", "danger")
-            return redirect(url_for("course.course_details"))
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         selected_tariff = next(
             (tariff for tariff in selected_course.tariffes if tariff.id == payment_form.price.data),
@@ -139,7 +155,7 @@ def course_details(course_id):
         )
         if not selected_tariff:
             flash("Выбранный тариф не относится к выбранному курсу. Пожалуйста, выберите корректный тариф.", "danger")
-            return redirect(url_for("course.course_details"))
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         # Сохранение заявки на оплату в базу
         if current_user.is_authenticated:
@@ -154,7 +170,7 @@ def course_details(course_id):
             db.session.commit()
         else:
             flash("Для регистрации на курс — зайдите в личный кабинет.", "danger")
-            return redirect(url_for("course.course_details"))
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         # Формирование сообщения
         send_message = (
@@ -177,7 +193,26 @@ def course_details(course_id):
             reply_to=['klasstruedaru@gmail.com']
         )
 
-        flash("Заявка на оплату курса зарегистрирована", "success")
+        # Отправка сообщения пользователю
+        user_subject = "Спасибо за регистрацию на курс!"
+        user_body = (
+            f"Здравствуйте, {current_user.first_name}!\n\n"
+            f"Вы успешно зарегистрировались на курс \"{selected_course.title}\".\n"
+            f"Выбранный тариф: {selected_tariff.title} ({selected_tariff.price})\n"
+            f"Способ оплаты: {payment_form.payment_method.data.upper()}\n\n"
+            "Мы свяжемся с вами в ближайшее время.\n\n"
+            "С уважением,\n"
+            "Команда Klasstrueda"
+        )
+        send_to_email(
+            subject=user_subject,
+            body=user_body,
+            recipients=[payment_form.email.data],
+            sender='klasstruedaru@gmail.com',
+            reply_to=['klasstruedaru@gmail.com']
+        )
+
+        flash("Заявка на курс зарегистрирована. Мы свяжемся с вами по email с подробностями.", "success")
         return redirect(url_for("course.course_details", course_id=course_id))
 
 
@@ -190,8 +225,8 @@ def course_details(course_id):
         )
 
 
-@courses.route("/form-payment", methods=["GET", "POST"])
-def form_payment():
+@courses.route("/payment", methods=["GET", "POST"])
+def payment():
     # Получаем все курсы и формируем их выбор
     courses = Course.query.all()
     course_choices = [(course.id, course.title) for course in courses]
@@ -214,13 +249,13 @@ def form_payment():
         form.email.data = current_user.email
 
     if not form.validate_on_submit():
-        return render_template("public/payment.j2", form=form, tariffs_by_course=tariffs_by_course)
+        return render_template("courses/public/payment.j2", form=form, tariffs_by_course=tariffs_by_course)
 
     # Проверка Honeypot поля
     if form.hidden_field.data:
         current_app.logger.warning("Honeypot triggered! Possible bot detected.")
         flash("Ошибка при отправке формы. Попробуйте снова.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Проверка временной метки
     form_time = int(form.form_time.data)  # Получаем значение времени в миллисекундах
@@ -230,13 +265,13 @@ def form_payment():
     if time_difference < 2000:  # Если разница меньше 2 секунд
         current_app.logger.warning("Форма отправлена слишком быстро! Возможный бот.")
         flash("Ошибка при отправке формы. Попробуйте снова.", "error")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Проверка существования выбранного курса и тарифа
     selected_course = Course.query.get(form.course_title.data)
     if not selected_course:
         flash("Выбранный курс не найден. Пожалуйста, выберите корректный курс.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     selected_tariff = next(
         (tariff for tariff in selected_course.tariffes if tariff.id == form.price.data),
@@ -244,7 +279,7 @@ def form_payment():
     )
     if not selected_tariff:
         flash("Выбранный тариф не относится к выбранному курсу. Пожалуйста, выберите корректный тариф.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Сохранение заявки на оплату в базу
     if current_user.is_authenticated:
@@ -259,7 +294,7 @@ def form_payment():
         db.session.commit()
     else:
         flash("Для регистрации на курс — зайдите в личный кабинет.", "danger")
-        return redirect(url_for("course.form_payment"))
+        return redirect(url_for("course.payment"))
 
     # Формирование сообщения
     send_message = (
@@ -282,7 +317,26 @@ def form_payment():
         reply_to=['klasstruedaru@gmail.com']
     )
 
-    flash("Заявка на оплату курса зарегистрирована", "success")
+    # Отправка подтверждения пользователю
+    user_subject = "Спасибо за регистрацию на курс!"
+    user_body = (
+        f"Здравствуйте, {form.name.data}!\n\n"
+        f"Вы успешно зарегистрировались на курс \"{selected_course.title}\".\n"
+        f"Выбранный тариф: {selected_tariff.title} ({selected_tariff.price})\n"
+        f"Способ оплаты: {form.payment_method.data.upper()}\n\n"
+        "Мы свяжемся с вами в ближайшее время.\n\n"
+        "С уважением,\n"
+        "Команда Klasstrueda"
+    )
+    send_to_email(
+        subject=user_subject,
+        body=user_body,
+        recipients=[form.email.data],
+        sender='klasstruedaru@gmail.com',
+        reply_to=['klasstruedaru@gmail.com']
+    )
+
+    flash("Заявка на курс зарегистрирована. Мы свяжемся с вами по email с подробностями.", "success")
     return redirect(url_for("core.thank_you"))
 
 

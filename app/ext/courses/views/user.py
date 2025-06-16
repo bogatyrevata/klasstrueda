@@ -21,7 +21,7 @@ def inject_user_menu():
 
 @user_courses.get("")
 def index():
-    payments_db = Payment.query.filter_by(user_id=current_user.id).all() #получаем все оплаты пользователя
+    payments_db = Payment.query.filter_by(user_id=current_user.id, status_payment=1).all() #получаем все оплаты пользователя со статусом 1
     return render_template("courses/user/user-courses.j2", payments=payments_db, active_item="user-courses")  # TODO: fix template name
 
 

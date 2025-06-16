@@ -68,7 +68,11 @@
                 <!-- Video start -->
                 {% if lesson.video_url %}
                   <div class="container mb-5">
-                    {% if 'youtube.com' in lesson.video_url %}
+                    {% if 'youtube.com/live' in lesson.video_url %}
+                      {% set video_id = lesson.video_url.split('/')[-1] %}
+                      <lite-youtube videoid="{{ video_id }}" style="width: 100%; height: 500px;"></lite-youtube>
+
+                    {% elif 'youtube.com' in lesson.video_url %}
                       {% set video_id = lesson.video_url.split('v=')[-1].split('&')[0] %}
                       <lite-youtube videoid="{{ video_id }}" style="width: 100%; height: 500px;"></lite-youtube>
 

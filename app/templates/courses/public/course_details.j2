@@ -135,7 +135,7 @@
           <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
             <h6 class="text-danger text-uppercase mb-2">Напишите нам</h6>
             <h1 class="display-6 mb-4">Получить бесплатную консультацию по курсу</h1>
-            <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" novalidate>
+            <form action="{{ url_for('course.course_details', course_id=course.id) }}" method="post" id="registration" novalidate>
               <div class="row g-3">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="form_name" value="registration"> <!-- Скрытое поле для идентификации формы -->
