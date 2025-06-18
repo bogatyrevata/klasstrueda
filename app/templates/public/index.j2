@@ -189,7 +189,7 @@
             <div class="position-relative mt-auto">
               <img class="img-fluid" src="{{ url_for('static', filename='upload/' ~ course.preview_photo) }}"  alt="">
               <div class="courses-overlay">
-                <a class="btn btn-outline-primary border-2" href="{{ url_for('core.page', page_name='jewelry-ring') }}">Подробнее</a>
+                <a class="btn btn-outline-primary border-2" href="{{ url_for('course.course_details', course_id=course.id) }}">Подробнее</a>
               </div>
             </div>
           </div>
