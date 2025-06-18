@@ -6,7 +6,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_category') }}">Категории</a></li>
-      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_course') }}">Добавить Курс</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_course') }}">Добавление курса</a></li>
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_module') }}">Модули</a></li>
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_lesson') }}">Уроки</a></li>
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_studentwork') }}">Работы студентов</a></li>
@@ -14,9 +14,9 @@
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_artistwork') }}">Работы мастеров</a></li>
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_tariff') }}">Тарифы</a></li>
       <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.add_promo') }}">Акции</a></li>
-      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_courses') }}">Показ курсов на главной</a></li>
-      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_artists') }}">Показ мастеров на главной</a></li>
-      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_popular_courses') }}">Показ популярных курсов на главной</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_courses') }}">Курсы на главной</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_artists') }}">Мастера на главной</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('admin_courses.save_selected_popular_courses') }}">Популярные курсы</a></li>
     </ol>
   </nav>
   {# <h3 class="mb-4">Список всех категорий курсов</h3> #}
@@ -34,60 +34,74 @@
               </h4>
               <form action="{{ url_for('admin_courses.delete_category', category_id=category.id) }}" method="post" style="display:inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-secondary" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?');">Удалить</button>
+                <button type="submit" class="btn btn-outline-secondary" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?');">Удалить категорию</button>
               </form>
             </div>
           </div>
+          <div class="row g-4">  {# g-4 — расстояние между колонками и рядами #}
+            {% for course in category.courses %}
+            <div class="col-sm-4">  {# или col-sm-6, col-lg-3 — зависит от желаемой плотности #}
+              <div class="card">
+                <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
+                  {% if course.preview_photo %}
+                    {{ picture(
+                      class_name='card-img-top',
+                      file_name='upload/' ~ course.preview_photo,
+                      alt='Изображение для курса %s' % course.title,
+                      width=400,
+                      height=400,
+                      bp_tablet=834,
+                      width_tablet=550,
+                      height_tablet=550,
+                      bp_desktop=1440,
+                      width_desktop=600,
+                      height_desktop=600
+                    ) }}
+                  {% endif %}
+                  <div class="card-body p-3">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.alias }}</p>
+                    <p class="card-text">{{ course.preview_description }}</p>
+                    <form action="{{ url_for('admin_courses.delete_course', course_id=course.id) }}" method="post" style="display:inline;">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <button type="submit" class="btn btn-outline-secondary" onclick="return confirm('Вы уверены, что хотите удалить этот курс?');">Удалить курс</button>
+                    </form>
 
-          {% for course in category.courses %}
-            <div class="card" style="width: 18rem;">
-              <a href="{{ url_for('admin_courses.edit_course', course_id=course.id) }}">
-                {% if course.preview_photo %}
-                  {{ picture(
-                    class_name='card-img-top',
-                    file_name='upload/' ~ course.preview_photo,
-                    alt='Изображение для курса %s' % course.title,
-                    width=200,
-                    height=200,
-                    bp_tablet=834,
-                    width_tablet=300,
-                    height_tablet=200,
-                    bp_desktop=1440,
-                    width_desktop=400,
-                    height_desktop=300
-                  ) }}
-                {% endif %}
-                <div class="card-body">
-                  <h5 class="card-title">{{ course.title }}</h5>
-                  <p class="card-text">{{ course.alias }}</p>
-                  <p class="card-text">{{ course.preview_description }}</p>
-                  <form action="{{ url_for('admin_courses.delete_course', course_id=course.id) }}" method="post" style="display:inline;">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="card-link" onclick="return confirm('Вы уверены, что хотите удалить этот курс?');">Удалить</button>
-                  </form>
-                </div>
-              </a>
 
-              {% for module in course.modules %}
-                <div class="module-item">
-                  <div class="mb-2">
-                    модуль:
-                    <a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}"><small>({{ module.id }})</small> {{ module.title }} - {{ module.alias }}</a>
-                    <a href="{{ url_for('.delete_module', course_id=course.id, module_id=module.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот модуль?');">Удалить</a>
-                  </div>
-                  {% for lesson in module.lessons %}
-                    <div class="module-item">
-                      <div class="mb-2" style="padding-left: 90px">
-                        урок:
-                        <a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}"><small>({{ lesson.id }})</small> {{ lesson.title }} - {{ lesson.alias }}</a>
-                        <a href="{{ url_for('.delete_lesson', lesson_id=lesson.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить этот урок?');">Удалить</a>
-                      </div>
+                {% for module in course.modules %}
+                  <div class="module-item">
+                    <div class="mb-2">
+                      модуль:
+                      <a href="{{ url_for('admin_courses.edit_module', module_id=module.id) }}"><small>({{ module.id }})</small> {{ module.title }} - {{ module.alias }}</a>
+                      <a href="{{ url_for('.delete_module', course_id=course.id, module_id=module.id) }}"
+                        class="btn btn-outline-primary btn-sm"
+                        onclick="return confirm('Вы уверены, что хотите удалить этот урок?');"
+                        title="Удалить модуль">
+                        <i class="bi bi-x"></i>
+                      </a>
                     </div>
-                  {% endfor %}
+                    {% for lesson in module.lessons %}
+                      <div class="module-item">
+                        <div class="mb-2" style="padding-left: 90px">
+                          урок:
+                          <a href="{{ url_for('admin_courses.edit_lesson', lesson_id=lesson.id) }}"><small>({{ lesson.id }})</small> {{ lesson.title }} - {{ lesson.alias }}</a>
+                          <a href="{{ url_for('.delete_lesson', lesson_id=lesson.id) }}"
+                            class="btn btn-outline-secondary btn-sm"
+                            onclick="return confirm('Вы уверены, что хотите удалить этот урок?');"
+                            title="Удалить урок">
+                            <i class="bi bi-x"></i>
+                          </a>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
                 </div>
-              {% endfor %}
+                </a>
+              </div>
+            </div>
+            {% endfor %}
           </div>
-          {% endfor %}
         </div>
       </div>
     {% endif %}
