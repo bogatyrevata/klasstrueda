@@ -2,30 +2,50 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.edit_promo', promo_id=promo_id) }}" method="post" enctype="multipart/form-data">
-  <h1>Добавление работы студента</h1>
-    <div class="row g-3">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      {{ input_form_6(form.course_id) }}
-      {{ input_form_6(form.title) }}
-      {{ input_form_6(form.alias) }}
-      {{ input_form_6(form.price) }}
-      {{ input_form_6(form.discount) }}
-      {{ input_form_12(form.description, style="height: 150px") }}
-      {{ input_form_12(form.photo) }}
-      {{ input_form_6(form.start_time) }}
-      {{ input_form_6(form.end_time) }}
-      {{ btn(form.submit, value="Отправить") }}
-      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
-    </div>
-  </form>
-  <h2>Список всех акций</h2>
-  <ul>
-    {% for promo in promos %}
-      <li><a href="{{ url_for('admin_courses.edit_promo', promo_id=promo.id) }}">{{ promo.title }} </a>
-      <a href="{{ url_for('admin_courses.delete_promo', promo_id=promo.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту акцию?');">Удалить</a>
-      </li>
-    {% endfor %}
-  </ul>
-    <a href="{{ url_for('admin_courses.add_promo') }}" class="btn btn-primary">Добавить еще одну акцию</a>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> На главную
+    </a>
+    <a href="{{ url_for('admin_courses.add_promo') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
+  <div class="container mb-4">
+    <form action="{{ url_for('admin_courses.edit_promo', promo_id=promo_id) }}" method="post" enctype="multipart/form-data">
+    <h1>Изменение акции</h1>
+      <div class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {{ input_form_12(form.course_id, style="height: 150px") }}
+        {{ input_form_6(form.title) }}
+        {{ input_form_6(form.alias) }}
+        {{ input_form_6(form.price) }}
+        {{ input_form_6(form.discount) }}
+        {{ input_form_12(form.description, style="height: 150px") }}
+        {{ input_form_12(form.photo) }}
+        {{ input_form_6(form.start_time) }}
+        {{ input_form_6(form.end_time) }}
+        {{ btn(form.submit, value="Отправить") }}
+        <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
+      </div>
+    </form>
+  </div>
+  <div class="container mb-4">
+    <h2>Список всех акций</h2>
+    <ol>
+      {% for promo in promos %}
+        <li><a href="{{ url_for('admin_courses.edit_promo', promo_id=promo.id) }}">{{ promo.title }} </a>
+        <a href="{{ url_for('admin_courses.delete_promo', promo_id=promo.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту акцию?');">Удалить</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <a href="{{ url_for('admin_courses.add_promo') }}" class="btn btn-outline-success">Добавить еще одну акцию</a>
+  </div>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> На главную
+    </a>
+    <a href="{{ url_for('admin_courses.add_promo') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
 {% endblock admin_content %}

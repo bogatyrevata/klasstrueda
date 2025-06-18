@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
           <div class="position-relative overflow-hidden ps-5 pt-5 h-100" style="min-height: 400px;">
-            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='upload/' ~ course.preview_photo) }}"  alt="{{ course.title }}" style="object-fit: cover;">
+            <img class="position-absolute w-100 h-100" src="{{ url_for('static', filename='upload/' ~ course.about_photo) }}"  alt="{{ course.title }}" style="object-fit: cover;">
           </div>
         </div>
       </div>
@@ -238,10 +238,6 @@
                   </div>
                   <h5 class="mb-3">{{ tariff.title }}</h5>
                   <p>{{ tariff.description }}</p>
-                  <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item small"><i class="fa fa-signal text-primary me-2"></i>Для начинающих</li>
-                    <li class="breadcrumb-item small"><i class="fa fa-calendar-alt text-primary me-2"></i>2 часа</li>
-                  </ol>
                 </div>
                 <div class="position-relative mt-auto">
                   <img class="img-fluid" src="{{ url_for('static', filename='upload/' + tariff.photo) }}" alt="">

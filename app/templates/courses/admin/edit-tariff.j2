@@ -2,34 +2,53 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}" method="post" enctype="multipart/form-data">
-    <h1>Изменение тарифа</h1>
-    <div class="row g-3">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      {{ input_form_6(form.course_id) }}
-      {{ input_form_6(form.title) }}
-      {{ input_form_12(form.description, style="height: 150px") }}
-      {{ input_form_12(form.price) }}
-      {{ input_form_12(form.discount) }}
-      {{ input_form_12(form.photo) }}
-      {{ btn(form.submit, value="Отправить") }}
-      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
-    </div>
-  </form>
-  <h2>Список тарифов</h2>
-  <ul>
-    {% for tariff in tariffs %}
-    <li>
-      <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.title}}</a>
-      <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.price}}</a>
-      {% for course in courses %}
-          {% if tariff in course.tariffes %}
-            <a href="{{ url_for('admin_courses.delete_tariff', course_id=course.id, tariff_id=tariff.id) }}" class="btn btn-primary" onclick="return confirm('Вы уверены, что хотите удалить этот тариф?');">Удалить из {{ course.alias }}</a>
-          {% endif %}
-        {% endfor %}
-    </li>
-    {% endfor %}
-  </ul>
-  <a href="{{ url_for('admin_courses.add_tariff') }}" class="btn btn-primary">Добавить еще один тариф</a>
-
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> На главную
+    </a>
+    <a href="{{ url_for('admin_courses.add_tariff') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
+  <div class="container mb-4">
+    <form action="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}" method="post" enctype="multipart/form-data">
+      <h1>Изменение тарифа</h1>
+      <div class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {{ input_form_12(form.course_id, style="height: 150px") }}
+        {{ input_form_6(form.title) }}
+        {{ input_form_6(form.price) }}
+        {{ input_form_12(form.description, style="height: 150px") }}
+        {{ input_form_12(form.discount) }}
+        {{ input_form_12(form.photo) }}
+        {{ btn(form.submit, value="Отправить") }}
+        <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
+      </div>
+    </form>
+  </div>
+  <div class="container mb-4">
+    <h2>Список тарифов</h2>
+    <ol>
+      {% for tariff in tariffs %}
+      <li>
+        <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.title}}</a>
+        <a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.price}}</a>
+        {% for course in courses %}
+            {% if tariff in course.tariffes %}
+              <a href="{{ url_for('admin_courses.delete_tariff', course_id=course.id, tariff_id=tariff.id) }}" class="btn btn-outline-secondary" onclick="return confirm('Вы уверены, что хотите удалить этот тариф?');">Удалить из {{ course.alias }}</a>
+            {% endif %}
+          {% endfor %}
+      </li>
+      {% endfor %}
+    </ol>
+    <a href="{{ url_for('admin_courses.add_tariff') }}" class="btn btn-outline-success">Добавить еще один тариф</a>
+  </div>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> На главную
+    </a>
+    <a href="{{ url_for('admin_courses.add_tariff') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
 {% endblock admin_content %}
