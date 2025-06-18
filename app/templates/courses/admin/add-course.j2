@@ -2,51 +2,63 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.add_course') }}" method="post" enctype="multipart/form-data">
-    <h1>Добавление курса</h1>
-    <div class="row g-3">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      {{ input_form_6(form.category_id) }}
-      {{ input_form_6(form.title) }}
-      {{ input_form_6(form.alias) }}
-      {{ input_form_12(form.preview_description) }}
-      {{ input_form_12(form.preview_photo) }}
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
+  <div class="container mb-4">
+    <form action="{{ url_for('admin_courses.add_course') }}" method="post" enctype="multipart/form-data">
+      <h1>Добавление курса</h1>
+      <div class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {{ input_form_6(form.category_id) }}
+        {{ input_form_6(form.title) }}
+        {{ input_form_6(form.alias) }}
+        {{ input_form_12(form.preview_description) }}
+        {{ input_form_12(form.preview_photo) }}
         <label for="show_on_homepage">
             {{ form.show_on_homepage }} {{ form.show_on_homepage.label.text }}
         </label>
-      {{ input_form_12(form.homepage_photo) }}
         <label for="popular">
             {{ form.popular }} {{ form.popular.label.text }}
         </label>
-      {{ input_form_12(form.level) }}
-      {{ input_form_12(form.duration) }}
-      {{ input_form_12(form.about, style="height: 150px") }}
-      {{ input_form_12(form.about_photo) }}
-      {{ input_form_12(form.learning_process_title) }}
-      {{ input_form_12(form.learning_process_description, style="height: 150px") }}
-      {{ input_form_12(form.features_title) }}
-      {{ input_form_12(form.features_description, style="height: 150px") }}
-      {{ input_form_12(form.skills_title) }}
-      {{ input_form_12(form.skills_description, style="height: 150px") }}
-      <div class="col-12">
-        <label>Работы студентов</label>
-        <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-primary">Добавить работу студента</a>
+        {{ input_form_12(form.homepage_photo) }}
+        {{ input_form_12(form.level) }}
+        {{ input_form_12(form.duration) }}
+        {{ input_form_12(form.about, style="height: 150px") }}
+        {{ input_form_12(form.about_photo) }}
+        {{ input_form_12(form.learning_process_title) }}
+        {{ input_form_12(form.learning_process_description, style="height: 150px") }}
+        {{ input_form_12(form.features_title) }}
+        {{ input_form_12(form.features_description, style="height: 150px") }}
+        {{ input_form_12(form.skills_title) }}
+        {{ input_form_12(form.skills_description, style="height: 150px") }}
+        <div class="col-12">
+          <label>Работы студентов</label>
+          <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-outline-primary">Добавить работу студента</a>
+        </div>
+        {{ input_form_12(form.registration_form, style="height: 150px") }}
+        {{ input_form_12(form.registration_photo) }}
+        {{ input_form_12(form.artist_photo) }}
+        {{ input_form_12(form.artist_photo_preview) }}
+        {{ input_form_12(form.artist_title)}}
+        {{ input_form_12(form.artist_description, style="height: 150px") }}
+        <div class="col-12">
+          <label>Работы мастера</label>
+          <a href="{{ url_for('admin_courses.add_artistwork') }}" class="btn btn-outline-primary">Добавить работу мастера</a>
+        </div>
+        {{ input_form_12(form.price, style="height: 150px") }}
+        {{ input_form_12(form.start_date ) }}
+        {{ input_form_12(form.end_date ) }}
+        {{ input_form_12(form.modules, style="height: 100px")}}
+        {{ btn(form.submit, value="Отправить") }}
       </div>
-      {{ input_form_12(form.registration_form, style="height: 150px") }}
-      {{ input_form_12(form.registration_photo) }}
-      {{ input_form_12(form.artist_photo) }}
-      {{ input_form_12(form.artist_photo_preview) }}
-      {{ input_form_12(form.artist_title)}}
-      {{ input_form_12(form.artist_description, style="height: 150px") }}
-      <div class="col-12">
-        <label>Работы мастера</label>
-        <a href="{{ url_for('admin_courses.add_artistwork') }}" class="btn btn-primary">Добавить работу мастера</a>
-      </div>
-      {{ input_form_12(form.price, style="height: 150px") }}
-      {{ input_form_12(form.start_date ) }}
-      {{ input_form_12(form.end_date ) }}
-      {{ input_form_12(form.modules, style="height: 100px")}}
-      {{ btn(form.submit, value="Отправить") }}
-    </div>
-  </form>
+    </form>
+  </div>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
 {% endblock admin_content %}

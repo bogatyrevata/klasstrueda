@@ -2,25 +2,38 @@
 {% from "macros/form.j2" import btn, input_form_6, input_form_12 %}
 
 {% block admin_content %}
-  <form action="{{ url_for('admin_courses.add_studentwork') }}" method="post" enctype="multipart/form-data">
-  <h1>Добавление работы студента</h1>
-    <div class="row g-3">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      {{ input_form_6(form.course_id) }}
-      {{ input_form_6(form.title) }}
-      {{ input_form_12(form.description, style="height: 150px") }}
-      {{ input_form_12(form.photo) }}
-      {{ btn(form.submit, value="Отправить") }}
-      <p><a class="btn btn-secondary" href="{{ url_for('admin_courses.index') }}">Вернуться</a></p>
-    </div>
-  </form>
-  <h2>Список работ всех студентов</h2>
-  <ul>
-    {% for studentwork in studentworks %}
-      <li><a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=studentwork.id) }}">{{ studentwork.title }} </a>
-      <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=studentwork.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
-      </li>
-    {% endfor %}
-  </ul>
-    <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-primary">Добавить еще одну работу</a>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
+  <div class="container mb-4">
+    <form action="{{ url_for('admin_courses.add_studentwork') }}" method="post" enctype="multipart/form-data">
+    <h1>Добавление работы студента</h1>
+      <div class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {{ input_form_12(form.course_id, style="height: 150px") }}
+        {{ input_form_12(form.title) }}
+        {{ input_form_12(form.description, style="height: 150px") }}
+        {{ input_form_12(form.photo) }}
+        {{ btn(form.submit, value="Отправить") }}
+      </div>
+    </form>
+  </div>
+  <div class="container mb-4">
+    <h2>Список работ всех студентов</h2>
+    <ol>
+      {% for studentwork in studentworks %}
+        <li><a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=studentwork.id) }}">{{ studentwork.title }} </a>
+            <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=studentwork.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-outline-success">Добавить еще одну работу</a>
+  </div>
+  <div class="container mb-4">
+    <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
 {% endblock admin_content %}
