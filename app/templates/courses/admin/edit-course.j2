@@ -18,9 +18,10 @@
 
     {{ form.show_on_homepage.label }}
       <label for="show_on_homepage">
-          <input type="checkbox" id="show_on_homepage" name="show_on_homepage"
-                  {% if form.show_on_homepage %}checked{% endif %}>
-          Показать на главной
+          {{ form.show_on_homepage }} {{ form.show_on_homepage.label.text }}
+      </label>
+      <label for="popular">
+          {{ form.popular }} {{ form.popular.label.text }}
       </label>
 
     {{ input_form_12(form.homepage_photo, id="homepage_photo_input", data_input="homepage_photo_input") }}
