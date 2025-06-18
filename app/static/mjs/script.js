@@ -141,7 +141,7 @@ function updatePriceOptions() {
             tariffs.forEach(({ tariff, price, id }) => {
                 const option = document.createElement("option");
                 option.value = id;
-                option.textContent = `${tariff} - ${price} руб.`;
+                option.textContent = `${tariff} - ${price} USD`;
                 priceSelect.appendChild(option);
             });
         })
