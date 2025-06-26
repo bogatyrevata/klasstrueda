@@ -16,14 +16,20 @@
     <form class="row g-3" action="{{ url_for('admin_courses.edit_course', course_id=course_id) }}"
       method="post" enctype="multipart/form-data">
       <h1>Редактирование курса</h1>
+      <p> Фото можно не обновлять, но дата начала и окончания курса обязательны к обновлению.</p>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {{ input_form_6(form.category_id) }}
       {{ input_form_6(form.title) }}
       {{ input_form_6(form.alias) }}
+      <h4>Карточка курса:</h4>
       {{ input_form_12(form.preview_description) }}
-
       {{ input_form_12(form.preview_photo, id="image_input", data_input="image_input") }}
       {{ display_image(preview_photo, course.title, "image_input") }}
+      {{ input_form_12(form.level) }}
+      {{ input_form_12(form.duration) }}
+      {{ input_form_12(form.price) }}
+      <h4>Показ курса на главной:</h4>
+      <p>Статус показа курса на главной и в разделе популярные курсы, также можно снять или добавить галочку а также обновить фото курса на глвной странице.</p>
       <label for="show_on_homepage">
           {{ form.show_on_homepage }} {{ form.show_on_homepage.label.text }}
       </label>
@@ -32,78 +38,76 @@
       </label>
       {{ input_form_12(form.homepage_photo, id="homepage_photo_input", data_input="homepage_photo_input") }}
       {{ display_image(homepage_photo, course.title, "homepage_photo_input") }}
-      {{ input_form_12(form.level) }}
-      {{ input_form_12(form.duration) }}
+      <h4>Описание курса на странице курса:</h4>
       {{ input_form_12(form.about, style="height: 150px") }}
-
       {{ input_form_12(form.about_photo, id="about_photo_input", data_input="about_photo_input") }}
       {{ display_image(about_photo, course.title, "about_photo_input") }}
-
       {{ input_form_12(form.learning_process_title) }}
       {{ input_form_12(form.learning_process_description, style="height: 150px") }}
       {{ input_form_12(form.features_title) }}
       {{ input_form_12(form.features_description, style="height: 150px") }}
       {{ input_form_12(form.skills_title) }}
       {{ input_form_12(form.skills_description, style="height: 150px") }}
-
-      <h2>Работы студентов</h2>
-      <ul>
-      {% for student_work in student_works %}
-        <li>
-          <a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=student_work.id) }}">
-              <h6>{{ student_work.title }}</h6>
-              <img src="{{ url_for('static', filename='upload/' + student_work.photo) }}" alt="{{ student_work.title }}" width="100" height="100">
-          </a>
-          <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=student_work.id) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
-        </li>
-      {% endfor %}
-      </ul>
-
+      <h4>Работы студентов</h4>
+      <p>Будут добавлены в карусель с работами студентов на страницу курса.</p>
+      <div class="container">
+        <ol>
+        {% for student_work in student_works %}
+          <li>
+            <a href="{{ url_for('admin_courses.edit_studentwork', studentwork_id=student_work.id) }}">
+                <h6>{{ student_work.title }}</h6>
+                <img src="{{ url_for('static', filename='upload/' + student_work.photo) }}" alt="{{ student_work.title }}" width="100" height="100">
+            </a>
+            <a href="{{ url_for('admin_courses.delete_studentwork', studentwork_id=student_work.id) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу студента?');">Удалить</a>
+          </li>
+        {% endfor %}
+        </ol>
+      </div>
+      <h4>Форма регистрации:</h4>
+      <p> Форма, в которой пользователь может задать вопрос по курсу.</p>
       {{ input_form_12(form.registration_form, style="height: 150px") }}
-
       {{ input_form_12(form.registration_photo, id="registration_photo_input", data_input="registration_photo_input") }}
       {{ display_image(registration_photo, course.title, "registration_photo_input") }}
-
+      <h4>Мастер:</h4>
+      <p> Фото мастера будет на странице, фото работы - это небольшое фото к основному, будет вторым слоем.</p>
       {{ input_form_12(form.artist_photo, id="artist_photo_input", data_input="artist_photo_input") }}
       {{ display_image(artist_photo, course.title, "artist_photo_input") }}
-
       {{ input_form_12(form.artist_photo_preview, id="artist_photo_preview_input", data_input="artist_photo_preview_input") }}
-
+      {{ display_image(artist_photo_preview, course.title, "artist_photo_preview_input") }}
       {{ input_form_12(form.artist_title)}}
       {{ input_form_12(form.artist_description, style="height: 150px") }}
-
-      <!-- Вывод всех работ мастера курса -->
-      <h2>Работы мастеров</h2>
-      <ul>
+      <h4>Работы мастеров</h4>
+      <p>Здесь будут работы всех мастеров, которые добавлены как ведущие курс.</p>
+      <div class="container">
+        <ol>
           {% for artist in artists %}
-              <li>
-                  {{ loop.index }}
-                  <h6>{{ artist.user.first_name }}</h6>
+            <li>
+              {{ loop.index }}
+              <h6>{{ artist.user.first_name }}</h6>
 
-                  <!-- Ссылка для удаления мастера из курса -->
-                  <a href="{{ url_for('admin_courses.remove_artist_from_course', course_id=course_id, artist_id=artist.id) }}"
-                    class="btn btn-outline-primary btn-sm"
-                    onclick="return confirm('Вы уверены, что хотите удалить мастера из курса?');">
-                    Удалить из курса
-                  </a>
-
-                  {% for artistwork in artist.works %}  {# Добавлен вложенный цикл для работ мастера #}
-                      <a href="{{ url_for('admin_courses.edit_artistwork', artistwork_id=artistwork.id) }}">
-                          <p>{{ artistwork.title }}</p>
-                          <p>{{ artistwork.description }}</p>
-                          <img src="{{ url_for('static', filename='upload/' + artistwork.photo) }}" alt="{{ artistwork.title }}" width="100">
-                      </a>
-                      <a href="{{ url_for('admin_courses.delete_artistwork', artistwork_id=artistwork.id) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу мастера?');">Удалить</a>
-                  {% endfor %}
-              </li>
+              <!-- Ссылка для удаления мастера из курса -->
+              <a href="{{ url_for('admin_courses.remove_artist_from_course', course_id=course_id, artist_id=artist.id) }}"
+                class="btn btn-outline-primary btn-sm"
+                onclick="return confirm('Вы уверены, что хотите удалить мастера из курса?');">
+                Удалить из курса
+              </a>
+              {% for artistwork in artist.works %}  {# Добавлен вложенный цикл для работ мастера #}
+                <a href="{{ url_for('admin_courses.edit_artistwork', artistwork_id=artistwork.id) }}">
+                  <p>{{ artistwork.title }}</p>
+                  <p>{{ artistwork.description }}</p>
+                  <img src="{{ url_for('static', filename='upload/' + artistwork.photo) }}" alt="{{ artistwork.title }}" width="100">
+                </a>
+                <a href="{{ url_for('admin_courses.delete_artistwork', artistwork_id=artistwork.id) }}" class="btn btn-outline-primary btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту работу мастера?');">Удалить</a>
+              {% endfor %}
+            </li>
           {% endfor %}
-      </ul>
+        </ol>
+      </div>
 
-
-      {{ input_form_12(form.price, style="height: 150px") }}
-
-      <h2>Список тарифов</h2>
-        <ul>
+      <h4>Список тарифов</h4>
+      <p>Список всех тарифов, которые добавлены для курса. Для добавления нового тарифа перейдите в раздел Тарифы на главной странице.</p>
+      <div class="container">
+        <ol>
           {% for tariff in course.tariffes %}
             <li><a href="{{ url_for('admin_courses.edit_tariff', tariff_id=tariff.id) }}">{{ tariff.title }} </a>
               <a href="{{ url_for('admin_courses.delete_tariff', course_id=course.id, tariff_id=tariff.id) }}" onclick="return confirm('Вы уверены, что хотите удалить этот тариф?');">Удалить</a>
@@ -111,10 +115,12 @@
             {% else %}
           <li>Для этого курса нет выбранных тарифов.</li>
           {% endfor %}
-        </ul>
-
-      <h2>Список всех акций</h2>
-        <ul>
+        </ol>
+      </div>
+      <h4>Список всех акций</h4>
+      <p>Список всех акций, которые действуют на тариф. Чтобы добавить новую акцию перейдите в раздел Акции на главной странице.</p>
+      <div class="container">
+        <ol>
           {% for promo in course.promos %}
             <li><a href="{{ url_for('admin_courses.edit_promo', promo_id=promo.id) }}">{{ promo.title }} </a>
               <a href="{{ url_for('admin_courses.delete_promo', promo_id=promo.id) }}" onclick="return confirm('Вы уверены, что хотите удалить эту акцию?');">Удалить</a>
@@ -122,9 +128,14 @@
             {% else %}
           <li>Для этого курса нет доступных акций.</li>
           {% endfor %}
-        </ul>
+        </ol>
+      </div>
+      <h4>Дата начала/окончания курса</h4>
+      <p>Обязательны к заполнению еще раз.</p>
       {{ input_form_12(form.start_date) }}
       {{ input_form_12(form.end_date) }}
+      <h4>Модули</h4>
+      <p>Можно добавить в курс уже существующие модули. Но если нужны новые модули - нужно сначала их создать и добавить уже в сохраненный курс.</p>
       {{ input_form_12(form.modules, style="height: 100px")}}
       {{ btn(form.submit, value="Изменить") }}
     </form>
