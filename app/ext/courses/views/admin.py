@@ -991,7 +991,7 @@ def add_tariff():
           title=form.data["title"],
           description = form.data["description"],
           price = form.data["price"],
-          discount = form.data["discount"],
+          discount = form.data["discount"] or 0.0, # подставляется 0.0 если поле пусто
         )
 
         file = request.files["photo"]
@@ -1038,7 +1038,7 @@ def edit_tariff(tariff_id):
         tariff_db.title = form.title.data
         tariff_db.description = form.description.data
         tariff_db.price = form.price.data
-        tariff_db.discount = form.discount.data
+        tariff_db.discount = form.discount.data or 0.0 # подставляется 0.0 если поле пусто
 
         # Обработка загруженного файла (одно фото)
         file = request.files["photo"]
