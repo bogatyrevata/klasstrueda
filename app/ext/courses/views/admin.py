@@ -208,6 +208,8 @@ def edit_course(course_id):
         course_db.skills_title = form.skills_title.data
         course_db.skills_description = form.skills_description.data
         course_db.registration_form = form.registration_form.data
+        course_db.artist_title = form.artist_title.data
+        course_db.artist_description = form.artist_description.data
         course_db.price = form.price.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
