@@ -181,6 +181,7 @@ def course_details(course_id):
             f"Тариф: {selected_tariff.title}\n"
             f"Цена: {selected_tariff.price}\n"
             f"Способ оплаты: {payment_form.payment_method.data}"
+            status_payment=0 if selected_tariff.price > 0 else 1,
         )
 
         # Отправка сообщения (в Telegram и Email)
@@ -211,6 +212,20 @@ def course_details(course_id):
             sender='klasstruedaru@gmail.com',
             reply_to=['klasstruedaru@gmail.com']
         )
+        # === Бесплатный курс ===
+        if selected_tariff.price == 0:
+            flash("Бесплатный курс добавлен в ваш личный кабинет. Вы можете начать обучение прямо сейчас!", "success")
+            send_user_email(
+                subject="Доступ к бесплатному курсу предоставлен",
+                body=(
+                    f"Здравствуйте, {current_user.first_name}!\n\n"
+                    f"Вы зарегистрировались на бесплатный курс \"{selected_course.title}\".\n"
+                    "Курс уже добавлен в ваш личный кабинет, и вы можете приступить к обучению прямо сейчас.\n\n"
+                    "С уважением,\nКоманда Klasstrueda"
+                ),
+                recipient_email=payment_form.email.data
+            )
+            return redirect(url_for("course.course_details", course_id=course_id))
 
         flash("Заявка на курс зарегистрирована. Мы свяжемся с вами по email с подробностями.", "success")
         return redirect(url_for("course.course_details", course_id=course_id))
@@ -305,6 +320,7 @@ def payment():
         f"Тариф: {selected_tariff.title}\n"
         f"Цена: {selected_tariff.price}\n"
         f"Способ оплаты: {form.payment_method.data}"
+        status_payment=0 if selected_tariff.price > 0 else 1,
     )
 
     # Отправка сообщения (в Telegram и Email)
@@ -335,6 +351,21 @@ def payment():
         sender='klasstruedaru@gmail.com',
         reply_to=['klasstruedaru@gmail.com']
     )
+    # === Бесплатный курс ===
+    if selected_tariff.price == 0:
+        flash("Бесплатный курс добавлен в ваш личный кабинет. Вы можете начать обучение прямо сейчас!", "success")
+        send_user_email(
+            subject="Доступ к бесплатному курсу предоставлен",
+            body=(
+                f"Здравствуйте, {form.name.data}!\n\n"
+                f"Вы зарегистрировались на бесплатный курс \"{selected_course.title}\".\n"
+                "Курс уже добавлен в ваш личный кабинет, и вы можете приступить к обучению прямо сейчас.\n\n"
+                "С уважением,\n"
+                "Команда Klasstrueda"
+            ),
+            recipient_email=form.email.data
+        )
+        return redirect(url_for("core.thank_you"))
 
     flash("Заявка на курс зарегистрирована. Мы свяжемся с вами по email с подробностями.", "success")
     return redirect(url_for("core.thank_you"))
