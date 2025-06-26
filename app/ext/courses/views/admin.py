@@ -208,6 +208,8 @@ def edit_course(course_id):
         course_db.skills_title = form.skills_title.data
         course_db.skills_description = form.skills_description.data
         course_db.registration_form = form.registration_form.data
+        course_db.artist_title = form.artist_title.data
+        course_db.artist_description = form.artist_description.data
         course_db.price = form.price.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
@@ -991,7 +993,7 @@ def add_tariff():
           title=form.data["title"],
           description = form.data["description"],
           price = form.data["price"],
-          discount = form.data["discount"],
+          discount = form.data["discount"] or 0.0, # подставляется 0.0 если поле пусто
         )
 
         file = request.files["photo"]
@@ -1038,7 +1040,7 @@ def edit_tariff(tariff_id):
         tariff_db.title = form.title.data
         tariff_db.description = form.description.data
         tariff_db.price = form.price.data
-        tariff_db.discount = form.discount.data
+        tariff_db.discount = form.discount.data or 0.0 # подставляется 0.0 если поле пусто
 
         # Обработка загруженного файла (одно фото)
         file = request.files["photo"]
@@ -1217,3 +1219,8 @@ def change_payment_status(payment_id):
     payment_db.status_payment = 1
     db.session.commit()
     return {"status": "success"}
+
+@admin_courses.get("/help")
+def help():
+    """Вывод файла с помощью по заполнению Кусов."""
+    return render_template("courses/admin/help.j2")
