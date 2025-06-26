@@ -121,7 +121,18 @@
       {% else %}
         {% set className = 'form-control border-0 bg-light' %}
       {% endif %}
-      {{ field(class=className, placeholder="", style=style, id=id, data_input=data_input, value=value) }}
+      
+      {# настройки для поля value, чтобы можно было делать предзаполненное поле своим текстом, например инструкцией заполнения #}
+      {% if field.type == 'TextAreaField' %}
+        {% if field.data %}
+          <textarea name="{{ field.name }}" class="{{ className }}" style="{{ style }}" id="{{ id }}" data-input="{{ data_input }}">{{ field.data }}</textarea>
+        {% else %}
+          <textarea name="{{ field.name }}" class="{{ className }}" style="{{ style }}" id="{{ id }}" data-input="{{ data_input }}">{{ value }}</textarea>
+        {% endif %}
+      {% else %}
+        {{ field(class=className, placeholder="", style=style, id=id, data_input=data_input, value=value) }}
+      {% endif %}
+
       {{ field.label() }}
       {% if field.errors %}
         <ul class="invalid-feedback">
