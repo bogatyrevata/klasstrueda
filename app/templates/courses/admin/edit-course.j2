@@ -10,6 +10,7 @@
     <a href="{{ url_for('admin_courses.add_course') }}" class="btn btn-outline-primary">
       <i class="bi bi-arrow-left"></i> Назад к добавлению курса
     </a>
+    <a class="btn btn-outline-primary" href="{{ url_for('admin_courses.help') }}">Инструкция по заполнению курса</a>
   </div>
   <div class="container mb-4">
     <form class="row g-3" action="{{ url_for('admin_courses.edit_course', course_id=course_id) }}"

@@ -1219,3 +1219,8 @@ def change_payment_status(payment_id):
     payment_db.status_payment = 1
     db.session.commit()
     return {"status": "success"}
+
+@admin_courses.get("/help")
+def help():
+    """Вывод файла с помощью по заполнению Кусов."""
+    return render_template("courses/admin/help.j2")
