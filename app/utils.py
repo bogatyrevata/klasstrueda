@@ -1,3 +1,4 @@
+import time
 from requests import post
 
 from flask import current_app, url_for
@@ -88,3 +89,49 @@ def send_to_email(subject, body, recipients, sender=None, reply_to=None):
         reply_to=reply_to
     )
     msg.send()
+
+
+def is_form_too_fast(form_time_field: str | int) -> bool:
+    """Проверка: не слишком ли быстро отправлена форма (защита от ботов)"""
+    try:
+        form_time = int(form_time_field)
+    except (ValueError, TypeError):
+        return True
+    current_time = int(time.time() * 1000)
+    return current_time - form_time < 2000
+
+
+def send_admin_notification(name, email, course_title=None, tariff_title=None, price=None, message=None, method=None):
+    """Отправляет уведомление администратору о новой заявке"""
+    if message:
+        body = f"Новая заявка на курс:\nИмя: {name}\nEmail: {email}\nСообщение: {message}"
+    else:
+        body = (
+            f"Новая заявка на курс:\n"
+            f"Имя: {name}\nEmail: {email}\n"
+            f"Курс: {course_title}\n"
+            f"Тариф: {tariff_title}\n"
+            f"Цена: {price}\n"
+            f"Способ оплаты: {method}"
+        )
+
+    send_to_telegram(body, send_to_admin=True)
+    send_to_email(
+        subject="Новая заявка на курс",
+        body=body,
+        recipients=['bogatyrevata@gmail.com'],
+        sender='klasstruedaru@gmail.com',
+        reply_to=['klasstruedaru@gmail.com']
+    )
+
+
+def send_user_email(subject, body, recipient_email):
+    """Отправляет письмо пользователю"""
+    send_to_email(
+        subject=subject,
+        body=body,
+        recipients=[recipient_email],
+        sender='klasstruedaru@gmail.com',
+        reply_to=['klasstruedaru@gmail.com']
+    )
+
