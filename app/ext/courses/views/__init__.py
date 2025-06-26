@@ -346,7 +346,7 @@ def get_tariffs(course_id):
     if not course:
         return jsonify({"error": "Курс не найден"}), 404  # Ошибка 404
 
-    tariffs = [{"tariff": t.title, "price": t.price, "id": t.id} for t in course.tariffes]
+    tariffs = [{"tariff": t.title, "price": round(t.price), "id": t.id} for t in course.tariffes]
 
     if not tariffs:
         return jsonify([{"price": "0", "tariff": "Для этого курса пока нет тарифов"}])  # Сообщение, если тарифов нет
