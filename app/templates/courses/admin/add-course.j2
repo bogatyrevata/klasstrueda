@@ -32,9 +32,84 @@
         {{ input_form_12(form.learning_process_title) }}
         {{ input_form_12(form.learning_process_description, style="height: 150px") }}
         {{ input_form_12(form.features_title) }}
-        {{ input_form_12(form.features_description, style="height: 150px") }}
+        {{ input_form_12(form.features_description, style="height: 150px",
+        value='<div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Творцам, которые хотят новое хобби</h5>
+              </div>
+              <span>Скучно сидеть в офисе и хочется делать что-то своими руками</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Дизайнерам и студентам</h5>
+              </div>
+              <span>Если вы уже знаете как делать украшения но не хватает навыков</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Сотрудникам ювелирных магазинов</h5>
+              </div>
+              <span>Вы лучше будете понимать как создавать ювелирные украшения и сможете сменить работу на более творческую</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Создателям бренда</h5>
+              </div>
+              <span>У вас уже есть свой бренд и вы хотите научиться новым навыкам для расширения линейки украшений</span>
+            </div>',) }}
         {{ input_form_12(form.skills_title) }}
-        {{ input_form_12(form.skills_description, style="height: 150px") }}
+        {{ input_form_12(form.skills_description, style="height: 150px",
+        value='<div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Сделаете свое оригинальное украшение</h5>
+                        <span>в результате мастер-класса у вас будет новое кольцо - «всмятку»</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Практические навыки</h5>
+                        <span>Вы получите ценные навыки и знания, которые сможете применить в будущем для создания других украшений</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Знания для дальнейшего развития</h5>
+                        <span>Попробуете основные ювелирные операции и техники, и поймете понравится ли вам ювелирное дело</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>',) }}
         <div class="col-12">
           <label>Работы студентов</label>
           <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-outline-primary">Добавить работу студента</a>
