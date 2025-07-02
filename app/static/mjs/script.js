@@ -121,35 +121,3 @@ function showToast() {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
-
-
-// Обновление списка тарифов при выборе курса
-
-const courseSelect = document.getElementById("course_title"); // Селект курса
-const priceSelect = document.getElementById("price"); // Селект стоимости
-
-function updatePriceOptions() {
-    const selectedCourse = courseSelect.value;
-
-    // Делаем запрос к серверу, чтобы получить тарифы для выбранного курса
-    fetch(`/courses/get-tariffs/${selectedCourse}`)
-        .then(response => response.json())
-        .then(tariffs => {
-            // Очищаем предыдущие options
-            priceSelect.innerHTML = "";
-
-            tariffs.forEach(({ tariff, price, id }) => {
-                const option = document.createElement("option");
-                option.value = id;
-                option.textContent = `${tariff} - ${price} USD`;
-                priceSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error("Ошибка загрузки тарифов:", error));
-}
-
-// Вешаем обработчик события на изменение курса
-courseSelect.addEventListener("change", updatePriceOptions);
-
-// Вызываем обновление при загрузке страницы
-updatePriceOptions();
