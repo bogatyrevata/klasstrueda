@@ -6,17 +6,24 @@
     <a href="{{ url_for('admin_courses.index') }}" class="btn btn-outline-primary">
       <i class="bi bi-arrow-left"></i> Назад
     </a>
+    <a class="btn btn-outline-primary" href="{{ url_for('admin_courses.help') }}">Инструкция по заполнению курса</a>
   </div>
   <div class="container mb-4">
     <form action="{{ url_for('admin_courses.add_course') }}" method="post" enctype="multipart/form-data">
       <h1>Добавление курса</h1>
+      <p> Все фото, alias, а также дата начала и окончания курса, обязательны к заполнению.</p>
       <div class="row g-3">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         {{ input_form_6(form.category_id) }}
         {{ input_form_6(form.title) }}
         {{ input_form_6(form.alias) }}
+        <h4>Карточка курса:</h4>
         {{ input_form_12(form.preview_description) }}
         {{ input_form_12(form.preview_photo) }}
+        {{ input_form_12(form.level) }}
+        {{ input_form_12(form.duration) }}
+        {{ input_form_12(form.price) }}
+        <h4>Показ курса на главной:</h4>
         <label for="show_on_homepage">
             {{ form.show_on_homepage }} {{ form.show_on_homepage.label.text }}
         </label>
@@ -24,33 +31,118 @@
             {{ form.popular }} {{ form.popular.label.text }}
         </label>
         {{ input_form_12(form.homepage_photo) }}
-        {{ input_form_12(form.level) }}
-        {{ input_form_12(form.duration) }}
+        <h4>Описание курса на странице курса:</h4>
         {{ input_form_12(form.about, style="height: 150px") }}
         {{ input_form_12(form.about_photo) }}
         {{ input_form_12(form.learning_process_title) }}
         {{ input_form_12(form.learning_process_description, style="height: 150px") }}
         {{ input_form_12(form.features_title) }}
-        {{ input_form_12(form.features_description, style="height: 150px") }}
+        {{ input_form_12(form.features_description, style="height: 150px",
+        value='<div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Творцам, которые хотят новое хобби</h5>
+              </div>
+              <span>Скучно сидеть в офисе и хочется делать что-то своими руками</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Дизайнерам и студентам</h5>
+              </div>
+              <span>Если вы уже знаете как делать украшения но не хватает навыков</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Сотрудникам ювелирных магазинов</h5>
+              </div>
+              <span>Вы лучше будете понимать как создавать ювелирные украшения и сможете сменить работу на более творческую</span>
+            </div>
+            <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+              <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0 btn-square bg-primary me-3">
+                  <i class="fa fa-check text-white"></i>
+                </div>
+                <h5 class="mb-0">Создателям бренда</h5>
+              </div>
+              <span>У вас уже есть свой бренд и вы хотите научиться новым навыкам для расширения линейки украшений</span>
+            </div>',) }}
         {{ input_form_12(form.skills_title) }}
-        {{ input_form_12(form.skills_description, style="height: 150px") }}
+        {{ input_form_12(form.skills_description, style="height: 150px",
+        value='<div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Сделаете свое оригинальное украшение</h5>
+                        <span>в результате мастер-класса у вас будет новое кольцо - «всмятку»</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Практические навыки</h5>
+                        <span>Вы получите ценные навыки и знания, которые сможете применить в будущем для создания других украшений</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.1s">
+                  <div class="bg-white shadow d-flex align-items-center h-100 p-4" style="min-height: 150px;">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 btn-lg-square bg-primary">
+                        <i class="fa fa-clock text-white"></i>
+                      </div>
+                      <div class="ps-4">
+                        <h5>Знания для дальнейшего развития</h5>
+                        <span>Попробуете основные ювелирные операции и техники, и поймете понравится ли вам ювелирное дело</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>',) }}
+        <h4>Работы студентов:</h4>
+        <p>Будут добавлены в карусель с работами студентов на страницу курса. Добавляем только в существущий курс.</p>
         <div class="col-12">
           <label>Работы студентов</label>
           <a href="{{ url_for('admin_courses.add_studentwork') }}" class="btn btn-outline-primary">Добавить работу студента</a>
         </div>
+        <h4>Форма регистрации:</h4>
+        <p> Форма, в которой пользователь может задать вопрос по курсу.</p>
         {{ input_form_12(form.registration_form, style="height: 150px") }}
         {{ input_form_12(form.registration_photo) }}
+        <h4>Мастер:</h4>
+        <p> Фото мастера будет на странице, фото работы - это небольшое фото к основному, будет вторым слоем.</p>
         {{ input_form_12(form.artist_photo) }}
         {{ input_form_12(form.artist_photo_preview) }}
         {{ input_form_12(form.artist_title)}}
         {{ input_form_12(form.artist_description, style="height: 150px") }}
+        <h4>Работы мастера:</h4>
+        <p>Будут добавлены в карусель под разделом мастера. Можно добавлять только в существущий курс.</p>
         <div class="col-12">
           <label>Работы мастера</label>
           <a href="{{ url_for('admin_courses.add_artistwork') }}" class="btn btn-outline-primary">Добавить работу мастера</a>
         </div>
-        {{ input_form_12(form.price, style="height: 150px") }}
+        <h4>Дата начала/окончания курса</h4>
+        <p>Обязательны к заполнению.</p>
         {{ input_form_12(form.start_date ) }}
         {{ input_form_12(form.end_date ) }}
+        <h4>Модули</h4>
+        <p>Можно добавить в курс уже существующие модули. Но если нужны новые модули - нужно сначала их создать и добавить уже в сохраненный курс.</p>
         {{ input_form_12(form.modules, style="height: 100px")}}
         {{ btn(form.submit, value="Отправить") }}
       </div>
