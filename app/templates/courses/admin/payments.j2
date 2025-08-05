@@ -2,6 +2,12 @@
 
 {% block admin_content %}
 
+  <div class="container mb-4">
+    <a href="{{ url_for('admin.index') }}" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Назад
+    </a>
+  </div>
+  <div class="container mb-4">
   <h2>Статус оплат курсов: пользователи, курсы и даты</h2>
   <table class="table">
     <tr>
@@ -23,21 +29,22 @@
         <td> {{ payment.status_payment }}</td>
         <td> {{ payment.datetime_create }} </td>
         <td>{% if payment.status_payment == 0 %}
-          <a class="btn btn-primary" href="{{ url_for('admin_courses.change_payment_status', payment_id=payment.id) }}" data-id="{{ payment.id }}">Оплата получена</a>
+          <a class="btn btn-primary btn-payment-confirm" href="{{ url_for('admin_courses.change_payment_status', payment_id=payment.id) }}" data-id="{{ payment.id }}">Оплата получена</a>
         {% else %}
           оплачено
         {% endif %}</td>
       </tr>
     {% endfor %}
   {% else %}
-    <p>Пока никто ничего не оформлял.</p>
+      <p>Пока никто ничего не оформлял.</p>
   {% endif %}
-  </table>
+    </table>
+  </div>
 {% endblock admin_content %}
 
 {% block js %}
   <script>
-    const btns = document.querySelectorAll('.admin__container .btn');
+    const btns = document.querySelectorAll('.admin__container .btn-payment-confirm');
     btns.forEach((btn) => {
       btn.addEventListener('click', (evt) => {
         evt.preventDefault();
