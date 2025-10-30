@@ -14,3 +14,5 @@ venv/
 yarn.lock
 *.pyc
 *.sqlite
+
+echo -e "\n# macOS system files\n.DS_Store\n.AppleDouble\n.Spotlight-V100\n.Trashes" >> .gitignore

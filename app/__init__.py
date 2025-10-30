@@ -6,7 +6,15 @@ __author__ = "MakeHTML Team"
 import logging
 import os
 import sys
-from distutils.util import strtobool
+def strtobool(val):
+    """Convert a string representation of truth to true (1) or false (0)."""
+    val = str(val).lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError(f"invalid truth value {val!r}")
 from importlib import import_module
 
 from click import unstyle
