@@ -16,4 +16,5 @@ loguru
 PyMySql
 python-dotenv
 requests
+argon2-cffi
 git+https://github.com/jokerinteractive/flask-resize@master
