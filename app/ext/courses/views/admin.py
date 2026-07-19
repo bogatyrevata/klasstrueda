@@ -149,6 +149,8 @@ def add_course():
             price=form.data["price"],
             start_date=form.data["start_date"],
             end_date=form.data["end_date"],
+            alt_platform_url=form.data["alt_platform_url"],
+            alt_platform_description=form.data["alt_platform_description"]
         )
 
        # Загружаем файлы
@@ -213,6 +215,8 @@ def edit_course(course_id):
         course_db.price = form.price.data
         course_db.start_date = form.start_date.data
         course_db.end_date = form.end_date.data
+        course_db.alt_platform_url = form.alt_platform_url.data
+        course_db.alt_platform_description = form.alt_platform_description.data
 
         file_fields = [
             "preview_photo", "homepage_photo", "about_photo",

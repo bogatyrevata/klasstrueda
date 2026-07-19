@@ -15,6 +15,17 @@
         {% endif %}
         <h1>{{ payment.course.title }}</h1>
         <p>{{ payment.course.about }}</p>
+
+        <!-- Альтернативная платформа -->
+        {% if payment.course.alt_platform_url %}
+        <div class="alt-platform-block alert alert-info d-flex align-items-center justify-content-between mb-4">
+          <p class="mb-0">{{ payment.course.alt_platform_description }}</p>
+          <a href="{{ payment.course.alt_platform_url }}" target="_blank" rel="noopener" class="btn btn-primary ms-3">
+            Смотреть на другой платформе
+          </a>
+        </div>
+        {% endif %}
+
         <!-- Module start -->
         {% for module in payment.course.modules %}
           <div class="container mb-5">
