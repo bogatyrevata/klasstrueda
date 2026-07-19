@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from flask import Blueprint, abort, current_app, g, flash, redirect, render_template, request, url_for
 from flask_security import hash_password, current_user
@@ -26,24 +26,36 @@ def init_request():
             name="admin",
             permissions={"admin-read", "admin-write", "user-read", "user-write"},
         )
-        user_datastore.find_or_create_role(name="user", permissions={"user-read", "user-write"})
+        user_datastore.find_or_create_role(
+            name="user",
+            permissions={"user-read", "user-write"}
+        )
+
         if not user_datastore.find_user(email="admin@z-gu.ru"):
             user_datastore.create_user(
                 username="admin",
                 email="admin@z-gu.ru",
                 password=hash_password("1234567"),
                 roles=["admin"],
+                confirmed_at=datetime.now(timezone.utc),  # добавляем дату подтверждения администратора, чтобы он мог сразу войти в систему
             )
+
         if not user_datastore.find_user(email="user@z-gu.ru"):
             user_datastore.create_user(
                 username="user",
                 email="user@z-gu.ru",
                 password=hash_password("1234567"),
                 roles=["user"],
+                confirmed_at=datetime.now(timezone.utc),  # добавляем дату подтверждения пользователя, чтобы он мог сразу войти в систему
+
             )
+
         db.session.commit()
+
     except OperationalError as msg:
-        abort(500, msg)
+        db.session.rollback() # делаем откат транзакции в случае ошибки
+        current_app.logger.error(f"Ошибка при инициализации базы данных: {msg}", exc_info=True)
+        abort(500, "Внутренняя ошибка сервера")
 
 
 @core.before_app_request

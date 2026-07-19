@@ -137,6 +137,10 @@
           <label>Работы мастера</label>
           <a href="{{ url_for('admin_courses.add_artistwork') }}" class="btn btn-outline-primary">Добавить работу мастера</a>
         </div>
+        <h4>Альтернативная платформа</h4>
+        <p>Ссылка на группу Вконтакте или альтернативную платформу.</p>
+        {{ input_form_12(form.alt_platform_url) }}
+        {{ input_form_12(form.alt_platform_description, style="height: 150px") }}
         <h4>Дата начала/окончания курса</h4>
         <p>Обязательны к заполнению.</p>
         {{ input_form_12(form.start_date ) }}
