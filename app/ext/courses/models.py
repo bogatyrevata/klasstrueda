@@ -276,6 +276,10 @@ class Course(db.Model, ModelMixin):
     start_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
     end_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.UTC))
 
+    # Альтернативная платформа для просмотра уроков
+    alt_platform_url = db.Column(db.String(255), nullable=True)   # Ссылка на кнопку
+    alt_platform_description = db.Column(db.Text, nullable=True)  # Текст-пояснение к кнопке
+
     modules = db.relationship("Module", secondary="course_module", backref="course")
 
 
