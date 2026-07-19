@@ -353,6 +353,8 @@
   width: 350px;
   height: 350px;
   border-radius: 50%;
+  object-fit: cover;     /* обрезка без деформации */
+  object-position: center; /* центрирование */
 }
 
 /*** workphoto-single ***/
