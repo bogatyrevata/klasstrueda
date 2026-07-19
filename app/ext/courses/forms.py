@@ -69,6 +69,8 @@ class CourseForm(FlaskForm):
     artist_photo_preview = FileField(
         "Фото работы как дополнение к основному фото",
         [FileAllowed(["jpg","png"],"Только jpg и png!")])
+    alt_platform_url = StringField("Ссылка группу Вконтакте или на альтернативную платформу")
+    alt_platform_description = TextAreaField("Описание ссылки Вконтакте или альтернативной платформы")
     price = TextAreaField("Стоимость курса")
     start_date = DateField("Дата начала курса", validators=[DataRequired()])
     end_date = DateField("Дата окончания курса", validators=[DataRequired()])
