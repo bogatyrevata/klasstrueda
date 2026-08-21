@@ -110,17 +110,17 @@ def before_app_request():
       "email": "klasstrueda@gmail.com",
     }
     g.social_links = [{
-      "title": "facebook-f",
-      "href": "https://www.facebook.com/klasstrueda",
-    }, {
+    #   "title": "facebook-f",
+    #   "href": "https://www.facebook.com/klasstrueda",
+    # }, {
       "title": "youtube",
       "href": "https://www.youtube.com/channel/UCXIbv2Y_Qvy3sxvluUDA6XQ",
     },{
       "title": "vk",
       "href": "https://vk.com/true_da",
-    }, {
-      "title": "instagram",
-      "href": "https://www.instagram.com/klasstrueda/",
+    # }, {
+    #   "title": "instagram",
+    #   "href": "https://www.instagram.com/klasstrueda/",
     }]
 
 
